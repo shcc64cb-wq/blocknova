@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090711">
+  <title>BlockNova | هاستینگ ماینکرافت</title>
+  <style>
+    :root{--bg:#090711;--panel:#141020;--panel2:#1b142b;--purple:#8b5cf6;--purple2:#a78bfa;--text:#f7f3ff;--muted:#aaa1bd;--line:#302442;--green:#5ee6a8}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at 80% -10%,#38205e 0,transparent 36%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+    a{color:inherit;text-decoration:none}.wrap{width:min(1100px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:5;background:#0b0813eF;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}.brand{font-size:22px;font-weight:900;letter-spacing:.3px}.brand span{color:var(--purple2)}
+    .navlinks{display:flex;gap:22px;color:var(--muted);font-size:14px}.navlinks a:hover{color:white}
+    button,.btn{border:0;border-radius:12px;padding:11px 17px;font:inherit;font-weight:700;cursor:pointer}
+    .primary{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;box-shadow:0 8px 30px #8b5cf633}.secondary{background:#211832;color:#e9ddff;border:1px solid #493467}
+    .hero{padding:76px 0 55px;text-align:center}.eyebrow{display:inline-block;border:1px solid #533b77;background:#211632;color:#d8c6ff;border-radius:30px;padding:5px 13px;font-size:13px}
+    h1{font-size:clamp(34px,7vw,64px);line-height:1.25;margin:18px auto 12px;max-width:850px}.glow{color:#b99aff;text-shadow:0 0 28px #9b6dff55}
+    .hero p{max-width:650px;margin:0 auto 25px;color:var(--muted);font-size:17px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:35px auto 0;max-width:720px}.stat{background:#130e1f;border:1px solid var(--line);border-radius:15px;padding:13px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+    section{padding:42px 0}.section-head{text-align:center;margin-bottom:25px}.section-head h2{font-size:30px;margin:0 0 5px}.section-head p{color:var(--muted);margin:0}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.feature,.plan,.how{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:20px}
+    .icon{width:43px;height:43px;border-radius:13px;background:#352252;display:grid;place-items:center;font-size:22px;margin-bottom:10px}.feature h3,.plan h3{margin:4px 0}.feature p,.plan p{color:var(--muted);font-size:14px;margin:5px 0}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.plan{position:relative}.plan.popular{border-color:#9b72ef;box-shadow:0 0 35px #8b5cf61c}.tag{display:inline-block;color:#d9c8ff;background:#39245a;border-radius:20px;padding:3px 10px;font-size:12px}
+    .price{font-size:29px;font-weight:900;margin:12px 0 0}.price small{font-size:13px;color:var(--muted);font-weight:400}.plan ul{padding-right:20px;color:#d8d0e6;font-size:14px;min-height:112px}.plan li{margin:5px 0}
+    .plan button{width:100%}.note{border:1px solid #59442b;background:#211a12;color:#e9d4ae;padding:13px 16px;border-radius:13px;font-size:13px;margin-top:17px}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.how b{color:#c6aaff;font-size:20px}.how p{color:var(--muted);font-size:14px;margin-bottom:0}
+    footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .lang{font-size:13px;padding:8px 12px}
+    @media(max-width:760px){.navlinks{display:none}.hero{padding:55px 0 35px}.features,.plans,.steps{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:9px 4px}.stat b{font-size:17px}.stat small{font-size:11px}.section-head h2{font-size:25px}}
+  </style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="#">Block<span>Nova</span></a>
+  <nav class="navlinks"><a href="#features">امکانات</a><a href="#plans">پلن‌ها</a><a href="#how">نحوه کار</a></nav>
+  <button class="secondary lang" id="langBtn">English</button>
+</div></header>
+<main>
+  <div class="wrap hero">
+    <span class="eyebrow" id="eyebrow">هاستینگ ماینکرافت، ساده و سریع</span>
+    <h1 id="heroTitle">دنیای ماینکرافت خودت را <span class="glow">بساز و مدیریت کن</span></h1>
+    <p id="heroText">با BlockNova برای دوستانت سرور بساز؛ از نسخه Java و Bedrock پشتیبانی می‌کنیم. ساده، قابل مدیریت و با پلن‌های زمانی.</p>
+    <div class="actions"><a class="btn primary" href="#plans" id="heroCta">مشاهده پلن‌ها</a><a class="btn secondary" href="#how" id="heroMore">چطور کار می‌کند؟</a></div>
+    <div class="stats"><div class="stat"><b>Java + Bedrock</b><small id="s1">پشتیبانی از دو نسخه</small></div><div class="stat"><b>۲۴/۷</b><small id="s2">هدف دسترس‌پذیری سرویس</small></div><div class="stat"><b>ساده</b><small id="s3">مدیریت از پنل کاربری</small></div></div>
+  </div>
+  <section id="features"><div class="wrap"><div class="section-head"><h2 id="featuresTitle">امکانات BlockNova</h2><p id="featuresSub">همه‌چیز برای شروع یک دنیای چندنفره</p></div>
+    <div class="features">
+      <article class="feature"><div class="icon">⚡</div><h3 id="f1t">راه‌اندازی آسان</h3><p id="f1p">فرایند ساخت سرور از داخل پنل، بدون نیاز به دانش فنی پیچیده.</p></article>
+      <article class="feature"><div class="icon">🌍</div><h3 id="f2t">Java و Bedrock</h3><p id="f2p">امکان ارائه سرورهای سازگار با بازیکنان کامپیوتر و موبایل.</p></article>
+      <article class="feature"><div class="icon">🛡️</div><h3 id="f3t">مدیریت مستقل</h3><p id="f3p">هر مشتری دنیای جداگانه و تنظیمات مخصوص سرور خودش را دارد.</p></article>
+    </div>
+  </div></section>
+  <section id="plans"><div class="wrap"><div class="section-head"><h2 id="plansTitle">پلن‌های اشتراکی</h2><p id="plansSub">قیمت‌های نمونه؛ تا زمان آماده شدن زیرساخت، فروش فعال نیست.</p></div>
+    <div class="plans">
+      <article class="plan"><span class="tag" id="p1tag">شروع</span><h3 id="p1name">یک‌روزه</h3><div class="price">۵۰٬۰۰۰ <small id="currency1">تومان / ۲۴ ساعت</small></div><ul id="p1list"><li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدیریت از پنل</li></ul><button class="secondary" onclick="alert('ثبت سفارش هنوز فعال نشده است. زیرساخت سرورها و پرداخت باید راه‌اندازی شود.') " id="p1btn">به‌زودی</button></article>
+      <article class="plan popular"><span class="tag" id="p2tag">پیشنهادی</span><h3 id="p2name">سه‌روزه</h3><div class="price">۱۲۰٬۰۰۰ <small id="currency2">تومان / ۳ روز</small></div><ul id="p2list"><li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدت بیشتر با قیمت کمتر</li></ul><button class="primary" onclick="alert('ثبت سفارش هنوز فعال نشده است. زیرساخت سرورها و پرداخت باید راه‌اندازی شود.')" id="p2btn">به‌زودی</button></article>
+      <article class="plan"><span class="tag" id="p3tag">بلندمدت</span><h3 id="p3name">هفت‌روزه</h3><div class="price">۲۵۰٬۰۰۰ <small id="currency3">تومان / ۷ روز</small></div><ul id="p3list"><li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>تمدید اشتراک</li></ul><button class="secondary" onclick="alert('ثبت سفارش هنوز فعال نشده است. زیرساخت سرورها و پرداخت باید راه‌اندازی شود.')" id="p3btn">به‌زودی</button></article>
+    </div>
+    <div class="note" id="priceNote">توجه: این قیمت‌ها فقط نمونه اولیه‌اند. قبل از فروش باید هزینه منابع، ظرفیت هر میزبان، پشتیبانی و حاشیه سود محاسبه شود. هیچ پرداختی در این نسخه انجام نمی‌شود.</div>
+  </div></section>
+  <section id="how"><div class="wrap"><div class="section-head"><h2 id="howTitle">چطور کار می‌کند؟</h2><p id="howSub">مسیر ساده مشتری در BlockNova</p></div>
+    <div class="steps"><article class="how"><b>۰۱</b><h3 id="h1t">ثبت‌نام</h3><p id="h1p">کاربر حساب می‌سازد و وارد پنل می‌شود.</p></article><article class="how"><b>۰۲</b><h3 id="h2t">انتخاب پلن</h3><p id="h2p">مدت اشتراک و نسخه Java یا Bedrock را انتخاب می‌کند.</p></article><article class="how"><b>۰۳</b><h3 id="h3t">دریافت سرور</h3><p id="h3p">پس از فعال شدن پرداخت و زیرساخت، سرور ساخته و اطلاعات اتصال نمایش داده می‌شود.</p></article></div>
+  </div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 BlockNova. <span id="rights">تمام حقوق محفوظ است.</span></span><span id="status">نسخه نمایشی — سفارش و سرور هنوز فعال نیست</span></div></footer>
+<script>
+const fa={dir:'rtl',eyebrow:'هاستینگ ماینکرافت، ساده و سریع',heroTitle:'دنیای ماینکرافت خودت را <span class="glow">بساز و مدیریت کن</span>',heroText:'با BlockNova برای دوستانت سرور بساز؛ از نسخه Java و Bedrock پشتیبانی می‌کنیم. ساده، قابل مدیریت و با پلن‌های زمانی.',heroCta:'مشاهده پلن‌ها',heroMore:'چطور کار می‌کند؟',s1:'پشتیبانی از دو نسخه',s2:'هدف دسترس‌پذیری سرویس',s3:'مدیریت از پنل کاربری',featuresTitle:'امکانات BlockNova',featuresSub:'همه‌چیز برای شروع یک دنیای چندنفره',f1t:'راه‌اندازی آسان',f1p:'فرایند ساخت سرور از داخل پنل، بدون نیاز به دانش فنی پیچیده.',f2t:'Java و Bedrock',f2p:'امکان ارائه سرورهای سازگار با بازیکنان کامپیوتر و موبایل.',f3t:'مدیریت مستقل',f3p:'هر مشتری دنیای جداگانه و تنظیمات مخصوص سرور خودش را دارد.',plansTitle:'پلن‌های اشتراکی',plansSub:'قیمت‌های نمونه؛ تا زمان آماده شدن زیرساخت، فروش فعال نیست.',p1tag:'شروع',p2tag:'پیشنهادی',p3tag:'بلندمدت',p1name:'یک‌روزه',p2name:'سه‌روزه',p3name:'هفت‌روزه',currency1:'تومان / ۲۴ ساعت',currency2:'تومان / ۳ روز',currency3:'تومان / ۷ روز',p1list:'<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدیریت از پنل</li>',p2list:'<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدت بیشتر با قیمت کمتر</li>',p3list:'<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>تمدید اشتراک</li>',p1btn:'به‌زودی',p2btn:'به‌زودی',p3btn:'به‌زودی',priceNote:'توجه: این قیمت‌ها فقط نمونه اولیه‌اند. قبل از فروش باید هزینه منابع، ظرفیت هر میزبان، پشتیبانی و حاشیه سود محاسبه شود. هیچ پرداختی در این نسخه انجام نمی‌شود.',howTitle:'چطور کار می‌کند؟',howSub:'مسیر ساده مشتری در BlockNova',h1t:'ثبت‌نام',h1p:'کاربر حساب می‌سازد و وارد پنل می‌شود.',h2t:'انتخاب پلن',h2p:'مدت اشتراک و نسخه Java یا Bedrock را انتخاب می‌کند.',h3t:'دریافت سرور',h3p:'پس از فعال شدن پرداخت و زیرساخت، سرور ساخته و اطلاعات اتصال نمایش داده می‌شود.',rights:'تمام حقوق محفوظ است.',status:'نسخه نمایشی — سفارش و سرور هنوز فعال نیست'};
+const en={dir:'ltr',eyebrow:'Minecraft hosting, made simple',heroTitle:'Build and manage your <span class="glow">own Minecraft world</span>',heroText:'Create a server for your friends with BlockNova. Java and Bedrock support, simple management and time-based plans.',heroCta:'View plans',heroMore:'How it works',s1:'Two editions supported',s2:'Service availability goal',s3:'Manage from your panel',featuresTitle:'BlockNova features',featuresSub:'Everything you need to start a multiplayer world',f1t:'Easy setup',f1p:'Create a server from your panel without complicated technical steps.',f2t:'Java and Bedrock',f2p:'Options for players on computers and mobile devices.',f3t:'Separate management',f3p:'Each customer gets a separate world and server settings.',plansTitle:'Shared plans',plansSub:'Sample prices. Sales are not active until infrastructure is ready.',p1tag:'Starter',p2tag:'Popular',p3tag:'Longer term',p1name:'1 day',p2name:'3 days',p3name:'7 days',currency1:'Toman / 24 hours',currency2:'Toman / 3 days',currency3:'Toman / 7 days',p1list:'<li>One separate server</li><li>Java or Bedrock</li><li>Panel management</li>',p2list:'<li>One separate server</li><li>Java or Bedrock</li><li>More time for a lower daily price</li>',p3list:'<li>One separate server</li><li>Java or Bedrock</li><li>Subscription renewal</li>',p1btn:'Coming soon',p2btn:'Coming soon',p3btn:'Coming soon',priceNote:'Note: These are draft prices only. Resource costs, host capacity, support and margin must be calculated before sales. No payment is processed in this demo.',howTitle:'How it works',howSub:'A simple customer journey on BlockNova',h1t:'Sign up',h1p:'The user creates an account and opens the panel.',h2t:'Choose a plan',h2p:'They choose a subscription period and Java or Bedrock.',h3t:'Get a server',h3p:'Once payments and infrastructure are ready, the server is created and connection details are shown.',rights:'All rights reserved.',status:'Demo version — orders and servers are not active'};
+let english=false;document.getElementById('langBtn').addEventListener('click',()=>{english=!english;const d=english?en:fa;document.documentElement.lang=english?'en':'fa';document.documentElement.dir=d.dir;for(const [k,v] of Object.entries(d)){const el=document.getElementById(k);if(el){if(k==='heroTitle'||k.endsWith('list'))el.innerHTML=v;else el.textContent=v;}}document.getElementById('langBtn').textContent=english?'فارسی':'English';});
+</script>
+</body></html>
