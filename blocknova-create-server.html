@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlockNova | ساخت سرور آزمایشی</title>
+<style>
+:root{--bg:#090811;--panel:#171426;--panel2:#211a35;--purple:#8b5cf6;--purple2:#6d28d9;--text:#f5f3ff;--muted:#aaa3bd;--line:#382d50;--green:#34d399;--gold:#fbbf24}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,#28164b 0,transparent 35%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+header{padding:22px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:23px;font-weight:800}.brand span{color:#a78bfa}.tag{font-size:12px;color:var(--muted);margin-top:6px}
+main{max-width:850px;margin:auto;padding:22px 16px 45px}h1{font-size:23px;margin:8px 0}.muted{color:var(--muted);font-size:13px;line-height:1.9}
+.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:18px}
+label{display:block;font-size:13px;margin:16px 0 8px;color:#ddd6f2}
+input,select{width:100%;background:#0f0c19;border:1px solid #493b63;color:white;border-radius:11px;padding:13px;font:inherit;font-size:14px;outline:none}
+input:focus,select:focus{border-color:var(--purple)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:0;border-radius:12px;padding:13px 17px;font-weight:700;font-size:14px;cursor:pointer}
+.primary{background:linear-gradient(100deg,var(--purple2),var(--purple));color:white;width:100%;margin-top:20px}
+.secondary{background:#2a233d;color:white;border:1px solid #4a3c64}
+.server{border:1px solid var(--line);background:#141120;border-radius:14px;padding:15px;margin-top:12px}
+.server b{font-size:15px}.server p{color:var(--muted);font-size:12px;line-height:1.9;margin-bottom:0}
+.status{display:inline-block;color:var(--gold);background:#453516;border-radius:30px;padding:5px 9px;font-size:11px;margin-top:10px}
+.notice{border:1px solid #66512a;background:#211a28;border-radius:14px;padding:14px;color:#c9c1d8;font-size:12px;line-height:2;margin-top:18px}
+.notice strong{color:#fcd34d}.empty{text-align:center;color:var(--muted);padding:18px;border:1px dashed #493b63;border-radius:14px;margin-top:12px}
+footer{text-align:center;color:#766f89;font-size:11px;margin-top:28px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div><div class="brand">Block<span>Nova</span></div><div class="tag">ساخت و مدیریت سرور ماینکرافت</div></div>
+ <div class="tag">نسخه آزمایشی · Demo</div>
+</header>
+<main>
+ <h1>ساخت سرور جدید</h1>
+ <div class="muted">مشخصات سرور آزمایشی خودت را انتخاب کن.</div>
+ <section class="panel">
+  <form id="serverForm">
+   <label for="serverName">نام سرور</label>
+   <input id="serverName" maxlength="24" placeholder="مثلاً My Minecraft Server" required>
+   <div class="grid">
+    <div>
+     <label for="edition">نسخه بازی</label>
+     <select id="edition"><option value="Java">Java Edition</option><option value="Bedrock">Bedrock Edition</option></select>
+    </div>
+    <div>
+     <label for="version">نسخه ماینکرافت</label>
+     <select id="version"><option>1.21.1</option><option>1.21</option><option>1.20.6</option><option>1.20.4</option><option>1.19.4</option></select>
+    </div>
+   </div>
+   <div class="grid">
+    <div>
+     <label for="software">نوع نرم‌افزار</label>
+     <select id="software"><option>Vanilla</option><option>Paper</option><option>Fabric</option><option>Forge</option></select>
+    </div>
+    <div>
+     <label for="ram">رم درخواستی (نمایشی)</label>
+     <select id="ram"><option value="1">1 GB</option><option value="2">2 GB</option><option value="4">4 GB</option><option value="6">6 GB</option></select>
+    </div>
+   </div>
+   <button class="primary" type="submit">＋ ثبت سرور آزمایشی</button>
+  </form>
+ </section>
+ <h2 style="font-size:18px;margin:28px 0 8px">سرورهای ثبت‌شده روی این دستگاه</h2>
+ <div class="muted">این فهرست فقط در همین مرورگر ذخیره می‌شود.</div>
+ <div id="serverList"></div>
+ <div class="notice"><strong>نکته مهم:</strong> این نسخه فقط فرم و فهرست نمایشی دارد. ثبت سرور به معنی ساخت سرور واقعی نیست؛ گزینه رم هم فقط انتخاب نمایشی است و منابعی اختصاص داده نمی‌شود. برای اجرای واقعی به بک‌اند و زیرساخت میزبانی نیاز داریم. این صفحه به Aternos متصل نیست و برای فروش خدمات آماده نیست.</div>
+ <footer>© BlockNova · نسخه آزمایشی</footer>
+</main>
+<script>
+const form=document.getElementById('serverForm'), list=document.getElementById('serverList');
+let servers=[];
+try{servers=JSON.parse(localStorage.getItem('bn_demo_servers')||'[]')}catch(e){servers=[]}
+function render(){
+ if(!servers.length){list.innerHTML='<div class="empty">هنوز سروری ثبت نکرده‌ای.</div>';return}
+ list.innerHTML=servers.map((s,i)=>`<article class="server"><b>${escapeHtml(s.name)}</b><span class="status">آزمایشی · بدون اتصال</span><p>بازی: ${s.edition} · نسخه: ${s.version}<br>نرم‌افزار: ${s.software} · رم انتخابی: ${s.ram} GB</p><button class="secondary" onclick="removeServer(${i})">حذف از فهرست</button></article>`).join('');
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function removeServer(i){servers.splice(i,1);save();render()}
+function save(){try{localStorage.setItem('bn_demo_servers',JSON.stringify(servers))}catch(e){}}
+form.addEventListener('submit',e=>{
+ e.preventDefault();
+ if(servers.length>=5){alert('در نسخه آزمایشی حداکثر ۵ سرور می‌توانی ثبت کنی.');return}
+ servers.push({name:document.getElementById('serverName').value.trim(),edition:document.getElementById('edition').value,version:document.getElementById('version').value,software:document.getElementById('software').value,ram:document.getElementById('ram').value});
+ save();render();form.reset();alert('سرور آزمایشی در فهرست همین مرورگر ثبت شد؛ سرور واقعی ساخته نشده است.');
+});
+render();
+</script>
+</body>
+</html>
