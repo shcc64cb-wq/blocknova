@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090711">
+<title>BlockNova | ورود و ثبت‌نام</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;background:#090711;color:#fff;
+font-family:Tahoma,Arial,sans-serif;
+min-height:100vh;display:flex;align-items:center;
+justify-content:center;padding:20px;
+}
+.card{
+width:100%;max-width:430px;
+background:#151322;border:1px solid #302943;
+border-radius:24px;padding:30px;
+box-shadow:0 20px 70px #0008;
+}
+.logo{text-align:center;font-size:30px;font-weight:900}
+.logo span{color:#a56aff}
+.sub{text-align:center;color:#aaa;margin:12px 0 28px}
+.tabs{display:flex;gap:10px;margin-bottom:25px}
+.tabs button{
+flex:1;padding:13px;border:0;border-radius:12px;
+background:#29233c;color:#bbb;font-size:15px;
+}
+.tabs button.active{
+background:linear-gradient(120deg,#7024db,#9855ff);
+color:white;
+}
+h2{font-size:22px;margin-bottom:22px}
+label{display:block;color:#bbb;margin:17px 0 9px;font-size:13px}
+input{
+width:100%;padding:15px;border-radius:12px;
+border:1px solid #39304d;background:#0c0a14;
+color:white;font-size:15px;outline:none;
+}
+input:focus{border-color:#9955ff}
+.submit{
+width:100%;margin-top:25px;padding:16px;
+border:0;border-radius:13px;
+background:linear-gradient(120deg,#7024db,#9855ff);
+color:white;font-size:16px;font-weight:bold;
+}
+.note{text-align:center;color:#777;font-size:11px;margin-top:22px}
+.message{color:#c49aff;text-align:center;margin-top:15px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="logo">Block<span>Nova</span></div>
+<div class="sub">به دنیای هاستینگ ماینکرافت خوش آمدی</div>
+
+<div class="tabs">
+<button id="loginTab" class="active" onclick="showForm('login')">ورود</button>
+<button id="registerTab" onclick="showForm('register')">ثبت‌نام</button>
+</div>
+
+<h2 id="heading">ورود به حساب کاربری</h2>
+
+<form onsubmit="demo(event)">
+<div id="nameField" style="display:none">
+<label>نام کاربری</label>
+<input id="username" placeholder="نام خود را وارد کن">
+</div>
+
+<label>ایمیل</label>
+<input type="email" id="email" placeholder="example@email.com" required>
+
+<label>رمز عبور</label>
+<input type="password" id="password" placeholder="رمز عبور" minlength="8" required>
+
+<button class="submit" id="submitBtn">ورود به حساب</button>
+<div class="message" id="message"></div>
+</form>
+
+<div class="note">
+© 2026 BlockNova · نسخه آزمایشی
+</div>
+</div>
+
+<script>
+let mode='login';
+
+function showForm(type){
+mode=type;
+document.getElementById('loginTab').classList.toggle('active',type==='login');
+document.getElementById('registerTab').classList.toggle('active',type==='register');
+document.getElementById('nameField').style.display=type==='register'?'block':'none';
+document.getElementById('username').required=type==='register';
+document.getElementById('heading').textContent=type==='login'?'ورود به حساب کاربری':'ساخت حساب جدید';
+document.getElementById('submitBtn').textContent=type==='login'?'ورود به حساب':'ثبت‌نام';
+document.getElementById('message').textContent='';
+}
+
+function demo(e){
+e.preventDefault();
+document.getElementById('message').textContent=
+'این نسخه آزمایشی است؛ برای ورود واقعی باید سیستم حساب کاربری به سرور متصل شود.';
+}
+</script>
+</body>
+</html>
