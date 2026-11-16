@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پنل مدیریت | BlockNova</title>
+<style>
+:root{--bg:#09090f;--panel:#12121d;--panel2:#191927;--line:#29283b;--text:#f5f3ff;--muted:#aaa6c2;--purple:#9b5cff;--pink:#c45cff;--green:#35d39a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#24133b 0,transparent 35%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+header{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:#0c0b13dd;position:sticky;top:0}
+.logo{font-size:21px;font-weight:900;letter-spacing:.3px}.logo span{color:var(--purple)}.tag{font-size:12px;color:#d9c5ff;background:#291a40;padding:7px 10px;border-radius:20px}
+main{max-width:1050px;margin:30px auto;padding:0 18px}.welcome{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}h1{font-size:25px;margin:0 0 8px}.sub{color:var(--muted);font-size:13px}
+button{border:0;border-radius:10px;padding:12px 17px;background:linear-gradient(120deg,var(--purple),var(--pink));color:white;font-weight:bold;font-size:14px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}.card{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:18px}.stat{font-size:26px;font-weight:bold;margin:9px 0}.muted{color:var(--muted);font-size:12px}
+.section{display:flex;justify-content:space-between;align-items:center;margin:28px 0 13px}.section h2{font-size:17px;margin:0}.server{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.server-name{font-weight:bold;font-size:16px}.status{color:var(--green);font-size:12px;margin-top:8px}.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-left:6px}
+.details{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.secondary{background:#27233a;border:1px solid #42365e}.notice{border:1px solid #59452b;background:#211a12;color:#e8c994;padding:14px;border-radius:12px;font-size:12px;line-height:1.9;margin-top:20px}
+.empty{border:1px dashed #49405e;text-align:center;padding:28px;border-radius:14px;color:var(--muted)}
+footer{text-align:center;color:#716c86;font-size:11px;padding:30px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.welcome{align-items:flex-start}.server{align-items:flex-start}.actions{width:100%}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="logo">BLOCK<span>NOVA</span></div><div class="tag">پنل آزمایشی</div></header>
+<main>
+<div class="welcome"><div><h1>داشبورد مدیریت</h1><div class="sub">خوش آمدی! اینجا وضعیت سرویس‌های آزمایشی‌ات را می‌بینی.</div></div><button onclick="alert('در نسخه آزمایشی، ساخت سرور واقعی هنوز فعال نیست.')">＋ ساخت سرور جدید</button></div>
+<div class="grid">
+<div class="card"><div class="muted">تعداد سرورها</div><div class="stat">۰</div><div class="muted">هنوز سروری به پنل متصل نشده</div></div>
+<div class="card"><div class="muted">سرورهای روشن</div><div class="stat">۰</div><div class="muted">وضعیت اتصال در نسخه بعدی</div></div>
+<div class="card"><div class="muted">پلن فعلی</div><div class="stat" style="font-size:20px">آزمایشی</div><div class="muted">بدون پرداخت و تعهد</div></div>
+</div>
+<div class="section"><h2>سرورهای من</h2><span class="muted">نسخه نمایشی</span></div>
+<div class="card">
+<div class="server"><div><div class="server-name">سرور آزمایشی Minecraft</div><div class="status"><span class="dot"></span>نمونه رابط کاربری — متصل نیست</div></div><div class="actions"><button class="secondary" onclick="alert('این دکمه فعلاً نمایشی است؛ برای کنترل واقعی به بک‌اند نیاز داریم.')">مدیریت سرور</button><button onclick="alert('کنترل روشن/خاموش هنوز به سرور واقعی وصل نشده است.')">کنترل سرور</button></div></div>
+<div class="details"><span>نرم‌افزار: Fabric</span><span>نسخه: 1.21.1</span><span>بازیکنان: —</span></div>
+</div>
+<div class="notice"><b>توجه:</b> این پنل فعلاً فقط رابط کاربری آزمایشی است. دکمه‌ها هنوز به Aternos یا سرور دیگری وصل نیستند و هیچ سرور واقعی ایجاد، روشن یا خاموش نمی‌کنند. برای اتصال واقعی باید بک‌اند و زیرساختی با مجوز استفاده تجاری آماده شود.</div>
+</main>
+<footer>© BlockNova — پنل مدیریت آزمایشی</footer>
+</body></html>
