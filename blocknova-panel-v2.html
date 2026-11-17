@@ -75,14 +75,11 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 .user-email{
  font-size:12px;color:#c4b5fd;direction:ltr;overflow-wrap:anywhere
 }
-
-/* Notification bell */
 .header-actions{
  display:flex;align-items:center;gap:10px;flex-wrap:wrap
 }
 .bell-button{
- position:relative;
- width:46px;height:44px;padding:0;
+ position:relative;width:46px;height:44px;padding:0;
  display:flex;align-items:center;justify-content:center;
  background:#29233c;color:white;border:1px solid #493c65;
  font-size:22px
@@ -95,13 +92,9 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
  font-size:10px;font-weight:bold
 }
 .bell-count[hidden]{display:none}
-
-/* Notification center */
 .notification-center{
- margin:20px 0 25px;
- padding:16px;
- border:1px solid #493c65;
- border-radius:18px;
+ margin:20px 0 25px;padding:16px;
+ border:1px solid #493c65;border-radius:18px;
  background:linear-gradient(145deg,#1d1930,#11101b)
 }
 .notification-center[hidden]{display:none}
@@ -111,9 +104,7 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 }
 .notification-head h2{font-size:17px;margin:0}
 .notification-buttons{display:flex;gap:7px;flex-wrap:wrap}
-.small-button{
- padding:9px 12px;font-size:11px
-}
+.small-button{padding:9px 12px;font-size:11px}
 .notification{
  display:flex;justify-content:space-between;align-items:center;
  gap:12px;margin-bottom:9px;padding:13px
@@ -140,7 +131,6 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 }
 .read-label{font-size:11px;color:#86efac}
 .notification-error{color:#fca5a5;font-size:12px;padding:12px}
-
 @media(max-width:600px){
  .stats{grid-template-columns:1fr}
  .server{align-items:flex-start}
@@ -152,23 +142,19 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 </head>
 
 <body>
-
 <div id="loading">در حال بررسی حساب کاربری...</div>
 
 <div id="app" hidden>
-
 <header>
  <div>
   <div class="brand">Block<span>Nova</span></div>
   <div class="tag">پنل مدیریت هاست ماینکرافت</div>
  </div>
-
  <div class="header-actions">
   <button class="bell-button" id="bell" title="اعلان‌ها">
    🔔
    <span class="bell-count" id="bellCount" hidden>۰</span>
   </button>
-
   <div>
    <div class="user-email" id="userEmail"></div>
    <button class="secondary" id="logout">خروج از حساب</button>
@@ -177,7 +163,6 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 </header>
 
 <main class="wrap">
-
  <h1>داشبورد</h1>
  <div class="sub">به پنل کاربری BlockNova خوش آمدی.</div>
 
@@ -203,26 +188,15 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
   <button class="secondary" id="settings">تنظیمات پنل</button>
  </div>
 
- <!-- Notification center -->
  <section class="notification-center" id="notificationCenter" hidden>
-
   <div class="notification-head">
    <h2>مرکز اعلان‌ها</h2>
-
    <div class="notification-buttons">
-    <button class="secondary small-button" id="readAll">
-     خواندن همه
-    </button>
-    <button class="danger small-button" id="deleteAll">
-     حذف همه
-    </button>
+    <button class="secondary small-button" id="readAll">خواندن همه</button>
+    <button class="danger small-button" id="deleteAll">حذف همه</button>
    </div>
   </div>
-
-  <div id="notifications" class="empty">
-   در حال دریافت اعلان‌ها...
-  </div>
-
+  <div id="notifications" class="empty">در حال دریافت اعلان‌ها...</div>
  </section>
 
  <div class="servers-head">
@@ -238,7 +212,6 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
   اما سرورها فعلاً نمایشی هستند.
   ساخت و روشن کردن سرور واقعی به زیرساخت میزبانی و بک‌اند نیاز دارد.
  </div>
-
  <footer>© BlockNova</footer>
 </main>
 </div>
@@ -284,18 +257,12 @@ function formatDate(date){
  });
 }
 
-/* باز و بسته کردن مرکز اعلان‌ها */
 bell.addEventListener("click",async()=>{
  center.hidden=!center.hidden;
-
- if(!center.hidden){
-  await loadNotifications();
- }
+ if(!center.hidden)await loadNotifications();
 });
 
-/* دریافت اعلان‌ها */
 async function loadNotifications(){
-
  const {data,error}=await supabase
   .from("notifications")
   .select("*")
@@ -308,13 +275,10 @@ async function loadNotifications(){
   notificationsElement.textContent="خطا در دریافت اعلان‌ها: "+error.message;
   return;
  }
-
  renderNotifications(data||[]);
 }
 
-/* نمایش تعداد و فهرست اعلان‌ها */
 function renderNotifications(items){
-
  const unread=items.filter(item=>!item.is_read).length;
 
  if(unread>0){
@@ -335,7 +299,6 @@ function renderNotifications(items){
  notificationsElement.className="";
 
  items.forEach(item=>{
-
   const card=document.createElement("div");
   card.className="notification"+(item.is_read?"":" unread");
 
@@ -380,10 +343,8 @@ function renderNotifications(items){
      readButton.disabled=false;
      return;
     }
-
     await loadNotifications();
    });
-
    actions.appendChild(readButton);
   }else{
    const label=document.createElement("span");
@@ -397,7 +358,6 @@ function renderNotifications(items){
   deleteButton.textContent="حذف";
 
   deleteButton.addEventListener("click",async()=>{
-
    deleteButton.disabled=true;
 
    const {data,error}=await supabase
@@ -413,20 +373,16 @@ function renderNotifications(items){
     deleteButton.disabled=false;
     return;
    }
-
    await loadNotifications();
   });
 
   actions.appendChild(deleteButton);
-
   card.append(content,actions);
   notificationsElement.appendChild(card);
  });
 }
 
-/* خواندن همه اعلان‌ها */
 document.getElementById("readAll").addEventListener("click",async()=>{
-
  const button=document.getElementById("readAll");
  button.disabled=true;
 
@@ -436,22 +392,16 @@ document.getElementById("readAll").addEventListener("click",async()=>{
   .eq("user_id",currentUser.id)
   .eq("is_read",false);
 
- if(error){
-  alert("خطا: "+error.message);
- }else{
-  await loadNotifications();
- }
+ if(error)alert("خطا: "+error.message);
+ else await loadNotifications();
 
  button.disabled=false;
 });
 
-/* حذف همه اعلان‌ها */
 document.getElementById("deleteAll").addEventListener("click",async()=>{
-
  const confirmed=confirm(
   "آیا مطمئنی می‌خواهی تمام اعلان‌هایت را حذف کنی؟ این کار قابل برگشت نیست."
  );
-
  if(!confirmed)return;
 
  const button=document.getElementById("deleteAll");
@@ -468,20 +418,23 @@ document.getElementById("deleteAll").addEventListener("click",async()=>{
   await loadNotifications();
   alert("تمام اعلان‌ها حذف شدند.");
  }
-
  button.disabled=false;
 });
 
-/* نمایش سرورها */
+/* ترجمه و محاسبه وضعیت واقعی سرورها */
 function renderServers(servers){
-
  serversElement.replaceChildren();
  serverCount=servers.length;
 
  document.getElementById("total").textContent=
   persianNumber(serverCount);
 
- document.getElementById("online").textContent="۰";
+ const onlineCount=servers.filter(server=>
+  server.status==="active"
+ ).length;
+
+ document.getElementById("online").textContent=
+  persianNumber(onlineCount);
 
  if(servers.length===0){
   showEmpty("هنوز سروری در این پنل ثبت نشده است.");
@@ -490,8 +443,13 @@ function renderServers(servers){
 
  serversElement.className="";
 
- servers.forEach(server=>{
+ const statusNames={
+  active:"فعال",
+  waiting:"در انتظار اتصال",
+  stopped:"متوقف‌شده"
+ };
 
+ servers.forEach(server=>{
   const card=document.createElement("div");
   card.className="server";
 
@@ -517,7 +475,15 @@ function renderServers(servers){
 
   const status=document.createElement("span");
   status.className="status";
-  status.textContent="در انتظار اتصال";
+  status.textContent=statusNames[server.status]||"نامشخص";
+
+  if(server.status==="active"){
+   status.style.color="#86efac";
+   status.style.background="#163d2b";
+  }else if(server.status==="stopped"){
+   status.style.color="#fca5a5";
+   status.style.background="#54212b";
+  }
 
   const actions=document.createElement("div");
   actions.className="server-actions";
@@ -525,7 +491,6 @@ function renderServers(servers){
   const manage=document.createElement("button");
   manage.className="secondary";
   manage.textContent="مدیریت";
-
   manage.addEventListener("click",()=>{
    location.href="blocknova-server-manage.html?id="+
     encodeURIComponent(server.id);
@@ -536,20 +501,17 @@ function renderServers(servers){
   deleteButton.textContent="حذف سرور";
 
   deleteButton.addEventListener("click",async()=>{
-
    const confirmed=confirm(
     "آیا مطمئنی می‌خواهی سرور «"+
     (server.name||"بدون نام")+
     "» را حذف کنی؟ این کار قابل برگشت نیست."
    );
-
    if(!confirmed)return;
 
    deleteButton.disabled=true;
    deleteButton.textContent="در حال حذف...";
 
    try{
-
     const {data,error}=await supabase
      .from("servers")
      .delete()
@@ -558,14 +520,12 @@ function renderServers(servers){
      .select("id");
 
     if(error)throw error;
-
     if(!data||data.length===0){
      throw new Error("سرور حذف نشد. دسترسی حذف را بررسی کنیم.");
     }
 
     await loadServers();
     alert("سرور با موفقیت حذف شد.");
-
    }catch(error){
     alert("خطا در حذف سرور: "+error.message);
     deleteButton.disabled=false;
@@ -580,7 +540,6 @@ function renderServers(servers){
 }
 
 async function loadServers(){
-
  showEmpty("در حال دریافت سرورها...");
 
  const {data,error}=await supabase
@@ -590,15 +549,11 @@ async function loadServers(){
   .order("created_at",{ascending:false});
 
  if(error)throw error;
-
  renderServers(data||[]);
 }
 
-/* بررسی حساب */
 async function checkSession(){
-
  try{
-
   const {data,error}=await supabase.auth.getSession();
   if(error)throw error;
 
@@ -608,7 +563,6 @@ async function checkSession(){
   }
 
   currentUser=data.session.user;
-
   document.getElementById("userEmail").textContent=
    currentUser.email||"";
 
@@ -617,32 +571,24 @@ async function checkSession(){
 
   await loadServers();
   await loadNotifications();
-
  }catch(error){
   loading.textContent="خطا در اتصال: "+error.message;
  }
 }
 
-/* خروج */
 supabase.auth.onAuthStateChange((event)=>{
- if(event==="SIGNED_OUT"){
-  location.replace("login.html");
- }
+ if(event==="SIGNED_OUT")location.replace("login.html");
 });
 
-/* ساخت سرور */
 document.getElementById("create").addEventListener("click",()=>{
  if(!currentUser)return;
-
  if(serverCount>=1){
   alert("در نسخه آزمایشی فقط یک نمونه سرور برای هر حساب مجاز است.");
   return;
  }
-
  location.href="blocknova-create-server.html";
 });
 
-/* لینک‌ها */
 document.getElementById("myOrders").addEventListener("click",()=>{
  location.href="blocknova-my-orders.html";
 });
@@ -655,9 +601,7 @@ document.getElementById("settings").addEventListener("click",()=>{
  alert("بخش تنظیمات در مرحله بعد ساخته می‌شود.");
 });
 
-/* خروج از حساب */
 document.getElementById("logout").addEventListener("click",async()=>{
-
  const button=document.getElementById("logout");
  button.disabled=true;
 
@@ -671,17 +615,17 @@ document.getElementById("logout").addEventListener("click",async()=>{
  }
 });
 
-/* شروع */
 checkSession();
 
-/* به‌روزرسانی اعلان‌ها هر ۱۵ ثانیه */
+/* به‌روزرسانی اعلان‌ها و وضعیت سرورها هر ۱۵ ثانیه */
 setInterval(()=>{
  if(currentUser&&!document.hidden){
   loadNotifications();
+  loadServers().catch(error=>{
+   console.error("خطا در به‌روزرسانی سرورها:",error);
+  });
  }
 },15000);
-
 </script>
 </body>
- </html>
- 
+</html>
