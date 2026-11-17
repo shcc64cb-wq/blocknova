@@ -5,166 +5,402 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مدیریت سفارش‌ها | BlockNova</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#090811;color:#fff;font-family:Tahoma,Arial,sans-serif}
-.wrap{max-width:900px;margin:30px auto}
-.panel{background:#151322;border:1px solid #30264b;border-radius:16px;padding:20px;margin-bottom:16px}
-h2{color:#a78bfa}
-.muted{color:#aaa;font-size:13px;line-height:2}
-.order{background:#211a35;border:1px solid #382b55;border-radius:12px;padding:15px;margin-top:14px}
-button,select{padding:11px;border-radius:9px;border:0;font-family:inherit}
-button{background:#8b5cf6;color:white;cursor:pointer}
-select{background:#090811;color:white;border:1px solid #594080}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.status{color:#c4b5fd}
+body{
+ margin:0;padding:18px;background:#090811;color:#fff;
+ font-family:Tahoma,Arial,sans-serif;
+ background-image:radial-gradient(circle at 85% 0,#28164c,transparent 38%);
+}
+.wrap{max-width:1050px;margin:20px auto}
+header{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px
+}
+.brand{font-size:24px;font-weight:900;direction:ltr}
+.brand span{color:#a78bfa}
+.back{
+ color:white;text-decoration:none;background:#29233c;
+ padding:11px 14px;border-radius:10px;font-size:12px
+}
+.panel{
+ background:#151322;border:1px solid #30264b;
+ border-radius:16px;padding:19px;margin-bottom:16px
+}
+h2{color:#a78bfa;font-size:20px;margin-top:0}
+.muted{color:#aaa;font-size:12px;line-height:2}
+.stats{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+ gap:12px;margin:18px 0
+}
+.stat{
+ background:#151322;border:1px solid #30264b;
+ border-radius:14px;padding:17px
+}
+.stat small{color:#aaa;font-size:12px}
+.stat strong{display:block;font-size:25px;margin-top:12px;color:#c4b5fd}
+.tools{
+ display:flex;gap:10px;flex-wrap:wrap;margin-top:16px
+}
+input,select{
+ background:#090811;color:white;border:1px solid #594080;
+ padding:12px;border-radius:10px;font-family:inherit;
+ min-width:0
+}
+input{flex:1;min-width:180px}
+button{
+ border:0;border-radius:10px;padding:12px 15px;
+ font-family:inherit;font-weight:bold;color:white;
+ background:#8b5cf6;cursor:pointer
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.refresh{background:#29233c}
+.order{
+ background:linear-gradient(145deg,#211a35,#151322);
+ border:1px solid #382b55;border-radius:14px;
+ padding:17px;margin-top:13px
+}
+.order-head{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:10px;flex-wrap:wrap
+}
+.order h3{font-size:16px;margin:0;color:#e9ddff}
+.status{
+ padding:7px 11px;border-radius:20px;
+ font-size:11px;background:#493716;color:#fbbf24
+}
+.status.paid{background:#143d2b;color:#86efac}
+.status.failed,.status.cancelled{background:#54212b;color:#fecaca}
+.info{
+ color:#c4bdd2;font-size:12px;line-height:2.3;
+ margin-top:13px;overflow-wrap:anywhere
+}
+.row{
+ display:flex;gap:9px;align-items:center;
+ flex-wrap:wrap;margin-top:13px
+}
+.row select{flex:1;min-width:140px}
+.save{background:#6d28d9}
+.empty{
+ text-align:center;padding:30px;color:#aaa;
+ border:1px dashed #493c65;border-radius:14px;
+ margin-top:15px;line-height:2
+}
 .error{color:#fca5a5}
 .success{color:#86efac}
+footer{text-align:center;color:#766f89;font-size:11px;padding:25px}
+@media(max-width:500px){
+ body{padding:12px}
+ .wrap{margin:12px auto}
+ h2{font-size:17px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-  <div class="panel">
-    <h2>مدیریت سفارش‌های BlockNova</h2>
-    <p class="muted" id="message">در حال بررسی دسترسی مدیر...</p>
-    <button id="refresh" hidden>بروزرسانی سفارش‌ها</button>
-  </div>
-  <div id="orders"></div>
+
+<header>
+ <div class="brand">Block<span>Nova</span></div>
+ <a class="back" href="blocknova-panel-v2.html">بازگشت به پنل</a>
+</header>
+
+<div class="panel">
+ <h2>مدیریت سفارش‌های BlockNova</h2>
+ <p class="muted" id="message">در حال بررسی دسترسی مدیر...</p>
+ <button class="refresh" id="refresh" hidden>بروزرسانی سفارش‌ها</button>
+</div>
+
+<div id="stats" class="stats" hidden>
+ <div class="stat">
+  <small>کل سفارش‌ها</small>
+  <strong id="total">۰</strong>
+ </div>
+ <div class="stat">
+  <small>در انتظار پرداخت</small>
+  <strong id="pending">۰</strong>
+ </div>
+ <div class="stat">
+  <small>پرداخت‌شده</small>
+  <strong id="paid">۰</strong>
+ </div>
+ <div class="stat">
+  <small>لغوشده و ناموفق</small>
+  <strong id="other">۰</strong>
+ </div>
+</div>
+
+<div class="panel" id="filterPanel" hidden>
+ <h2>جستجو و فیلتر سفارش‌ها</h2>
+ <div class="tools">
+  <input id="search" type="search"
+   placeholder="جستجو با شماره سفارش یا شناسه کاربر...">
+
+  <select id="filter">
+   <option value="all">همه سفارش‌ها</option>
+   <option value="pending">در انتظار پرداخت</option>
+   <option value="paid">پرداخت‌شده</option>
+   <option value="failed">ناموفق</option>
+   <option value="cancelled">لغوشده</option>
+  </select>
+ </div>
+</div>
+
+<div id="orders"></div>
+
+<footer>© 2026 BlockNova</footer>
+
 </div>
 
 <script type="module">
 import { createClient } from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const supabase = createClient(
-  "https://rxynsocnofdakbjbsgry.supabase.co",
-  "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+const supabase=createClient(
+ "https://rxynsocnofdakbjbsgry.supabase.co",
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
 );
 
-const message = document.getElementById("message");
-const ordersBox = document.getElementById("orders");
-const refresh = document.getElementById("refresh");
+const message=document.getElementById("message");
+const ordersBox=document.getElementById("orders");
+const refresh=document.getElementById("refresh");
+const stats=document.getElementById("stats");
+const filterPanel=document.getElementById("filterPanel");
+const search=document.getElementById("search");
+const filter=document.getElementById("filter");
 
-const labels = {
-  pending:"در انتظار پرداخت",
-  paid:"پرداخت‌شده",
-  failed:"ناموفق",
-  cancelled:"لغوشده"
+let allOrders=[];
+let busy=false;
+
+const labels={
+ pending:"در انتظار پرداخت",
+ paid:"پرداخت‌شده",
+ failed:"ناموفق",
+ cancelled:"لغوشده"
 };
 
 function say(text,type=""){
-  message.textContent=text;
-  message.className=type;
+ message.textContent=text;
+ message.className="muted "+type;
+}
+
+function fa(value){
+ return Number(value||0).toLocaleString("fa-IR");
+}
+
+function dateFormat(value){
+ const date=new Date(value);
+ return isNaN(date.getTime())
+  ?"نامشخص"
+  :date.toLocaleString("fa-IR");
+}
+
+function updateStats(){
+ document.getElementById("total").textContent=fa(allOrders.length);
+
+ document.getElementById("pending").textContent=
+  fa(allOrders.filter(o=>o.status==="pending").length);
+
+ document.getElementById("paid").textContent=
+  fa(allOrders.filter(o=>o.status==="paid").length);
+
+ document.getElementById("other").textContent=
+  fa(allOrders.filter(o=>
+   o.status==="failed"||o.status==="cancelled"
+  ).length);
+}
+
+function renderOrders(){
+ ordersBox.replaceChildren();
+
+ const term=search.value.trim().toLowerCase();
+ const selected=filter.value;
+
+ const filtered=allOrders.filter(order=>{
+  const id=String(order.id||"").toLowerCase();
+  const user=String(order.user_id||"").toLowerCase();
+
+  const matchesText=!term||
+   id.includes(term)||user.includes(term);
+
+  const matchesStatus=selected==="all"||
+   order.status===selected;
+
+  return matchesText&&matchesStatus;
+ });
+
+ if(filtered.length===0){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent=allOrders.length===0
+   ?"هنوز سفارشی ثبت نشده است."
+   :"سفارشی با این مشخصات پیدا نشد.";
+  ordersBox.appendChild(empty);
+  return;
+ }
+
+ filtered.forEach(order=>{
+  const card=document.createElement("div");
+  card.className="order";
+
+  const head=document.createElement("div");
+  head.className="order-head";
+
+  const title=document.createElement("h3");
+  title.textContent="اشتراک "+order.plan_name;
+
+  const status=document.createElement("span");
+  status.className="status "+order.status;
+  status.textContent=labels[order.status]||"نامشخص";
+
+  head.append(title,status);
+
+  const info=document.createElement("div");
+  info.className="info";
+
+  info.textContent=
+   "شماره سفارش: "+String(order.id).slice(0,8)+
+   "\nشناسه کاربر: "+order.user_id+
+   "\nمبلغ: "+fa(order.price_toman)+" تومان"+
+   "\nمدت اشتراک: "+fa(order.duration_days)+" روز"+
+   "\nتاریخ ثبت: "+dateFormat(order.created_at);
+
+  const row=document.createElement("div");
+  row.className="row";
+
+  const select=document.createElement("select");
+
+  Object.entries(labels).forEach(([value,label])=>{
+   const option=document.createElement("option");
+   option.value=value;
+   option.textContent=label;
+   select.appendChild(option);
+  });
+
+  select.value=labels[order.status]?order.status:"pending";
+
+  const save=document.createElement("button");
+  save.className="save";
+  save.textContent="ذخیره وضعیت";
+
+  save.addEventListener("click",async()=>{
+   if(busy)return;
+
+   if(select.value===order.status){
+    alert("وضعیت سفارش تغییری نکرده است.");
+    return;
+   }
+
+   busy=true;
+   save.disabled=true;
+   save.textContent="در حال ذخیره...";
+
+   try{
+    const {data,error}=await supabase
+     .from("orders")
+     .update({status:select.value})
+     .eq("id",order.id)
+     .select("id,status");
+
+    if(error)throw error;
+
+    if(!data||data.length===0){
+     throw new Error("سفارش تغییر نکرد. دسترسی مدیر را بررسی کن.");
+    }
+
+    alert("وضعیت سفارش با موفقیت تغییر کرد.");
+    await loadOrders();
+
+   }catch(error){
+    alert("خطا در تغییر وضعیت:\n"+error.message);
+    save.disabled=false;
+    save.textContent="ذخیره وضعیت";
+   }finally{
+    busy=false;
+   }
+  });
+
+  row.append(select,save);
+  card.append(head,info,row);
+  ordersBox.appendChild(card);
+ });
 }
 
 async function loadOrders(){
-  ordersBox.replaceChildren();
-  say("در حال دریافت سفارش‌ها...");
+ if(busy)return;
 
+ refresh.disabled=true;
+ ordersBox.replaceChildren();
+
+ say("در حال دریافت سفارش‌ها...");
+
+ try{
   const {data,error}=await supabase
-    .from("orders")
-    .select("*")
-    .order("created_at",{ascending:false});
+   .from("orders")
+   .select("*")
+   .order("created_at",{ascending:false});
 
-  if(error){
-    say("خطا در دریافت سفارش‌ها: "+error.message,"error");
-    return;
-  }
+  if(error)throw error;
 
-  if(!data || data.length===0){
-    say("هنوز سفارشی ثبت نشده است.");
-    return;
-  }
+  allOrders=data||[];
 
-  say("تعداد سفارش‌ها: "+data.length,"success");
+  updateStats();
+  renderOrders();
 
-  data.forEach(order=>{
-    const card=document.createElement("div");
-    card.className="order";
+  say("سفارش‌ها با موفقیت دریافت شدند. تعداد: "+fa(allOrders.length),"success");
 
-    const title=document.createElement("h3");
-    title.textContent="اشتراک "+order.plan_name;
-
-    const info=document.createElement("p");
-    info.className="muted";
-    info.textContent=
-      "شماره سفارش: "+order.id.slice(0,8)+
-      " | کاربر: "+order.user_id+
-      " | قیمت: "+Number(order.price_toman).toLocaleString("fa-IR")+
-      " تومان | مدت: "+order.duration_days+" روز";
-
-    const status=document.createElement("p");
-    status.className="status";
-    status.textContent="وضعیت فعلی: "+(labels[order.status]||order.status);
-
-    const row=document.createElement("div");
-    row.className="row";
-
-    const select=document.createElement("select");
-    ["pending","paid","failed","cancelled"].forEach(value=>{
-      const option=document.createElement("option");
-      option.value=value;
-      option.textContent=labels[value];
-      select.appendChild(option);
-    });
-    select.value=labels[order.status]?order.status:"pending";
-
-    const save=document.createElement("button");
-    save.textContent="ذخیره وضعیت";
-
-    save.addEventListener("click",async()=>{
-      save.disabled=true;
-      save.textContent="در حال ذخیره...";
-
-      const {error}=await supabase
-        .from("orders")
-        .update({status:select.value})
-        .eq("id",order.id);
-
-      if(error){
-        alert("خطا در تغییر وضعیت: "+error.message);
-        save.disabled=false;
-        save.textContent="ذخیره وضعیت";
-        return;
-      }
-
-      alert("وضعیت سفارش تغییر کرد.");
-      await loadOrders();
-    });
-
-    row.append(select,save);
-    card.append(title,info,status,row);
-    ordersBox.appendChild(card);
-  });
+ }catch(error){
+  say("خطا در دریافت سفارش‌ها: "+error.message,"error");
+ }finally{
+  refresh.disabled=false;
+ }
 }
 
 async function start(){
-  const {data:{session},error}=await supabase.auth.getSession();
+ try{
+  const {data,error}=await supabase.auth.getSession();
 
-  if(error || !session){
-    location.href="login.html";
-    return;
+  if(error)throw error;
+
+  const session=data.session;
+
+  if(!session){
+   location.href="login.html";
+   return;
   }
 
   const {data:admin,error:adminError}=await supabase
-    .from("admins")
-    .select("user_id")
-    .eq("user_id",session.user.id)
-    .maybeSingle();
+   .from("admins")
+   .select("user_id")
+   .eq("user_id",session.user.id)
+   .maybeSingle();
 
-  if(adminError || !admin){
-    say("دسترسی غیرمجاز: این حساب مدیر سایت نیست.","error");
-    return;
+  if(adminError)throw adminError;
+
+  if(!admin){
+   say("دسترسی غیرمجاز: این حساب مدیر سایت نیست.","error");
+   return;
   }
 
   say("دسترسی مدیر تأیید شد.","success");
+
   refresh.hidden=false;
+  stats.hidden=false;
+  filterPanel.hidden=false;
+
   await loadOrders();
+
+ }catch(error){
+  say("خطا در بررسی دسترسی: "+error.message,"error");
+ }
 }
 
 refresh.addEventListener("click",loadOrders);
+search.addEventListener("input",renderOrders);
+filter.addEventListener("change",renderOrders);
+
 start();
 </script>
 </body>
-  </html>
-  
+</html>
