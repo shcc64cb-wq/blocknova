@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت کاربران | BlockNova</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#090811;color:white;font-family:Tahoma,Arial,sans-serif}
+.wrap{max-width:900px;margin:30px auto}
+.panel,.user{background:#151322;border:1px solid #30264b;border-radius:15px;padding:18px;margin-bottom:15px}
+h2{color:#a78bfa}
+.muted{color:#aaa;font-size:13px;line-height:2;overflow-wrap:anywhere}
+.user{background:#211a35}
+button{padding:11px 16px;border:0;border-radius:9px;background:#8b5cf6;color:white;font-family:inherit;cursor:pointer}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.stat{background:#090811;border-radius:9px;padding:10px;color:#c4b5fd}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <h2>مدیریت کاربران BlockNova</h2>
+    <p id="message" class="muted">در حال بررسی دسترسی مدیر...</p>
+    <button id="refresh" hidden>بروزرسانی کاربران</button>
+  </div>
+  <div id="users"></div>
+</div>
+
+<script type="module">
+import {createClient} from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase=createClient(
+ "https://rxynsocnofdakbjbsgry.supabase.co",
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+);
+
+const message=document.getElementById("message");
+const usersBox=document.getElementById("users");
+const refresh=document.getElementById("refresh");
+
+async function loadUsers(){
+ usersBox.replaceChildren();
+ message.textContent="در حال دریافت کاربران...";
+
+ const {data,error}=await supabase.rpc("admin_list_users");
+
+ if(error){
+  message.textContent="خطا: "+error.message;
+  return;
+ }
+
+ if(!data || data.length===0){
+  message.textContent="کاربری پیدا نشد.";
+  return;
+ }
+
+ message.textContent="تعداد کاربران: "+data.length;
+
+ data.forEach(user=>{
+  const card=document.createElement("div");
+  card.className="user";
+
+  const email=document.createElement("h3");
+  email.textContent=user.email || "بدون ایمیل";
+
+  const id=document.createElement("p");
+  id.className="muted";
+  id.textContent="شناسه: "+user.user_id;
+
+  const date=document.createElement("p");
+  date.className="muted";
+  date.textContent="تاریخ ثبت‌نام: "+
+   new Date(user.created_at).toLocaleString("fa-IR");
+
+  const stats=document.createElement("div");
+  stats.className="stats";
+
+  const servers=document.createElement("div");
+  servers.className="stat";
+  servers.textContent="تعداد سرورها: "+
+   Number(user.server_count).toLocaleString("fa-IR");
+
+  const orders=document.createElement("div");
+  orders.className="stat";
+  orders.textContent="تعداد سفارش‌ها: "+
+   Number(user.order_count).toLocaleString("fa-IR");
+
+  stats.append(servers,orders);
+  card.append(email,id,date,stats);
+  usersBox.append(card);
+ });
+}
+
+async function start(){
+ const {data:{session},error}=await supabase.auth.getSession();
+
+ if(error || !session){
+  location.href="login.html";
+  return;
+ }
+
+ const {data:admin,error:adminError}=await supabase
+  .from("admins")
+  .select("user_id")
+  .eq("user_id",session.user.id)
+  .maybeSingle();
+
+ if(adminError || !admin){
+  message.textContent="دسترسی غیرمجاز؛ این حساب مدیر نیست.";
+  return;
+ }
+
+ message.textContent="دسترسی مدیر تأیید شد.";
+ refresh.hidden=false;
+ await loadUsers();
+}
+
+refresh.addEventListener("click",loadUsers);
+start();
+</script>
+</body>
+</html>
