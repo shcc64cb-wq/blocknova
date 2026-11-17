@@ -43,6 +43,7 @@ button,a{border:0;border-radius:10px;padding:12px 17px;background:#8b5cf6;color:
 <div class="item"><small>نوع سرور</small><b id="type">-</b></div>
 <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
 <div class="item"><small>نسخه بازی</small><b id="version">-</b></div>
+<div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
 <div class="item"><small>وضعیت</small><b class="status" id="status">-</b></div>
 </div>
 
@@ -98,6 +99,7 @@ async function loadServer(){
   document.getElementById("type").textContent=data.type || "-";
   document.getElementById("software").textContent=data.software || "-";
   document.getElementById("version").textContent=data.version || "-";
+  document.getElementById("ram").textContent=data.ram_gb ? data.ram_gb+" گیگابایت" : "تنظیم نشده";
   document.getElementById("status").textContent=data.status || "نامشخص";
 
   document.getElementById("serverInfo").hidden=false;
