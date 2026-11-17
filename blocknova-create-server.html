@@ -1,91 +1,463 @@
+
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BlockNova | ساخت سرور آزمایشی</title>
+<title>BlockNova | ساخت سرور</title>
 <style>
-:root{--bg:#090811;--panel:#171426;--panel2:#211a35;--purple:#8b5cf6;--purple2:#6d28d9;--text:#f5f3ff;--muted:#aaa3bd;--line:#382d50;--green:#34d399;--gold:#fbbf24}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,#28164b 0,transparent 35%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
-header{padding:22px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-size:23px;font-weight:800}.brand span{color:#a78bfa}.tag{font-size:12px;color:var(--muted);margin-top:6px}
-main{max-width:850px;margin:auto;padding:22px 16px 45px}h1{font-size:23px;margin:8px 0}.muted{color:var(--muted);font-size:13px;line-height:1.9}
-.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:18px}
+:root{
+--bg:#090811;--panel:#171426;--panel2:#211a35;
+--purple:#8b5cf6;--text:#f5f3ff;--muted:#aaa3bd;
+--line:#382d50;--green:#34d399;--gold:#fbbf24
+}
+*{box-sizing:border-box}
+body{
+margin:0;background:radial-gradient(circle at 85% 0,#28164b 0,transparent 35%),var(--bg);
+color:var(--text);font-family:Tahoma,Arial,sans-serif
+}
+header{
+padding:22px 18px;border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap
+}
+.brand{font-size:23px;font-weight:800}
+.brand span{color:#a78bfa}
+.tag{font-size:12px;color:var(--muted);margin-top:6px}
+main{max-width:850px;margin:auto;padding:22px 16px 45px}
+h1{font-size:23px}
+h2{font-size:18px}
+.muted{color:var(--muted);font-size:13px;line-height:1.9}
+.panel{
+background:linear-gradient(145deg,var(--panel2),var(--panel));
+border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:18px
+}
 label{display:block;font-size:13px;margin:16px 0 8px;color:#ddd6f2}
-input,select{width:100%;background:#0f0c19;border:1px solid #493b63;color:white;border-radius:11px;padding:13px;font:inherit;font-size:14px;outline:none}
-input:focus,select:focus{border-color:var(--purple)}
+input,select{
+width:100%;background:#0f0c19;border:1px solid #493b63;
+color:white;border-radius:11px;padding:13px;font:inherit;font-size:14px
+}
+input:focus,select:focus{border-color:var(--purple);outline:none}
+select option{background:#171426;color:white}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:0;border-radius:12px;padding:13px 17px;font-weight:700;font-size:14px;cursor:pointer}
-.primary{background:linear-gradient(100deg,var(--purple2),var(--purple));color:white;width:100%;margin-top:20px}
+button{
+border:0;border-radius:12px;padding:13px 17px;
+font-weight:700;font-size:14px;cursor:pointer
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{
+background:linear-gradient(100deg,#6d28d9,var(--purple));
+color:white;width:100%;margin-top:20px
+}
 .secondary{background:#2a233d;color:white;border:1px solid #4a3c64}
-.server{border:1px solid var(--line);background:#141120;border-radius:14px;padding:15px;margin-top:12px}
-.server b{font-size:15px}.server p{color:var(--muted);font-size:12px;line-height:1.9;margin-bottom:0}
-.status{display:inline-block;color:var(--gold);background:#453516;border-radius:30px;padding:5px 9px;font-size:11px;margin-top:10px}
-.notice{border:1px solid #66512a;background:#211a28;border-radius:14px;padding:14px;color:#c9c1d8;font-size:12px;line-height:2;margin-top:18px}
-.notice strong{color:#fcd34d}.empty{text-align:center;color:var(--muted);padding:18px;border:1px dashed #493b63;border-radius:14px;margin-top:12px}
+.danger{background:#3a1d2b;color:#fecdd3;border:1px solid #713047}
+.server{
+border:1px solid var(--line);background:#141120;
+border-radius:14px;padding:15px;margin-top:12px
+}
+.server b{font-size:15px}
+.server p{color:var(--muted);font-size:12px;line-height:2}
+.status{
+display:inline-block;color:var(--gold);background:#453516;
+border-radius:30px;padding:5px 9px;font-size:11px;margin-top:10px
+}
+.notice{
+border:1px solid #66512a;background:#211a28;border-radius:14px;
+padding:14px;color:#c9c1d8;font-size:12px;line-height:2;margin-top:18px
+}
+.notice strong{color:#fcd34d}
+.empty{text-align:center;color:var(--muted);padding:18px;border:1px dashed #493b63;border-radius:14px;margin-top:12px}
+.info{font-size:12px;color:#c4b5fd;margin-top:9px;line-height:1.8}
+.message{font-size:13px;margin-top:12px;line-height:2}
 footer{text-align:center;color:#766f89;font-size:11px;margin-top:28px}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
 <header>
- <div><div class="brand">Block<span>Nova</span></div><div class="tag">ساخت و مدیریت سرور ماینکرافت</div></div>
- <div class="tag">نسخه آزمایشی · Demo</div>
+ <div>
+  <div class="brand">Block<span>Nova</span></div>
+  <div class="tag">ساخت و مدیریت سرور ماینکرافت</div>
+ </div>
+ <div class="tag" id="userEmail">در حال بررسی حساب...</div>
 </header>
+
 <main>
  <h1>ساخت سرور جدید</h1>
- <div class="muted">مشخصات سرور آزمایشی خودت را انتخاب کن.</div>
+ <div class="muted">نرم‌افزار و نسخه موردنظر سرورت را انتخاب کن.</div>
+
  <section class="panel">
   <form id="serverForm">
+
    <label for="serverName">نام سرور</label>
-   <input id="serverName" maxlength="24" placeholder="مثلاً My Minecraft Server" required>
-   <div class="grid">
-    <div>
-     <label for="edition">نسخه بازی</label>
-     <select id="edition"><option value="Java">Java Edition</option><option value="Bedrock">Bedrock Edition</option></select>
-    </div>
-    <div>
-     <label for="version">نسخه ماینکرافت</label>
-     <select id="version"><option>1.21.1</option><option>1.21</option><option>1.20.6</option><option>1.20.4</option><option>1.19.4</option></select>
-    </div>
+   <input id="serverName" maxlength="24"
+   placeholder="مثلاً My Minecraft Server" required>
+
+   <label>نسخه بازی</label>
+   <input value="Java Edition" disabled>
+
+   <label for="software">نرم‌افزار سرور</label>
+   <select id="software">
+    <option value="Vanilla">Vanilla (بدون مود)</option>
+    <option value="Fabric">Fabric</option>
+    <option value="Forge">Forge</option>
+   </select>
+
+   <label for="version">نسخه ماین‌کرافت</label>
+   <select id="version" required>
+    <option>در حال دریافت نسخه‌ها...</option>
+   </select>
+   <div class="info" id="versionInfo">
+    نسخه‌ها از فهرست رسمی ماین‌کرافت دریافت می‌شوند.
    </div>
-   <div class="grid">
-    <div>
-     <label for="software">نوع نرم‌افزار</label>
-     <select id="software"><option>Vanilla</option><option>Paper</option><option>Fabric</option><option>Forge</option></select>
-    </div>
-    <div>
-     <label for="ram">رم درخواستی (نمایشی)</label>
-     <select id="ram"><option value="1">1 GB</option><option value="2">2 GB</option><option value="4">4 GB</option><option value="6">6 GB</option></select>
-    </div>
+
+   <div id="loaderBox" hidden>
+    <label for="loaderVersion">نسخه Loader</label>
+    <select id="loaderVersion"></select>
+    <div class="info" id="loaderInfo"></div>
    </div>
-   <button class="primary" type="submit">＋ ثبت سرور آزمایشی</button>
+
+   <label for="ram">رم درخواستی (نمایشی)</label>
+   <select id="ram">
+    <option value="1">1 GB</option>
+    <option value="2">2 GB</option>
+    <option value="4">4 GB</option>
+    <option value="6">6 GB</option>
+    <option value="8">8 GB</option>
+   </select>
+
+   <button class="primary" id="submitBtn" type="submit">
+    ＋ ثبت سرور آزمایشی
+   </button>
+   <div id="message" class="message"></div>
   </form>
  </section>
- <h2 style="font-size:18px;margin:28px 0 8px">سرورهای ثبت‌شده روی این دستگاه</h2>
- <div class="muted">این فهرست فقط در همین مرورگر ذخیره می‌شود.</div>
- <div id="serverList"></div>
- <div class="notice"><strong>نکته مهم:</strong> این نسخه فقط فرم و فهرست نمایشی دارد. ثبت سرور به معنی ساخت سرور واقعی نیست؛ گزینه رم هم فقط انتخاب نمایشی است و منابعی اختصاص داده نمی‌شود. برای اجرای واقعی به بک‌اند و زیرساخت میزبانی نیاز داریم. این صفحه به Aternos متصل نیست و برای فروش خدمات آماده نیست.</div>
- <footer>© BlockNova · نسخه آزمایشی</footer>
+
+ <h2>سرورهای ثبت‌شده در حساب شما</h2>
+ <div class="muted">اطلاعات این بخش از Firebase دریافت می‌شوند.</div>
+ <div id="serverList"><div class="empty">در حال دریافت اطلاعات...</div></div>
+
+ <div class="notice">
+  <strong>توجه مهم:</strong>
+  این نسخه اطلاعات سرور را در Firebase ذخیره می‌کند.
+  انتخاب نرم‌افزار و نسخه به معنی نصب یا اجرای سرور واقعی نیست.
+  برای روشن کردن سرورها به بک‌اند و زیرساخت میزبانی نیاز داریم.
+ </div>
+
+ <footer>© BlockNova</footer>
 </main>
-<script>
-const form=document.getElementById('serverForm'), list=document.getElementById('serverList');
-let servers=[];
-try{servers=JSON.parse(localStorage.getItem('bn_demo_servers')||'[]')}catch(e){servers=[]}
-function render(){
- if(!servers.length){list.innerHTML='<div class="empty">هنوز سروری ثبت نکرده‌ای.</div>';return}
- list.innerHTML=servers.map((s,i)=>`<article class="server"><b>${escapeHtml(s.name)}</b><span class="status">آزمایشی · بدون اتصال</span><p>بازی: ${s.edition} · نسخه: ${s.version}<br>نرم‌افزار: ${s.software} · رم انتخابی: ${s.ram} GB</p><button class="secondary" onclick="removeServer(${i})">حذف از فهرست</button></article>`).join('');
+
+<script type="module">
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+getAuth,onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+import {
+getFirestore,collection,addDoc,getDocs,deleteDoc,doc,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyArXiu4eEaMmvfkhHT-7Ho2CyTTT8DvgHQ",
+authDomain:"blocknova-ea03e.firebaseapp.com",
+projectId:"blocknova-ea03e",
+storageBucket:"blocknova-ea03e.firebasestorage.app",
+messagingSenderId:"594671551477",
+appId:"1:594671551477:web:ca5fd2e5500665f18dd6bc",
+measurementId:"G-FRHHEHCR6N"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+const form=document.getElementById("serverForm");
+const list=document.getElementById("serverList");
+const software=document.getElementById("software");
+const version=document.getElementById("version");
+const loaderBox=document.getElementById("loaderBox");
+const loaderVersion=document.getElementById("loaderVersion");
+const loaderInfo=document.getElementById("loaderInfo");
+const message=document.getElementById("message");
+const submitBtn=document.getElementById("submitBtn");
+
+let currentUser=null;
+let releases=[];
+let loaderReady=true;
+
+function say(text,color="#c4b5fd"){
+message.textContent=text;
+message.style.color=color;
 }
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function removeServer(i){servers.splice(i,1);save();render()}
-function save(){try{localStorage.setItem('bn_demo_servers',JSON.stringify(servers))}catch(e){}}
-form.addEventListener('submit',e=>{
- e.preventDefault();
- if(servers.length>=5){alert('در نسخه آزمایشی حداکثر ۵ سرور می‌توانی ثبت کنی.');return}
- servers.push({name:document.getElementById('serverName').value.trim(),edition:document.getElementById('edition').value,version:document.getElementById('version').value,software:document.getElementById('software').value,ram:document.getElementById('ram').value});
- save();render();form.reset();alert('سرور آزمایشی در فهرست همین مرورگر ثبت شد؛ سرور واقعی ساخته نشده است.');
+
+function escapeHtml(value){
+return String(value).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+// دریافت تمام نسخه‌های رسمی Java Edition
+async function loadMinecraftVersions(){
+version.innerHTML="<option>در حال دریافت...</option>";
+try{
+const response=await fetch(
+"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+);
+if(!response.ok)throw new Error("version manifest unavailable");
+
+const data=await response.json();
+releases=data.versions.filter(v=>v.type==="release");
+
+version.innerHTML="";
+releases.forEach(v=>{
+const option=document.createElement("option");
+option.value=v.id;
+option.textContent=v.id;
+version.appendChild(option);
 });
-render();
+
+if([...version.options].some(o=>o.value==="1.21.1")){
+version.value="1.21.1";
+}else if(version.options.length){
+version.selectedIndex=0;
+}
+
+document.getElementById("versionInfo").textContent=
+"تعداد نسخه‌های رسمی دریافت‌شده: "+releases.length+
+" | نسخه‌های جدید با به‌روزرسانی فهرست رسمی اضافه می‌شوند.";
+
+await updateLoaderVersions();
+
+}catch(error){
+version.innerHTML='<option value="">دریافت نسخه‌ها ناموفق بود</option>';
+document.getElementById("versionInfo").textContent=
+"اتصال به فهرست رسمی نسخه‌ها برقرار نشد. اینترنت را بررسی و صفحه را دوباره باز کن.";
+say("دریافت نسخه‌ها ناموفق بود.","#fca5a5");
+}
+}
+
+// دریافت نسخه‌های سازگار Loader
+async function updateLoaderVersions(){
+const selectedSoftware=software.value;
+const mcVersion=version.value;
+
+loaderBox.hidden=selectedSoftware==="Vanilla";
+loaderVersion.innerHTML="";
+loaderReady=true;
+loaderInfo.textContent="";
+
+if(selectedSoftware==="Vanilla"){
+return;
+}
+
+loaderVersion.innerHTML="<option>در حال بررسی سازگاری...</option>";
+loaderReady=false;
+
+try{
+let versions=[];
+
+if(selectedSoftware==="Fabric"){
+const response=await fetch(
+"https://meta.fabricmc.net/v2/versions/loader/"+encodeURIComponent(mcVersion)
+);
+if(!response.ok)throw new Error("Fabric unavailable");
+
+const data=await response.json();
+versions=data
+.filter(x=>x.loader && x.loader.stable)
+.map(x=>x.loader.version);
+
+}else if(selectedSoftware==="Forge"){
+const response=await fetch(
+"https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
+);
+if(!response.ok)throw new Error("Forge unavailable");
+
+const xml=await response.text();
+const parsed=new DOMParser().parseFromString(xml,"text/xml");
+
+versions=[...parsed.querySelectorAll("version")]
+.map(x=>x.textContent.trim())
+.filter(v=>v.startsWith(mcVersion+"-"))
+.map(v=>v.slice(mcVersion.length+1))
+.reverse();
+}
+
+loaderVersion.innerHTML="";
+
+if(!versions.length){
+loaderVersion.innerHTML='<option value="">نسخه سازگار پیدا نشد</option>';
+loaderInfo.textContent="برای این ترکیب، نسخه Loader در منبع رسمی پیدا نشد.";
+loaderReady=false;
+return;
+}
+
+versions.forEach(v=>{
+const option=document.createElement("option");
+option.value=v;
+option.textContent=v;
+loaderVersion.appendChild(option);
+});
+
+loaderInfo.textContent="نسخه‌های Loader از منبع مربوط به همان نرم‌افزار دریافت شدند.";
+loaderReady=true;
+
+}catch(error){
+loaderVersion.innerHTML='<option value="">دریافت ناموفق</option>';
+loaderInfo.textContent="دریافت نسخه Loader ناموفق بود. اتصال اینترنت را بررسی کن.";
+loaderReady=false;
+}
+}
+
+software.addEventListener("change",updateLoaderVersions);
+version.addEventListener("change",updateLoaderVersions);
+
+// دریافت سرورهای کاربر از Firebase
+async function loadServers(){
+if(!currentUser)return;
+
+list.innerHTML='<div class="empty">در حال دریافت سرورها...</div>';
+
+try{
+const ref=collection(db,"users",currentUser.uid,"servers");
+const snapshot=await getDocs(ref);
+
+if(snapshot.empty){
+list.innerHTML='<div class="empty">هنوز سروری ثبت نکرده‌ای.</div>';
+return;
+}
+
+list.innerHTML="";
+
+snapshot.forEach(serverDoc=>{
+const s=serverDoc.data();
+const id=serverDoc.id;
+
+const article=document.createElement("article");
+article.className="server";
+
+article.innerHTML=`
+<b>${escapeHtml(s.name||"Minecraft Server")}</b>
+<span class="status">آزمایشی · بدون اتصال</span>
+<p>
+بازی: Java Edition<br>
+نسخه: ${escapeHtml(s.version||"-")}<br>
+نرم‌افزار: ${escapeHtml(s.software||"-")}<br>
+نسخه Loader: ${escapeHtml(s.loaderVersion||"ندارد")}<br>
+رم انتخابی: ${escapeHtml(s.ram||"1")} GB
+</p>
+`;
+
+const manage=document.createElement("button");
+manage.className="secondary";
+manage.textContent="مدیریت";
+manage.onclick=()=>{
+const q=new URLSearchParams({
+name:s.name||"Minecraft Server",
+edition:"Java",
+version:s.version||"",
+software:s.software||"",
+ram:s.ram||"1",
+loaderVersion:s.loaderVersion||""
+});
+location.href="blocknova-server-manage.html?"+q.toString();
+};
+
+const remove=document.createElement("button");
+remove.className="danger";
+remove.style.marginRight="8px";
+remove.textContent="حذف سرور";
+remove.onclick=()=>removeServer(id);
+
+article.append(manage,remove);
+list.appendChild(article);
+});
+
+}catch(error){
+list.innerHTML='<div class="empty">خطا در دریافت سرورها از Firebase.</div>';
+}
+}
+
+async function removeServer(id){
+if(!confirm("آیا از حذف این سرور آزمایشی مطمئنی؟"))return;
+
+try{
+await deleteDoc(doc(db,"users",currentUser.uid,"servers",id));
+say("سرور با موفقیت حذف شد.","#34d399");
+await loadServers();
+}catch(error){
+say("حذف سرور انجام نشد.","#fca5a5");
+}
+}
+
+// ثبت سرور در Firebase
+form.addEventListener("submit",async event=>{
+event.preventDefault();
+
+if(!currentUser){
+say("ابتدا وارد حساب خود شو.","#fca5a5");
+return;
+}
+
+if(!version.value){
+say("نسخه ماین‌کرافت را انتخاب کن.","#fca5a5");
+return;
+}
+
+if(software.value!=="Vanilla" &&
+(!loaderReady || !loaderVersion.value)){
+say("نسخه سازگار Loader هنوز آماده نیست.","#fca5a5");
+return;
+}
+
+submitBtn.disabled=true;
+say("در حال ذخیره سرور در حساب شما...");
+
+const server={
+name:document.getElementById("serverName").value.trim(),
+edition:"Java",
+version:version.value,
+software:software.value,
+loaderVersion:software.value==="Vanilla"?"":loaderVersion.value,
+ram:document.getElementById("ram").value,
+status:"demo",
+createdAt:serverTimestamp()
+};
+
+try{
+await addDoc(
+collection(db,"users",currentUser.uid,"servers"),
+server
+);
+
+say("سرور آزمایشی با موفقیت در حساب شما ذخیره شد.","#34d399");
+form.reset();
+version.value=releases.some(v=>v.id==="1.21.1")?"1.21.1":releases[0]?.id||"";
+await updateLoaderVersions();
+await loadServers();
+
+}catch(error){
+say("ذخیره سرور ناموفق بود. اتصال Firebase و قوانین دیتابیس را بررسی کن.","#fca5a5");
+}finally{
+submitBtn.disabled=false;
+}
+});
+
+// بررسی ورود کاربر
+onAuthStateChanged(auth,async user=>{
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser=user;
+document.getElementById("userEmail").textContent=user.email||"حساب کاربری";
+await loadMinecraftVersions();
+await loadServers();
+});
 </script>
 </body>
-</html>
+ </html>
+ 
