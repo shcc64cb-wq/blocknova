@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت مرکزی | BlockNova</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#090811;color:#fff;font-family:Tahoma,Arial,sans-serif}
+.wrap{max-width:900px;margin:35px auto}
+.header,.card{background:#151322;border:1px solid #30264b;border-radius:16px;padding:20px;margin-bottom:16px}
+h1{font-size:25px;color:#a78bfa}
+p{color:#aaa;line-height:2;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:#1d1930}
+.card h3{margin-top:0;color:#c4b5fd}
+button{width:100%;padding:13px;border:0;border-radius:10px;background:#8b5cf6;color:white;font-family:inherit;font-size:14px;cursor:pointer}
+button:hover{background:#6d28d9}
+.secondary{background:#30244b}
+#message{color:#c4b5fd}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="header">
+  <h1>BlockNova Admin</h1>
+  <p>پنل مرکزی مدیریت سایت</p>
+  <p id="message">در حال بررسی دسترسی مدیر...</p>
+ </div>
+
+ <div class="grid" id="menu" hidden>
+  <div class="card">
+   <h3>مدیریت سفارش‌ها</h3>
+   <p>مشاهده سفارش‌ها و تغییر وضعیت آن‌ها</p>
+   <button onclick="location.href='blocknova-admin.html'">ورود به سفارش‌ها</button>
+  </div>
+
+  <div class="card">
+   <h3>مدیریت کاربران</h3>
+   <p>مشاهده کاربران، ایمیل و تعداد سرورها و سفارش‌ها</p>
+   <button onclick="location.href='blocknova-users.html'">ورود به کاربران</button>
+  </div>
+
+  <div class="card">
+   <h3>مدیریت سرورها</h3>
+   <p>مشاهده اطلاعات سرورهای ثبت‌شده</p>
+   <button onclick="location.href='blocknova-panel-v2.html'">مشاهده پنل سرورها</button>
+  </div>
+
+  <div class="card">
+   <h3>مشاهده سایت</h3>
+   <p>باز کردن صفحه اصلی BlockNova</p>
+   <button class="secondary" onclick="location.href='index.html'">صفحه اصلی سایت</button>
+  </div>
+ </div>
+</div>
+
+<script type="module">
+import {createClient} from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase=createClient(
+ "https://rxynsocnofdakbjbsgry.supabase.co",
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+);
+
+const message=document.getElementById("message");
+const menu=document.getElementById("menu");
+
+async function start(){
+ const {data:{session},error}=await supabase.auth.getSession();
+
+ if(error || !session){
+  location.href="login.html";
+  return;
+ }
+
+ const {data:admin,error:adminError}=await supabase
+  .from("admins")
+  .select("user_id")
+  .eq("user_id",session.user.id)
+  .maybeSingle();
+
+ if(adminError || !admin){
+  message.textContent="دسترسی غیرمجاز؛ این حساب مدیر نیست.";
+  return;
+ }
+
+ message.textContent="مدیر تأیید شد: "+session.user.email;
+ menu.hidden=false;
+}
+
+start();
+</script>
+</body>
+</html>
