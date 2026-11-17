@@ -15,6 +15,7 @@ input,button{width:100%;padding:14px;margin-top:13px;border-radius:9px;font-size
 input{background:#0c0915;border:1px solid #55416e;color:white}
 button{background:#8b42d6;color:white;border:0;font-weight:bold}
 button.secondary{background:#302344}
+button:disabled{opacity:.5}
 #message{font-size:14px;line-height:1.8}
 </style>
 </head>
@@ -41,7 +42,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 
 const firebaseConfig = {
- apiKey: "AIzaSyArXiu4eEaMmvfkhHT-7HoC2yTTT8DvgHQ",
+ apiKey: "AIzaSyArXiu4eEaMmvfkhHT-7Ho2CyTTT8DvgHQ",
  authDomain: "blocknova-ea03e.firebaseapp.com",
  projectId: "blocknova-ea03e",
  storageBucket: "blocknova-ea03e.firebasestorage.app",
@@ -52,6 +53,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const message = document.getElementById("message");
@@ -59,21 +61,36 @@ const register = document.getElementById("register");
 const login = document.getElementById("login");
 const logout = document.getElementById("logout");
 
+const panelURL = "./blocknova-panel-v2.html";
+
+function goToPanel() {
+ message.textContent = "ورود موفق بود! در حال انتقال به پنل...";
+ window.location.replace(panelURL);
+}
+
 register.onclick = async () => {
  try {
-  await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);
-  message.textContent = "حساب با موفقیت ساخته شد!";
+  register.disabled = true;
+  const result = await createUserWithEmailAndPassword(
+   auth, email.value.trim(), password.value
+  );
+  if(result.user) goToPanel();
  } catch(e) {
   message.textContent = "خطا: " + e.message;
+  register.disabled = false;
  }
 };
 
 login.onclick = async () => {
  try {
-  await signInWithEmailAndPassword(auth,email.value.trim(),password.value);
-  message.textContent = "با موفقیت وارد شدی!";
+  login.disabled = true;
+  const result = await signInWithEmailAndPassword(
+   auth, email.value.trim(), password.value
+  );
+  if(result.user) goToPanel();
  } catch(e) {
   message.textContent = "خطا: " + e.message;
+  login.disabled = false;
  }
 };
 
@@ -82,9 +99,8 @@ logout.onclick = async () => {
  message.textContent = "از حساب خارج شدی.";
 };
 
-onAuthStateChanged(auth,user => {
+onAuthStateChanged(auth, user => {
  logout.hidden = !user;
- if(user) message.textContent = "وارد حساب شدی: " + user.email;
 });
 </script>
 </body>
