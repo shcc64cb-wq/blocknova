@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BlockNova | پنل کاربری</title>
 
@@ -17,17 +17,12 @@
 body{
  margin:0;
  background:radial-gradient(circle at 85% 0,#241448 0,transparent 35%),var(--bg);
- color:var(--text);
- font-family:Tahoma,Arial,sans-serif
+ color:var(--text);font-family:Tahoma,Arial,sans-serif
 }
 header{
- padding:22px 18px;
- border-bottom:1px solid var(--line);
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- flex-wrap:wrap
+ padding:20px 18px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap
 }
 .brand{font-size:23px;font-weight:800}
 .brand span{color:#a78bfa}
@@ -38,103 +33,90 @@ h1{font-size:23px;margin:8px 0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
 .stat,.server,.notice,.notification{
  background:linear-gradient(145deg,var(--panel2),var(--panel));
- border:1px solid var(--line);
- border-radius:17px;
- padding:16px
+ border:1px solid var(--line);border-radius:17px;padding:16px
 }
 .stat small{color:var(--muted)}
 .num{font-size:27px;font-weight:800;margin-top:10px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 button{
- border:0;
- border-radius:12px;
- padding:12px 16px;
- font-weight:700;
- font-size:14px;
- cursor:pointer;
- font-family:inherit
+ border:0;border-radius:12px;padding:12px 16px;
+ font-weight:700;font-size:14px;cursor:pointer;font-family:inherit
 }
 button:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:linear-gradient(100deg,var(--purple2),var(--purple));color:white}
 .secondary{background:#29233c;color:#eee;border:1px solid #493c65}
 .danger{background:#54212b;color:#fecaca;border:1px solid #8b3544}
 .servers-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
+ display:flex;justify-content:space-between;align-items:center;
  margin:26px 0 12px
 }
 .server{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- flex-wrap:wrap;
- margin-bottom:10px
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap;margin-bottom:10px
 }
 .server-title{font-weight:800;font-size:16px}
 .meta{color:var(--muted);font-size:12px;line-height:2;margin-top:7px}
 .status{
- color:var(--yellow);
- font-size:12px;
- background:#493716;
- padding:6px 10px;
- border-radius:30px
+ color:var(--yellow);font-size:12px;
+ background:#493716;padding:6px 10px;border-radius:30px
 }
 .server-actions{display:flex;gap:8px;flex-wrap:wrap}
 .notice{
- margin-top:18px;
- color:var(--muted);
- font-size:12px;
- line-height:2;
- border-color:#59472a
+ margin-top:18px;color:var(--muted);font-size:12px;
+ line-height:2;border-color:#59472a
 }
 .notice b{color:#fcd34d}
 .empty{
- padding:20px;
- text-align:center;
- color:var(--muted);
- border:1px dashed #493c65;
- border-radius:15px
+ padding:20px;text-align:center;color:var(--muted);
+ border:1px dashed #493c65;border-radius:15px
 }
 footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 #loading{text-align:center;padding:60px 20px;color:#c4b5fd}
 .user-email{
- font-size:12px;
- color:#c4b5fd;
- direction:ltr;
- overflow-wrap:anywhere
+ font-size:12px;color:#c4b5fd;direction:ltr;overflow-wrap:anywhere
 }
 
-/* Notifications */
-.notifications-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- flex-wrap:wrap;
- margin:28px 0 12px
+/* Notification bell */
+.header-actions{
+ display:flex;align-items:center;gap:10px;flex-wrap:wrap
 }
-.notifications-title{
- display:flex;
- align-items:center;
- gap:10px
+.bell-button{
+ position:relative;
+ width:46px;height:44px;padding:0;
+ display:flex;align-items:center;justify-content:center;
+ background:#29233c;color:white;border:1px solid #493c65;
+ font-size:22px
 }
-.unread-count{
- background:#6d28d9;
- color:white;
- padding:5px 10px;
- border-radius:30px;
- font-size:12px;
- font-weight:bold
+.bell-count{
+ position:absolute;top:-7px;right:-7px;
+ min-width:19px;height:19px;padding:0 5px;
+ display:flex;align-items:center;justify-content:center;
+ border-radius:20px;background:#ef4444;color:white;
+ font-size:10px;font-weight:bold
+}
+.bell-count[hidden]{display:none}
+
+/* Notification center */
+.notification-center{
+ margin:20px 0 25px;
+ padding:16px;
+ border:1px solid #493c65;
+ border-radius:18px;
+ background:linear-gradient(145deg,#1d1930,#11101b)
+}
+.notification-center[hidden]{display:none}
+.notification-head{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:10px;flex-wrap:wrap;margin-bottom:14px
+}
+.notification-head h2{font-size:17px;margin:0}
+.notification-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.small-button{
+ padding:9px 12px;font-size:11px
 }
 .notification{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- margin-bottom:10px;
- border-color:#493c65
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;margin-bottom:9px;padding:13px
 }
 .notification.unread{
  border-color:#8b5cf6;
@@ -143,43 +125,28 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 .notification-content{flex:1;min-width:0}
 .notification-title{font-weight:bold;font-size:14px}
 .notification-message{
- color:var(--muted);
- font-size:12px;
- line-height:2;
- margin-top:6px;
- overflow-wrap:anywhere
+ color:var(--muted);font-size:12px;
+ line-height:2;margin-top:6px;overflow-wrap:anywhere
 }
-.notification-date{
- color:#817995;
- font-size:10px;
- margin-top:5px
-}
-.notification-actions{
- display:flex;
- align-items:center;
- gap:7px
-}
+.notification-date{color:#817995;font-size:10px;margin-top:5px}
+.notification-actions{display:flex;gap:7px;align-items:center}
 .read-button{
- background:#29233c;
- border:1px solid #493c65;
- color:#ddd6fe;
- padding:9px 12px;
- font-size:12px;
- white-space:nowrap
+ background:#29233c;border:1px solid #493c65;
+ color:#ddd6fe;padding:9px 11px;font-size:11px
+}
+.delete-notification{
+ background:#54212b;color:#fecaca;
+ border:1px solid #8b3544;padding:9px 11px;font-size:11px
 }
 .read-label{font-size:11px;color:#86efac}
-.notification-error{
- color:#fca5a5;
- font-size:12px;
- padding:12px
-}
+.notification-error{color:#fca5a5;font-size:12px;padding:12px}
 
 @media(max-width:600px){
  .stats{grid-template-columns:1fr}
  .server{align-items:flex-start}
  .servers-head{align-items:flex-start;gap:10px;flex-direction:column}
  .notification{align-items:flex-start;flex-direction:column}
- .notification-actions{width:100%;justify-content:flex-start}
+ .notification-actions{width:100%;flex-wrap:wrap}
 }
 </style>
 </head>
@@ -196,9 +163,16 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
   <div class="tag">پنل مدیریت هاست ماینکرافت</div>
  </div>
 
- <div>
-  <div class="user-email" id="userEmail"></div>
-  <button class="secondary" id="logout">خروج از حساب</button>
+ <div class="header-actions">
+  <button class="bell-button" id="bell" title="اعلان‌ها">
+   🔔
+   <span class="bell-count" id="bellCount" hidden>۰</span>
+  </button>
+
+  <div>
+   <div class="user-email" id="userEmail"></div>
+   <button class="secondary" id="logout">خروج از حساب</button>
+  </div>
  </div>
 </header>
 
@@ -212,12 +186,10 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
    <small>کل سرورها</small>
    <div class="num" id="total">۰</div>
   </div>
-
   <div class="stat">
    <small>سرورهای آنلاین</small>
    <div class="num" id="online">۰</div>
   </div>
-
   <div class="stat">
    <small>پلن فعال</small>
    <div class="num" style="font-size:19px">آزمایشی</div>
@@ -231,22 +203,26 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
   <button class="secondary" id="settings">تنظیمات پنل</button>
  </div>
 
- <!-- Notifications -->
- <section>
-  <div class="notifications-head">
-   <div class="notifications-title">
-    <h2 style="font-size:18px;margin:0">اعلان‌های من</h2>
-    <span class="unread-count" id="unreadCount">۰ جدید</span>
-   </div>
+ <!-- Notification center -->
+ <section class="notification-center" id="notificationCenter" hidden>
 
-   <button class="secondary" id="readAll">
-    خواندن همه
-   </button>
+  <div class="notification-head">
+   <h2>مرکز اعلان‌ها</h2>
+
+   <div class="notification-buttons">
+    <button class="secondary small-button" id="readAll">
+     خواندن همه
+    </button>
+    <button class="danger small-button" id="deleteAll">
+     حذف همه
+    </button>
+   </div>
   </div>
 
   <div id="notifications" class="empty">
    در حال دریافت اعلان‌ها...
   </div>
+
  </section>
 
  <div class="servers-head">
@@ -264,7 +240,6 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
  </div>
 
  <footer>© BlockNova</footer>
-
 </main>
 </div>
 
@@ -278,17 +253,18 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9";
 
-const supabase = createClient(SUPABASE_URL,SUPABASE_KEY);
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const loading = document.getElementById("loading");
-const dashboard = document.getElementById("app");
-const serversElement = document.getElementById("servers");
-const notificationsElement = document.getElementById("notifications");
-const createButton = document.getElementById("create");
-const readAllButton = document.getElementById("readAll");
+const loading=document.getElementById("loading");
+const dashboard=document.getElementById("app");
+const serversElement=document.getElementById("servers");
+const notificationsElement=document.getElementById("notifications");
+const center=document.getElementById("notificationCenter");
+const bell=document.getElementById("bell");
+const bellCount=document.getElementById("bellCount");
 
-let currentUser = null;
-let serverCount = 0;
+let currentUser=null;
+let serverCount=0;
 
 function persianNumber(number){
  return String(number).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
@@ -300,23 +276,25 @@ function showEmpty(message){
 }
 
 function formatDate(date){
- if(!date) return "";
-
+ if(!date)return "";
  const parsed=new Date(date);
-
- if(Number.isNaN(parsed.getTime())) return "";
-
+ if(Number.isNaN(parsed.getTime()))return "";
  return parsed.toLocaleString("fa-IR",{
-  dateStyle:"short",
-  timeStyle:"short"
+  dateStyle:"short",timeStyle:"short"
  });
 }
 
-/* دریافت و نمایش اعلان‌ها */
-async function loadNotifications(){
+/* باز و بسته کردن مرکز اعلان‌ها */
+bell.addEventListener("click",async()=>{
+ center.hidden=!center.hidden;
 
- notificationsElement.className="empty";
- notificationsElement.textContent="در حال دریافت اعلان‌ها...";
+ if(!center.hidden){
+  await loadNotifications();
+ }
+});
+
+/* دریافت اعلان‌ها */
+async function loadNotifications(){
 
  const {data,error}=await supabase
   .from("notifications")
@@ -327,26 +305,28 @@ async function loadNotifications(){
 
  if(error){
   notificationsElement.className="notification-error";
-  notificationsElement.textContent=
-   "خطا در دریافت اعلان‌ها: "+error.message;
+  notificationsElement.textContent="خطا در دریافت اعلان‌ها: "+error.message;
   return;
  }
 
  renderNotifications(data||[]);
 }
 
-function renderNotifications(notifications){
+/* نمایش تعداد و فهرست اعلان‌ها */
+function renderNotifications(items){
+
+ const unread=items.filter(item=>!item.is_read).length;
+
+ if(unread>0){
+  bellCount.hidden=false;
+  bellCount.textContent=unread>99?"۹۹+":persianNumber(unread);
+ }else{
+  bellCount.hidden=true;
+ }
 
  notificationsElement.replaceChildren();
 
- const unread=notifications.filter(item=>!item.is_read).length;
-
- document.getElementById("unreadCount").textContent=
-  persianNumber(unread)+" جدید";
-
- readAllButton.disabled=unread===0;
-
- if(notifications.length===0){
+ if(items.length===0){
   notificationsElement.className="empty";
   notificationsElement.textContent="هنوز اعلانی دریافت نکرده‌ای.";
   return;
@@ -354,7 +334,7 @@ function renderNotifications(notifications){
 
  notificationsElement.className="";
 
- notifications.forEach(item=>{
+ items.forEach(item=>{
 
   const card=document.createElement("div");
   card.className="notification"+(item.is_read?"":" unread");
@@ -380,15 +360,12 @@ function renderNotifications(notifications){
   actions.className="notification-actions";
 
   if(!item.is_read){
+   const readButton=document.createElement("button");
+   readButton.className="read-button";
+   readButton.textContent="خواندم";
 
-   const button=document.createElement("button");
-   button.className="read-button";
-   button.textContent="خواندم";
-
-   button.addEventListener("click",async()=>{
-
-    button.disabled=true;
-    button.textContent="در حال ثبت...";
+   readButton.addEventListener("click",async()=>{
+    readButton.disabled=true;
 
     const {data,error}=await supabase
      .from("notifications")
@@ -397,26 +374,50 @@ function renderNotifications(notifications){
      .eq("user_id",currentUser.id)
      .select("id");
 
-    if(error || !data || data.length===0){
-     alert("خطا در ثبت وضعیت اعلان: "+
-      (error?.message||"دسترسی به اعلان تأیید نشد."));
-     button.disabled=false;
-     button.textContent="خواندم";
+    if(error||!data||data.length===0){
+     alert("خطا در خواندن اعلان: "+
+      (error?.message||"دسترسی تأیید نشد."));
+     readButton.disabled=false;
      return;
     }
 
     await loadNotifications();
    });
 
-   actions.appendChild(button);
-
+   actions.appendChild(readButton);
   }else{
-
    const label=document.createElement("span");
    label.className="read-label";
    label.textContent="✓ خوانده شده";
    actions.appendChild(label);
   }
+
+  const deleteButton=document.createElement("button");
+  deleteButton.className="delete-notification";
+  deleteButton.textContent="حذف";
+
+  deleteButton.addEventListener("click",async()=>{
+
+   deleteButton.disabled=true;
+
+   const {data,error}=await supabase
+    .from("notifications")
+    .delete()
+    .eq("id",item.id)
+    .eq("user_id",currentUser.id)
+    .select("id");
+
+   if(error||!data||data.length===0){
+    alert("خطا در حذف اعلان: "+
+     (error?.message||"دسترسی تأیید نشد."));
+    deleteButton.disabled=false;
+    return;
+   }
+
+   await loadNotifications();
+  });
+
+  actions.appendChild(deleteButton);
 
   card.append(content,actions);
   notificationsElement.appendChild(card);
@@ -424,33 +425,51 @@ function renderNotifications(notifications){
 }
 
 /* خواندن همه اعلان‌ها */
-readAllButton.addEventListener("click",async()=>{
+document.getElementById("readAll").addEventListener("click",async()=>{
 
- if(!currentUser) return;
+ const button=document.getElementById("readAll");
+ button.disabled=true;
 
- readAllButton.disabled=true;
- readAllButton.textContent="در حال ثبت...";
+ const {error}=await supabase
+  .from("notifications")
+  .update({is_read:true})
+  .eq("user_id",currentUser.id)
+  .eq("is_read",false);
 
- try{
-
-  const {error}=await supabase
-   .from("notifications")
-   .update({is_read:true})
-   .eq("user_id",currentUser.id)
-   .eq("is_read",false);
-
-  if(error) throw error;
-
+ if(error){
+  alert("خطا: "+error.message);
+ }else{
   await loadNotifications();
-
- }catch(error){
-
-  alert("خطا در خواندن اعلان‌ها: "+error.message);
-  readAllButton.disabled=false;
-
- }finally{
-  readAllButton.textContent="خواندن همه";
  }
+
+ button.disabled=false;
+});
+
+/* حذف همه اعلان‌ها */
+document.getElementById("deleteAll").addEventListener("click",async()=>{
+
+ const confirmed=confirm(
+  "آیا مطمئنی می‌خواهی تمام اعلان‌هایت را حذف کنی؟ این کار قابل برگشت نیست."
+ );
+
+ if(!confirmed)return;
+
+ const button=document.getElementById("deleteAll");
+ button.disabled=true;
+
+ const {error}=await supabase
+  .from("notifications")
+  .delete()
+  .eq("user_id",currentUser.id);
+
+ if(error){
+  alert("خطا در حذف اعلان‌ها: "+error.message);
+ }else{
+  await loadNotifications();
+  alert("تمام اعلان‌ها حذف شدند.");
+ }
+
+ button.disabled=false;
 });
 
 /* نمایش سرورها */
@@ -484,13 +503,12 @@ function renderServers(servers){
 
   const meta=document.createElement("div");
   meta.className="meta";
-
   meta.textContent=
    "نوع: "+(server.type||"Java")+
    " · نرم‌افزار: "+(server.software||"Fabric")+
    " · نسخه: "+(server.version||"1.21.1")+
    " · RAM: "+
-   (server.ram_gb ?
+   (server.ram_gb?
     persianNumber(server.ram_gb)+" گیگابایت":
     "تنظیم نشده")+
    " · آدرس: هنوز تنظیم نشده";
@@ -509,8 +527,7 @@ function renderServers(servers){
   manage.textContent="مدیریت";
 
   manage.addEventListener("click",()=>{
-   location.href=
-    "blocknova-server-manage.html?id="+
+   location.href="blocknova-server-manage.html?id="+
     encodeURIComponent(server.id);
   });
 
@@ -526,7 +543,7 @@ function renderServers(servers){
     "» را حذف کنی؟ این کار قابل برگشت نیست."
    );
 
-   if(!confirmed) return;
+   if(!confirmed)return;
 
    deleteButton.disabled=true;
    deleteButton.textContent="در حال حذف...";
@@ -540,19 +557,16 @@ function renderServers(servers){
      .eq("user_id",currentUser.id)
      .select("id");
 
-    if(error) throw error;
+    if(error)throw error;
 
-    if(!data || data.length===0){
-     throw new Error(
-      "سرور حذف نشد. لطفاً دسترسی حذف را بررسی کنیم."
-     );
+    if(!data||data.length===0){
+     throw new Error("سرور حذف نشد. دسترسی حذف را بررسی کنیم.");
     }
 
     await loadServers();
     alert("سرور با موفقیت حذف شد.");
 
    }catch(error){
-
     alert("خطا در حذف سرور: "+error.message);
     deleteButton.disabled=false;
     deleteButton.textContent="حذف سرور";
@@ -575,19 +589,18 @@ async function loadServers(){
   .eq("user_id",currentUser.id)
   .order("created_at",{ascending:false});
 
- if(error) throw error;
+ if(error)throw error;
 
  renderServers(data||[]);
 }
 
-/* بررسی حساب کاربری */
+/* بررسی حساب */
 async function checkSession(){
 
  try{
 
   const {data,error}=await supabase.auth.getSession();
-
-  if(error) throw error;
+  if(error)throw error;
 
   if(!data.session){
    location.replace("login.html");
@@ -606,23 +619,20 @@ async function checkSession(){
   await loadNotifications();
 
  }catch(error){
-
   loading.textContent="خطا در اتصال: "+error.message;
  }
 }
 
-/* خروج از حساب */
-supabase.auth.onAuthStateChange((event,session)=>{
-
+/* خروج */
+supabase.auth.onAuthStateChange((event)=>{
  if(event==="SIGNED_OUT"){
   location.replace("login.html");
  }
 });
 
-/* ساخت سرور آزمایشی */
-createButton.addEventListener("click",()=>{
-
- if(!currentUser) return;
+/* ساخت سرور */
+document.getElementById("create").addEventListener("click",()=>{
+ if(!currentUser)return;
 
  if(serverCount>=1){
   alert("در نسخه آزمایشی فقط یک نمونه سرور برای هر حساب مجاز است.");
@@ -632,7 +642,7 @@ createButton.addEventListener("click",()=>{
  location.href="blocknova-create-server.html";
 });
 
-/* لینک‌های داشبورد */
+/* لینک‌ها */
 document.getElementById("myOrders").addEventListener("click",()=>{
  location.href="blocknova-my-orders.html";
 });
@@ -645,39 +655,33 @@ document.getElementById("settings").addEventListener("click",()=>{
  alert("بخش تنظیمات در مرحله بعد ساخته می‌شود.");
 });
 
-/* خروج */
+/* خروج از حساب */
 document.getElementById("logout").addEventListener("click",async()=>{
 
  const button=document.getElementById("logout");
  button.disabled=true;
 
  try{
-
   const {error}=await supabase.auth.signOut();
-
-  if(error) throw error;
-
+  if(error)throw error;
   location.replace("login.html");
-
  }catch(error){
-
   alert("خطا در خروج: "+error.message);
   button.disabled=false;
  }
 });
 
-/* شروع داشبورد */
+/* شروع */
 checkSession();
 
-/* به‌روزرسانی خودکار اعلان‌ها هر ۱۵ ثانیه */
+/* به‌روزرسانی اعلان‌ها هر ۱۵ ثانیه */
 setInterval(()=>{
-
- if(currentUser && !document.hidden){
+ if(currentUser&&!document.hidden){
   loadNotifications();
  }
-
 },15000);
 
 </script>
 </body>
-</html>
+ </html>
+ 
