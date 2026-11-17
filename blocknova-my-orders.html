@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BlockNova | سفارش‌های من</title>
+
 <style>
 *{box-sizing:border-box}
 body{
@@ -17,7 +18,7 @@ header{
  display:flex;justify-content:space-between;align-items:center;
  flex-wrap:wrap;gap:12px
 }
-.brand{font-size:24px;font-weight:900}
+.brand{font-size:24px;font-weight:900;direction:ltr}
 .brand span{color:#a78bfa}
 .back{
  color:white;text-decoration:none;background:#29233c;
@@ -44,7 +45,7 @@ h1{font-size:23px}
 .status.failed{background:#54212b;color:#fecaca}
 .details{
  color:#c4bdd2;font-size:12px;line-height:2.5;
- margin-top:12px
+ margin-top:12px;white-space:pre-line
 }
 .price{color:#c4b5fd;font-weight:bold}
 .empty{
@@ -58,9 +59,11 @@ button{
  background:#29233c;color:white;font-weight:bold;
  cursor:pointer;margin-top:18px
 }
+button:disabled{opacity:.5}
 footer{text-align:center;color:#766f89;font-size:11px;margin-top:35px}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -74,7 +77,10 @@ footer{text-align:center;color:#766f89;font-size:11px;margin-top:35px}
 
  <div id="orders" class="empty">در حال دریافت سفارش‌ها...</div>
 
- <button onclick="loadOrders()">بروزرسانی سفارش‌ها</button>
+ <button id="refreshButton" onclick="loadOrders()">
+  بروزرسانی سفارش‌ها
+ </button>
+
  <footer>© BlockNova</footer>
 </main>
 
@@ -88,6 +94,7 @@ const supabase=createClient(
 );
 
 const ordersElement=document.getElementById("orders");
+const refreshButton=document.getElementById("refreshButton");
 
 function faNumber(value){
  return Number(value).toLocaleString("fa-IR");
@@ -106,6 +113,7 @@ function statusInfo(status){
 }
 
 async function loadOrders(){
+ refreshButton.disabled=true;
  showEmpty("در حال دریافت سفارش‌ها...");
 
  try{
@@ -150,8 +158,9 @@ async function loadOrders(){
    name.textContent="اشتراک "+order.plan_name;
 
    const status=document.createElement("span");
-   status.className="status "+statusInfo(order.status)[1];
-   status.textContent=statusInfo(order.status)[0];
+   const info=statusInfo(order.status);
+   status.className="status "+info[1];
+   status.textContent=info[0];
 
    head.append(name,status);
 
@@ -164,7 +173,7 @@ async function loadOrders(){
     :date.toLocaleString("fa-IR");
 
    details.textContent=
-    "شماره سفارش: "+order.id.slice(0,8)+
+    "شماره سفارش: "+String(order.id).slice(0,8)+
     "\nقیمت: "+faNumber(order.price_toman)+" تومان"+
     "\nمدت اشتراک: "+faNumber(order.duration_days)+" روز"+
     "\nتاریخ ثبت: "+dateText;
@@ -175,10 +184,15 @@ async function loadOrders(){
 
  }catch(error){
   showEmpty("خطا در دریافت سفارش‌ها: "+error.message,true);
+ }finally{
+  refreshButton.disabled=false;
  }
 }
 
+window.loadOrders=loadOrders;
+
 loadOrders();
 </script>
+
 </body>
 </html>
