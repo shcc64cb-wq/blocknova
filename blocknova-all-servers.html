@@ -20,6 +20,7 @@ h2{color:#a78bfa}
 button,select{padding:12px 16px;border:0;border-radius:9px;background:#8b5cf6;color:white;font-family:inherit;cursor:pointer;margin:5px 0}
 select{background:#090811;border:1px solid #8b5cf6}
 button:disabled{opacity:.5;cursor:not-allowed}
+.delete{background:#b91c1c}
 .error{color:#fca5a5}
 .success{color:#86efac}
 </style>
@@ -50,13 +51,10 @@ const refresh=document.getElementById("refresh");
 function field(label,value){
  const div=document.createElement("div");
  div.className="item";
-
  const small=document.createElement("small");
  small.textContent=label;
-
  const strong=document.createElement("strong");
  strong.textContent=value ?? "تنظیم نشده";
-
  div.append(small,strong);
  return div;
 }
@@ -76,7 +74,7 @@ async function changeStatus(server,status,button){
  button.disabled=false;
 
  if(error){
-  message.textContent="خطا در تغییر وضعیت: "+error.message;
+  message.textContent="خطا: "+error.message;
   message.className="muted error";
   return;
  }
@@ -88,6 +86,44 @@ async function changeStatus(server,status,button){
  }
 
  message.textContent="وضعیت سرور با موفقیت تغییر کرد.";
+ message.className="muted success";
+ await loadServers();
+}
+
+async function deleteServer(server,button){
+ const confirmed=confirm(
+  "آیا مطمئنی می‌خواهی سرور «"+
+  (server.server_name || "بدون نام")+
+  "» را برای همیشه حذف کنی؟\nاین کار قابل برگشت نیست."
+ );
+
+ if(!confirmed)return;
+
+ button.disabled=true;
+ message.textContent="در حال حذف سرور...";
+
+ const {data,error}=await supabase.rpc(
+  "admin_delete_server",
+  {
+   p_server_id:server.server_id
+  }
+ );
+
+ button.disabled=false;
+
+ if(error){
+  message.textContent="خطا در حذف سرور: "+error.message;
+  message.className="muted error";
+  return;
+ }
+
+ if(data!==true){
+  message.textContent="سرور موردنظر پیدا نشد.";
+  message.className="muted error";
+  return;
+ }
+
+ message.textContent="سرور با موفقیت حذف شد.";
  message.className="muted success";
  await loadServers();
 }
@@ -106,6 +142,7 @@ async function loadServers(){
 
  if(!data || data.length===0){
   message.textContent="هنوز سروری ثبت نشده است.";
+  message.className="muted";
   return;
  }
 
@@ -162,12 +199,18 @@ async function loadServers(){
 
   const save=document.createElement("button");
   save.textContent="ذخیره وضعیت";
-
   save.addEventListener("click",()=>{
    changeStatus(server,select.value,save);
   });
 
-  card.append(title,owner,id,info,label,select,save);
+  const remove=document.createElement("button");
+  remove.className="delete";
+  remove.textContent="حذف سرور";
+  remove.addEventListener("click",()=>{
+   deleteServer(server,remove);
+  });
+
+  card.append(title,owner,id,info,label,select,save,remove);
   box.append(card);
  });
 }
@@ -195,7 +238,6 @@ async function start(){
  message.textContent="دسترسی مدیر تأیید شد.";
  message.className="muted success";
  refresh.hidden=false;
-
  await loadServers();
 }
 
@@ -203,5 +245,4 @@ refresh.addEventListener("click",loadServers);
 start();
 </script>
 </body>
- </html>
- 
+</html>
