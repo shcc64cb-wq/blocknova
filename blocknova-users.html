@@ -4,28 +4,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090811">
 <title>مدیریت کاربران | BlockNova</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#090811;color:white;font-family:Tahoma,Arial,sans-serif}
-.wrap{max-width:900px;margin:30px auto}
-.panel,.user{background:#151322;border:1px solid #30264b;border-radius:15px;padding:18px;margin-bottom:15px}
-h2{color:#a78bfa}
+body{
+ margin:0;padding:18px;background:#090811;color:white;
+ font-family:Tahoma,Arial,sans-serif
+}
+.wrap{max-width:950px;margin:25px auto}
+.panel,.user{
+ background:#151322;border:1px solid #30264b;
+ border-radius:15px;padding:18px;margin-bottom:15px
+}
+h2{color:#a78bfa;margin-top:0}
 .muted{color:#aaa;font-size:13px;line-height:2;overflow-wrap:anywhere}
+.stats{
+ display:flex;gap:10px;flex-wrap:wrap;margin:15px 0
+}
+.stat{
+ flex:1;min-width:130px;background:#090811;
+ border:1px solid #30264b;border-radius:10px;
+ padding:14px;color:#c4b5fd
+}
+.stat strong{display:block;font-size:23px;margin-top:8px}
 .user{background:#211a35}
-button{padding:11px 16px;border:0;border-radius:9px;background:#8b5cf6;color:white;font-family:inherit;cursor:pointer}
-.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.stat{background:#090811;border-radius:9px;padding:10px;color:#c4b5fd}
+.user h3{color:#c4b5fd;overflow-wrap:anywhere}
+input{
+ width:100%;padding:13px;margin:12px 0;
+ border:1px solid #49376b;border-radius:10px;
+ background:#090811;color:white;font-family:inherit;
+ font-size:14px;outline:none
+}
+button{
+ padding:11px 16px;border:0;border-radius:9px;
+ background:#8b5cf6;color:white;font-family:inherit;
+ cursor:pointer
+}
+button:disabled{opacity:.5}
+.empty{
+ background:#151322;padding:20px;border-radius:12px;
+ color:#aaa;text-align:center
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-  <div class="panel">
-    <h2>مدیریت کاربران BlockNova</h2>
-    <p id="message" class="muted">در حال بررسی دسترسی مدیر...</p>
-    <button id="refresh" hidden>بروزرسانی کاربران</button>
+
+ <div class="panel">
+  <h2>BlockNova</h2>
+  <p class="muted">
+   <a href="blocknova-panel-v2.html" style="color:#a78bfa">
+    بازگشت به پنل
+   </a>
+  </p>
+
+  <h2>مدیریت کاربران</h2>
+  <p id="message" class="muted">
+   در حال بررسی دسترسی مدیر...
+  </p>
+
+  <button id="refresh" hidden>
+   بروزرسانی کاربران
+  </button>
+ </div>
+
+ <div id="statistics" class="stats" hidden>
+  <div class="stat">
+   کل کاربران
+   <strong id="total">۰</strong>
   </div>
-  <div id="users"></div>
+ </div>
+
+ <div class="panel" id="searchPanel" hidden>
+  <h3>جستجوی کاربران</h3>
+  <input
+   id="search"
+   type="search"
+   placeholder="جستجو با ایمیل یا شناسه کاربر..."
+  >
+ </div>
+
+ <div id="users"></div>
+
 </div>
 
 <script type="module">
@@ -40,26 +103,39 @@ const supabase=createClient(
 const message=document.getElementById("message");
 const usersBox=document.getElementById("users");
 const refresh=document.getElementById("refresh");
+const search=document.getElementById("search");
+const statistics=document.getElementById("statistics");
+const searchPanel=document.getElementById("searchPanel");
 
-async function loadUsers(){
+let allUsers=[];
+
+function faNumber(value){
+ return Number(value || 0).toLocaleString("fa-IR");
+}
+
+function showUsers(){
+ const term=search.value.trim().toLowerCase();
+
+ const filtered=allUsers.filter(user=>{
+  const email=String(user.email || "").toLowerCase();
+  const id=String(user.user_id || "").toLowerCase();
+
+  return email.includes(term) || id.includes(term);
+ });
+
  usersBox.replaceChildren();
- message.textContent="در حال دریافت کاربران...";
 
- const {data,error}=await supabase.rpc("admin_list_users");
-
- if(error){
-  message.textContent="خطا: "+error.message;
+ if(filtered.length===0){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent=allUsers.length
+   ? "کاربری با این مشخصات پیدا نشد."
+   : "هنوز کاربری ثبت‌نام نکرده است.";
+  usersBox.append(empty);
   return;
  }
 
- if(!data || data.length===0){
-  message.textContent="کاربری پیدا نشد.";
-  return;
- }
-
- message.textContent="تعداد کاربران: "+data.length;
-
- data.forEach(user=>{
+ filtered.forEach(user=>{
   const card=document.createElement("div");
   card.className="user";
 
@@ -68,30 +144,64 @@ async function loadUsers(){
 
   const id=document.createElement("p");
   id.className="muted";
-  id.textContent="شناسه: "+user.user_id;
+  id.textContent="شناسه کاربر: "+(user.user_id || "نامشخص");
 
   const date=document.createElement("p");
   date.className="muted";
-  date.textContent="تاریخ ثبت‌نام: "+
-   new Date(user.created_at).toLocaleString("fa-IR");
+
+  const created=user.created_at
+   ? new Date(user.created_at).toLocaleString("fa-IR")
+   : "نامشخص";
+
+  date.textContent="تاریخ ثبت‌نام: "+created;
 
   const stats=document.createElement("div");
   stats.className="stats";
 
   const servers=document.createElement("div");
   servers.className="stat";
-  servers.textContent="تعداد سرورها: "+
-   Number(user.server_count).toLocaleString("fa-IR");
+  servers.textContent="تعداد سرورها: "+faNumber(user.server_count);
 
   const orders=document.createElement("div");
   orders.className="stat";
-  orders.textContent="تعداد سفارش‌ها: "+
-   Number(user.order_count).toLocaleString("fa-IR");
+  orders.textContent="تعداد سفارش‌ها: "+faNumber(user.order_count);
 
   stats.append(servers,orders);
   card.append(email,id,date,stats);
   usersBox.append(card);
  });
+}
+
+async function loadUsers(){
+ refresh.disabled=true;
+ usersBox.replaceChildren();
+ message.textContent="در حال دریافت کاربران...";
+
+ const {data,error}=await supabase.rpc("admin_list_users");
+
+ if(error){
+  message.textContent="خطا در دریافت کاربران: "+error.message;
+  refresh.disabled=false;
+  return;
+ }
+
+ if(!Array.isArray(data)){
+  message.textContent="پاسخ دریافتی از سرور معتبر نیست.";
+  refresh.disabled=false;
+  return;
+ }
+
+ allUsers=data;
+
+ document.getElementById("total").textContent=faNumber(data.length);
+ statistics.hidden=false;
+ searchPanel.hidden=false;
+
+ message.textContent="کاربران با موفقیت دریافت شدند. تعداد: "+
+  faNumber(data.length);
+
+ showUsers();
+ refresh.disabled=false;
 }
 
 async function start(){
@@ -115,10 +225,13 @@ async function start(){
 
  message.textContent="دسترسی مدیر تأیید شد.";
  refresh.hidden=false;
+
  await loadUsers();
 }
 
 refresh.addEventListener("click",loadUsers);
+search.addEventListener("input",showUsers);
+
 start();
 </script>
 </body>
