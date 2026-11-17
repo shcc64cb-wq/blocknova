@@ -22,6 +22,13 @@ button:disabled{opacity:.5}
 .secondary{background:#30264a;padding:11px}
 .note{background:#2b2140;border:1px solid #594080;border-radius:12px;padding:13px;margin-top:18px;color:#ddd;line-height:2}
 #message{margin-top:15px;color:#c4b5fd;overflow-wrap:anywhere}
+.ram-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ram-option{background:#211a35;border:1px solid #493866;border-radius:12px;padding:14px 5px;text-align:center;cursor:pointer}
+.ram-option input{width:auto;margin:0 0 10px;accent-color:#a78bfa}
+.ram-option strong{display:block;font-size:19px;color:#c4b5fd}
+.ram-option small{display:block;color:#aaa;margin-top:6px}
+.ram-option:has(input:checked){border:2px solid #a78bfa;background:#30234b}
+@media(max-width:400px){.ram-options{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -62,8 +69,27 @@ button:disabled{opacity:.5}
 <option value="1.19.4">1.19.4</option>
 </select>
 
+<label>مقدار RAM سرور</label>
+<div class="ram-options">
+<label class="ram-option">
+<input type="radio" name="ram" value="2" checked>
+<strong>2 GB</strong>
+<small>پلن پایه</small>
+</label>
+<label class="ram-option">
+<input type="radio" name="ram" value="4">
+<strong>4 GB</strong>
+<small>پلن متوسط</small>
+</label>
+<label class="ram-option">
+<input type="radio" name="ram" value="6">
+<strong>6 GB</strong>
+<small>پلن حرفه‌ای</small>
+</label>
+</div>
+
 <div class="note">
-توجه: این مرحله فقط مشخصات سرور رو در حساب شما ذخیره می‌کنه. برای اجرای واقعی سرور، زیرساخت میزبانی لازم داریم.
+توجه: مقدار RAM انتخابی فعلاً فقط در اطلاعات حساب شما ذخیره می‌شود و به حافظه واقعی سرور اختصاص داده نمی‌شود.
 </div>
 
 <button id="submitButton" type="submit">ساخت سرور آزمایشی</button>
@@ -117,12 +143,15 @@ form.addEventListener("submit",async(event)=>{
    return;
   }
 
+  const ram = Number(form.querySelector('input[name="ram"]:checked').value);
+
   const server={
    user_id:session.user.id,
    name:document.getElementById("serverName").value.trim(),
    type:typeSelect.value,
    software:softwareSelect.value,
    version:document.getElementById("version").value,
+   ram_gb:ram,
    status:"waiting"
   };
 
@@ -143,4 +172,5 @@ form.addEventListener("submit",async(event)=>{
 });
 </script>
 </body>
-</html>
+ </html>
+ 
