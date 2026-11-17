@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ورود | BlockNova</title>
+
 <style>
 *{box-sizing:border-box}
 body{
@@ -21,18 +22,29 @@ input,button{
  width:100%;padding:14px;margin-top:13px;
  border-radius:9px;font-size:15px
 }
-input{background:#0c0915;border:1px solid #55416e;color:white}
-button{background:#8b42d6;color:white;border:0;font-weight:bold}
+input{
+ background:#0c0915;border:1px solid #55416e;color:white;
+ text-align:start;
+}
+button{
+ background:#8b42d6;color:white;border:0;font-weight:bold;
+ cursor:pointer
+}
 button.secondary{background:#302344}
-button:disabled{opacity:.5}
-#message{font-size:14px;line-height:1.8}
+button:disabled{opacity:.5;cursor:not-allowed}
+#message{font-size:14px;line-height:1.8;overflow-wrap:anywhere}
+#language{margin-top:0;margin-bottom:15px}
 </style>
 </head>
+
 <body>
 
 <div class="card">
+
+<button id="language" class="secondary" type="button">English</button>
+
 <h1>BlockNova</h1>
-<p>ورود یا ساخت حساب کاربری</p>
+<p id="subtitle">ورود یا ساخت حساب کاربری</p>
 
 <input id="email" type="email" placeholder="ایمیل" autocomplete="email">
 <input id="password" type="password" placeholder="رمز عبور" autocomplete="current-password">
@@ -42,6 +54,7 @@ button:disabled{opacity:.5}
 <button id="logout" class="secondary" hidden>خروج از حساب</button>
 
 <p id="message">به BlockNova خوش آمدی</p>
+
 </div>
 
 <script type="module">
@@ -59,19 +72,151 @@ const message = document.getElementById("message");
 const register = document.getElementById("register");
 const login = document.getElementById("login");
 const logout = document.getElementById("logout");
+const languageButton = document.getElementById("language");
 
 const panelURL =
 "https://shcc64cb-wq.github.io/blocknova/blocknova-panel-v2.html";
 
-function setLoading(value){
+const translations = {
+ fa: {
+  title: "ورود | BlockNova",
+  subtitle: "ورود یا ساخت حساب کاربری",
+  email: "ایمیل",
+  password: "رمز عبور",
+  register: "ساخت حساب",
+  login: "ورود به حساب",
+  logout: "خروج از حساب",
+  language: "English",
+  welcome: "به BlockNova خوش آمدی",
+  registering: "در حال ساخت حساب...",
+  loggingIn: "در حال ورود...",
+  accountCreated: "حساب ساخته شد؛ در حال انتقال...",
+  confirmEmail: "حساب ساخته شد! ایمیلت را بررسی کن و لینک تأیید را بزن.",
+  loginSuccess: "ورود موفق بود؛ در حال انتقال...",
+  loggedOut: "از حساب خارج شدی.",
+  error: "خطا: ",
+  logoutError: "خطا در خروج: ",
+  invalidLogin: "ایمیل یا رمز عبور اشتباه است.",
+  invalidEmail: "ایمیل واردشده معتبر نیست.",
+  weakPassword: "رمز عبور ضعیف است. یک رمز قوی‌تر انتخاب کن.",
+  alreadyRegistered: "این ایمیل قبلاً ثبت‌نام کرده است.",
+  emailNotConfirmed: "ایمیلت هنوز تأیید نشده است. ایمیلت را بررسی کن.",
+  tooManyRequests: "تعداد درخواست‌ها زیاد است. کمی بعد دوباره تلاش کن."
+ },
+ en: {
+  title: "Login | BlockNova",
+  subtitle: "Login or create an account",
+  email: "Email",
+  password: "Password",
+  register: "Create Account",
+  login: "Log In",
+  logout: "Log Out",
+  language: "فارسی",
+  welcome: "Welcome to BlockNova",
+  registering: "Creating your account...",
+  loggingIn: "Logging in...",
+  accountCreated: "Account created; redirecting...",
+  confirmEmail: "Account created! Check your email and click the confirmation link.",
+  loginSuccess: "Login successful; redirecting...",
+  loggedOut: "You have logged out.",
+  error: "Error: ",
+  logoutError: "Logout error: ",
+  invalidLogin: "Incorrect email or password.",
+  invalidEmail: "The email address is invalid.",
+  weakPassword: "Your password is too weak. Choose a stronger password.",
+  alreadyRegistered: "This email is already registered.",
+  emailNotConfirmed: "Your email is not confirmed yet. Please check your inbox.",
+  tooManyRequests: "Too many requests. Please try again later."
+ }
+};
+
+let currentLanguage =
+ localStorage.getItem("blocknova-language") || "fa";
+
+if (!translations[currentLanguage]) {
+ currentLanguage = "fa";
+}
+
+function t(key) {
+ return translations[currentLanguage][key] ||
+        translations.fa[key] ||
+        key;
+}
+
+function applyLanguage(language) {
+ currentLanguage = language;
+ localStorage.setItem("blocknova-language", language);
+
+ document.documentElement.lang = language;
+ document.documentElement.dir =
+  language === "fa" ? "rtl" : "ltr";
+
+ document.title = t("title");
+
+ document.getElementById("subtitle").textContent = t("subtitle");
+ email.placeholder = t("email");
+ password.placeholder = t("password");
+
+ register.textContent = t("register");
+ login.textContent = t("login");
+ logout.textContent = t("logout");
+ languageButton.textContent = t("language");
+
+ message.textContent = t("welcome");
+}
+
+function setMessage(key) {
+ message.textContent = t(key);
+}
+
+function getErrorMessage(error) {
+ const text = (error.message || "").toLowerCase();
+
+ if (
+  text.includes("invalid login credentials") ||
+  text.includes("invalid credentials")
+ ) return t("invalidLogin");
+
+ if (text.includes("invalid email")) {
+  return t("invalidEmail");
+ }
+
+ if (
+  text.includes("password") &&
+  (text.includes("weak") || text.includes("at least"))
+ ) return t("weakPassword");
+
+ if (
+  text.includes("already registered") ||
+  text.includes("user already exists")
+ ) return t("alreadyRegistered");
+
+ if (
+  text.includes("email not confirmed") ||
+  text.includes("email_not_confirmed")
+ ) return t("emailNotConfirmed");
+
+ if (
+  text.includes("rate limit") ||
+  text.includes("too many requests")
+ ) return t("tooManyRequests");
+
+ return t("error") + error.message;
+}
+
+function setLoading(value) {
  register.disabled = value;
  login.disabled = value;
 }
 
+languageButton.onclick = () => {
+ applyLanguage(currentLanguage === "fa" ? "en" : "fa");
+};
+
 register.onclick = async () => {
  try {
   setLoading(true);
-  message.textContent = "در حال ساخت حساب...";
+  setMessage("registering");
 
   const {data, error} = await supabase.auth.signUp({
    email: email.value.trim(),
@@ -81,18 +226,18 @@ register.onclick = async () => {
    }
   });
 
-  if(error) throw error;
+  if (error) throw error;
 
-  if(data.session){
-   message.textContent = "حساب ساخته شد؛ در حال انتقال...";
+  if (data.session) {
+   setMessage("accountCreated");
    window.location.href = panelURL;
   } else {
-   message.textContent =
-   "حساب ساخته شد! ایمیلت را بررسی کن و لینک تأیید را بزن.";
+   setMessage("confirmEmail");
    setLoading(false);
   }
+
  } catch(error) {
-  message.textContent = "خطا: " + error.message;
+  message.textContent = getErrorMessage(error);
   setLoading(false);
  }
 };
@@ -100,21 +245,22 @@ register.onclick = async () => {
 login.onclick = async () => {
  try {
   setLoading(true);
-  message.textContent = "در حال ورود...";
+  setMessage("loggingIn");
 
   const {data, error} = await supabase.auth.signInWithPassword({
    email: email.value.trim(),
    password: password.value
   });
 
-  if(error) throw error;
+  if (error) throw error;
 
-  if(data.session){
-   message.textContent = "ورود موفق بود؛ در حال انتقال...";
+  if (data.session) {
+   setMessage("loginSuccess");
    window.location.href = panelURL;
   }
+
  } catch(error) {
-  message.textContent = "خطا: " + error.message;
+  message.textContent = getErrorMessage(error);
   setLoading(false);
  }
 };
@@ -122,10 +268,10 @@ login.onclick = async () => {
 logout.onclick = async () => {
  const {error} = await supabase.auth.signOut();
 
- if(error){
-  message.textContent = "خطا در خروج: " + error.message;
+ if (error) {
+  message.textContent = t("logoutError") + error.message;
  } else {
-  message.textContent = "از حساب خارج شدی.";
+  setMessage("loggedOut");
   logout.hidden = true;
  }
 };
@@ -133,6 +279,8 @@ logout.onclick = async () => {
 supabase.auth.onAuthStateChange((event, session) => {
  logout.hidden = !session;
 });
+
+applyLanguage(currentLanguage);
 </script>
 
 </body>
