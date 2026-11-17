@@ -5,34 +5,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BlockNova | پنل کاربری</title>
-
 <style>
 :root{
- --bg:#090811;
- --panel:#151322;
- --panel2:#1d1930;
- --purple:#8b5cf6;
- --purple2:#6d28d9;
- --text:#f5f3ff;
- --muted:#aaa3bd;
- --line:#302943;
- --yellow:#fbbf24;
+ --bg:#090811;--panel:#151322;--panel2:#1d1930;
+ --purple:#8b5cf6;--purple2:#6d28d9;
+ --text:#f5f3ff;--muted:#aaa3bd;
+ --line:#302943;--yellow:#fbbf24;
 }
 *{box-sizing:border-box}
 body{
  margin:0;
  background:radial-gradient(circle at 85% 0,#241448 0,transparent 35%),var(--bg);
- color:var(--text);
- font-family:Tahoma,Arial,sans-serif
+ color:var(--text);font-family:Tahoma,Arial,sans-serif
 }
 header{
- padding:22px 18px;
- border-bottom:1px solid var(--line);
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- flex-wrap:wrap
+ padding:22px 18px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap
 }
 .brand{font-size:23px;font-weight:800}
 .brand span{color:#a78bfa}
@@ -40,90 +29,37 @@ header{
 .wrap{max-width:1050px;margin:auto;padding:22px 16px 50px}
 h1{font-size:23px;margin:8px 0}
 .sub{color:var(--muted);font-size:13px;line-height:1.9}
-.stats{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:12px;
- margin:22px 0
-}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
 .stat,.server,.notice{
  background:linear-gradient(145deg,var(--panel2),var(--panel));
- border:1px solid var(--line);
- border-radius:17px;
- padding:16px
+ border:1px solid var(--line);border-radius:17px;padding:16px
 }
 .stat small{color:var(--muted)}
 .num{font-size:27px;font-weight:800;margin-top:10px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 button{
- border:0;
- border-radius:12px;
- padding:12px 16px;
- font-weight:700;
- font-size:14px;
- cursor:pointer
+ border:0;border-radius:12px;padding:12px 16px;
+ font-weight:700;font-size:14px;cursor:pointer
 }
 button:disabled{opacity:.5;cursor:not-allowed}
-.primary{
- background:linear-gradient(100deg,var(--purple2),var(--purple));
- color:white
-}
-.secondary{
- background:#29233c;
- color:#eee;
- border:1px solid #493c65
-}
-.servers-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin:26px 0 12px
-}
+.primary{background:linear-gradient(100deg,var(--purple2),var(--purple));color:white}
+.secondary{background:#29233c;color:#eee;border:1px solid #493c65}
+.danger{background:#54212b;color:#fecaca;border:1px solid #8b3544}
+.servers-head{display:flex;justify-content:space-between;align-items:center;margin:26px 0 12px}
 .server{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- flex-wrap:wrap;
- margin-bottom:10px
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap;margin-bottom:10px
 }
 .server-title{font-weight:800;font-size:16px}
 .meta{color:var(--muted);font-size:12px;line-height:2;margin-top:7px}
-.status{
- color:var(--yellow);
- font-size:12px;
- background:#493716;
- padding:6px 10px;
- border-radius:30px
-}
-.notice{
- margin-top:18px;
- color:var(--muted);
- font-size:12px;
- line-height:2;
- border-color:#59472a
-}
+.status{color:var(--yellow);font-size:12px;background:#493716;padding:6px 10px;border-radius:30px}
+.server-actions{display:flex;gap:8px;flex-wrap:wrap}
+.notice{margin-top:18px;color:var(--muted);font-size:12px;line-height:2;border-color:#59472a}
 .notice b{color:#fcd34d}
-.empty{
- padding:20px;
- text-align:center;
- color:var(--muted);
- border:1px dashed #493c65;
- border-radius:15px
-}
-footer{
- color:#766f89;
- text-align:center;
- font-size:11px;
- margin-top:30px
-}
+.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed #493c65;border-radius:15px}
+footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 #loading{text-align:center;padding:60px 20px;color:#c4b5fd}
-.user-email{
- font-size:12px;
- color:#c4b5fd;
- direction:ltr;
- overflow-wrap:anywhere
-}
+.user-email{font-size:12px;color:#c4b5fd;direction:ltr;overflow-wrap:anywhere}
 @media(max-width:600px){
  .stats{grid-template-columns:1fr}
  .server{align-items:flex-start}
@@ -131,7 +67,6 @@ footer{
 }
 </style>
 </head>
-
 <body>
 
 <div id="loading">در حال بررسی حساب کاربری...</div>
@@ -200,10 +135,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9";
 
-const supabase = createClient(
- SUPABASE_URL,
- SUPABASE_KEY
-);
+const supabase = createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const loading = document.getElementById("loading");
 const dashboard = document.getElementById("app");
@@ -214,67 +146,102 @@ let currentUser = null;
 let serverCount = 0;
 
 function persianNumber(number){
- return String(number).replace(
-  /\d/g,
-  d => "۰۱۲۳۴۵۶۷۸۹"[d]
- );
+ return String(number).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
 }
 
 function showEmpty(message){
- serversElement.className = "empty";
- serversElement.textContent = message;
+ serversElement.className="empty";
+ serversElement.textContent=message;
 }
 
 function renderServers(servers){
  serversElement.replaceChildren();
+ serverCount=servers.length;
 
- serverCount = servers.length;
+ document.getElementById("total").textContent=persianNumber(serverCount);
+ document.getElementById("online").textContent="۰";
 
- document.getElementById("total").textContent =
- persianNumber(serverCount);
-
- document.getElementById("online").textContent = "۰";
-
- if(servers.length === 0){
+ if(servers.length===0){
   showEmpty("هنوز سروری در این پنل ثبت نشده است.");
   return;
  }
 
- serversElement.className = "";
+ serversElement.className="";
 
- servers.forEach(server => {
-  const card = document.createElement("div");
-  card.className = "server";
+ servers.forEach(server=>{
+  const card=document.createElement("div");
+  card.className="server";
 
-  const info = document.createElement("div");
+  const info=document.createElement("div");
 
-  const title = document.createElement("div");
-  title.className = "server-title";
-  title.textContent = server.name || "Minecraft Test Server";
+  const title=document.createElement("div");
+  title.className="server-title";
+  title.textContent=server.name||"Minecraft Test Server";
 
-  const meta = document.createElement("div");
-  meta.className = "meta";
-  meta.textContent =
-   "نوع: " + (server.type || "Java") +
-   " · نرم‌افزار: " + (server.software || "Fabric") +
-   " · نسخه: " + (server.version || "1.21.1") +
+  const meta=document.createElement("div");
+  meta.className="meta";
+  meta.textContent=
+   "نوع: "+(server.type||"Java")+
+   " · نرم‌افزار: "+(server.software||"Fabric")+
+   " · نسخه: "+(server.version||"1.21.1")+
    " · آدرس: هنوز تنظیم نشده";
 
   info.append(title,meta);
 
-  const status = document.createElement("span");
-  status.className = "status";
-  status.textContent = "در انتظار اتصال";
+  const status=document.createElement("span");
+  status.className="status";
+  status.textContent="در انتظار اتصال";
 
-  const manage = document.createElement("button");
-  manage.className = "secondary";
-  manage.textContent = "مدیریت";
+  const actions=document.createElement("div");
+  actions.className="server-actions";
 
+  const manage=document.createElement("button");
+  manage.className="secondary";
+  manage.textContent="مدیریت";
   manage.addEventListener("click",()=>{
-   alert("مدیریت واقعی سرور پس از اتصال زیرساخت فعال می‌شود.");
+   location.href="blocknova-server-manage.html?id="+encodeURIComponent(server.id);
   });
 
-  card.append(info,status,manage);
+  const deleteButton=document.createElement("button");
+  deleteButton.className="danger";
+  deleteButton.textContent="حذف سرور";
+
+  deleteButton.addEventListener("click",async()=>{
+   const confirmed=confirm(
+    "آیا مطمئنی می‌خواهی سرور «"+(server.name||"بدون نام")+"» را حذف کنی؟ این کار قابل برگشت نیست."
+   );
+
+   if(!confirmed) return;
+
+   deleteButton.disabled=true;
+   deleteButton.textContent="در حال حذف...";
+
+   try{
+    const {data,error}=await supabase
+     .from("servers")
+     .delete()
+     .eq("id",server.id)
+     .eq("user_id",currentUser.id)
+     .select("id");
+
+    if(error) throw error;
+
+    if(!data || data.length===0){
+     throw new Error("سرور حذف نشد. لطفاً دسترسی حذف را بررسی کنیم.");
+    }
+
+    await loadServers();
+    alert("سرور با موفقیت حذف شد.");
+
+   }catch(error){
+    alert("خطا در حذف سرور: "+error.message);
+    deleteButton.disabled=false;
+    deleteButton.textContent="حذف سرور";
+   }
+  });
+
+  actions.append(manage,deleteButton);
+  card.append(info,status,actions);
   serversElement.appendChild(card);
  });
 }
@@ -282,7 +249,7 @@ function renderServers(servers){
 async function loadServers(){
  showEmpty("در حال دریافت سرورها...");
 
- const {data,error} = await supabase
+ const {data,error}=await supabase
   .from("servers")
   .select("*")
   .eq("user_id",currentUser.id)
@@ -290,13 +257,12 @@ async function loadServers(){
 
  if(error) throw error;
 
- renderServers(data || []);
+ renderServers(data||[]);
 }
 
 async function checkSession(){
  try{
-  const {data,error} = await supabase.auth.getSession();
-
+  const {data,error}=await supabase.auth.getSession();
   if(error) throw error;
 
   if(!data.session){
@@ -304,63 +270,34 @@ async function checkSession(){
    return;
   }
 
-  currentUser = data.session.user;
+  currentUser=data.session.user;
+  document.getElementById("userEmail").textContent=currentUser.email||"";
 
-  document.getElementById("userEmail").textContent =
-   currentUser.email || "";
-
-  loading.hidden = true;
-  dashboard.hidden = false;
+  loading.hidden=true;
+  dashboard.hidden=false;
 
   await loadServers();
 
  }catch(error){
-  loading.textContent =
-   "خطا در اتصال: " + error.message;
+  loading.textContent="خطا در اتصال: "+error.message;
  }
 }
 
 supabase.auth.onAuthStateChange((event,session)=>{
- if(event === "SIGNED_OUT"){
+ if(event==="SIGNED_OUT"){
   location.replace("login.html");
  }
 });
 
-createButton.addEventListener("click",async()=>{
+createButton.addEventListener("click",()=>{
  if(!currentUser) return;
 
- if(serverCount >= 1){
+ if(serverCount>=1){
   alert("در نسخه آزمایشی فقط یک نمونه سرور برای هر حساب مجاز است.");
   return;
  }
 
- createButton.disabled = true;
- createButton.textContent = "در حال ذخیره...";
-
- try{
-  const {error} = await supabase
-   .from("servers")
-   .insert({
-    user_id:currentUser.id,
-    name:"Minecraft Test Server",
-    type:"Java",
-    software:"Fabric",
-    version:"1.21.1",
-    status:"waiting"
-   });
-
-  if(error) throw error;
-
-  await loadServers();
-
-  alert("سرور آزمایشی با موفقیت در حساب شما ذخیره شد.");
-
- }catch(error){
-  alert("خطا در ذخیره سرور: " + error.message);
- }finally{
-  createButton.disabled = false;
-  createButton.textContent = "＋ ساخت سرور آزمایشی";
- }
+ location.href="blocknova-create-server.html";
 });
 
 document.getElementById("settings").addEventListener("click",()=>{
@@ -368,24 +305,21 @@ document.getElementById("settings").addEventListener("click",()=>{
 });
 
 document.getElementById("logout").addEventListener("click",async()=>{
- const button = document.getElementById("logout");
- button.disabled = true;
+ const button=document.getElementById("logout");
+ button.disabled=true;
 
  try{
-  const {error} = await supabase.auth.signOut();
+  const {error}=await supabase.auth.signOut();
   if(error) throw error;
-
   location.replace("login.html");
-
  }catch(error){
-  alert("خطا در خروج: " + error.message);
-  button.disabled = false;
+  alert("خطا در خروج: "+error.message);
+  button.disabled=false;
  }
 });
 
 checkSession();
 </script>
-
 </body>
-   </html>
-   
+ </html>
+ 
