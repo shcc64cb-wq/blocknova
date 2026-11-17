@@ -104,6 +104,8 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 
  <div class="actions">
   <button class="primary" id="create">＋ ساخت سرور آزمایشی</button>
+  <button class="secondary" id="myOrders">سفارش‌های من</button>
+  <button class="secondary" id="plans">خرید اشتراک</button>
   <button class="secondary" id="settings">تنظیمات پنل</button>
  </div>
 
@@ -299,6 +301,14 @@ createButton.addEventListener("click",()=>{
  }
 
  location.href="blocknova-create-server.html";
+});
+
+document.getElementById("myOrders").addEventListener("click",()=>{
+ location.href="blocknova-my-orders.html";
+});
+
+document.getElementById("plans").addEventListener("click",()=>{
+ location.href="blocknova-plans.html";
 });
 
 document.getElementById("settings").addEventListener("click",()=>{
