@@ -184,6 +184,7 @@ function renderServers(servers){
    "نوع: "+(server.type||"Java")+
    " · نرم‌افزار: "+(server.software||"Fabric")+
    " · نسخه: "+(server.version||"1.21.1")+
+   " · RAM: "+(server.ram_gb ? persianNumber(server.ram_gb)+" گیگابایت" : "تنظیم نشده")+
    " · آدرس: هنوز تنظیم نشده";
 
   info.append(title,meta);
@@ -321,5 +322,4 @@ document.getElementById("logout").addEventListener("click",async()=>{
 checkSession();
 </script>
 </body>
- </html>
- 
+</html>
