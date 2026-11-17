@@ -48,7 +48,6 @@
     "در حال بارگذاری...": "Loading...",
     "عملیات موفق بود": "Operation successful",
     "خطا": "Error",
-
     "ورود یا ساخت حساب کاربری": "Login or create an account",
     "به BlockNova خوش آمدی": "Welcome to BlockNova",
     "در حال ساخت حساب...": "Creating your account...",
@@ -63,7 +62,6 @@
     "Fabric": "Fabric",
     "Spigot": "Spigot",
     "Vanilla": "Vanilla",
-    "در انتظار پرداخت": "Awaiting Payment",
     "تومان": "Toman",
     "روز": "Days",
     "ساعت": "Hours"
@@ -124,6 +122,7 @@
       rights: "تمام حقوق محفوظ است.",
       status: "نسخه نمایشی — سفارش و سرور هنوز فعال نیست"
     },
+
     en: {
       eyebrow: "Minecraft hosting, made simple",
       heroTitle: 'Build and manage your <span class="glow">own Minecraft world</span>',
@@ -206,9 +205,13 @@
       if (!element) return;
 
       if (id.endsWith("list") || id === "heroTitle") {
-        element.innerHTML = value;
+        if (element.innerHTML !== value) {
+          element.innerHTML = value;
+        }
       } else {
-        element.textContent = value;
+        if (element.textContent !== value) {
+          element.textContent = value;
+        }
       }
     });
   }
@@ -230,13 +233,19 @@
     );
 
     let node;
+
     while ((node = walker.nextNode())) {
       const parent = node.parentElement;
+
       if (!parent || parent.closest(
         "script,style,textarea,code,#blocknova-language-button"
       )) continue;
 
-      node.nodeValue = translateText(node.nodeValue, language);
+      const translated = translateText(node.nodeValue, language);
+
+      if (translated !== node.nodeValue) {
+        node.nodeValue = translated;
+      }
     }
 
     document.querySelectorAll(
@@ -252,6 +261,7 @@
     translateHome(language);
 
     const button = document.getElementById("blocknova-language-button");
+
     if (button) {
       button.textContent = language === "fa" ? "English" : "فارسی";
       button.style.left = language === "en" ? "12px" : "auto";
@@ -263,6 +273,7 @@
     if (document.getElementById("blocknova-language-button")) return;
 
     const button = document.createElement("button");
+
     button.id = "blocknova-language-button";
     button.type = "button";
     button.textContent = getLanguage() === "fa" ? "English" : "فارسی";
@@ -283,7 +294,7 @@
       font-family:Arial,Tahoma,sans-serif;
     `;
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
       const next = getLanguage() === "fa" ? "en" : "fa";
       localStorage.setItem(KEY, next);
       translatePage(next);
@@ -295,22 +306,21 @@
   function start() {
     addLanguageButton();
     translatePage(getLanguage());
-
-    const observer = new MutationObserver(() => {
-      translatePage(getLanguage());
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      characterData: true
-    });
   }
 
+  // برای ترجمه دوباره محتوایی که بعداً به صفحه اضافه می‌شود
+  window.BlockNovaLanguage = {
+    getLanguage: getLanguage,
+    apply: translatePage,
+    refresh: function () {
+      translatePage(getLanguage());
+    }
+  };
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
+    document.addEventListener("DOMContentLoaded", start, { once: true });
   } else {
     start();
   }
 })();
-      
+            
