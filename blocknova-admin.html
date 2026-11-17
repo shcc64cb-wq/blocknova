@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت سفارش‌ها | BlockNova</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#090811;color:#fff;font-family:Tahoma,Arial,sans-serif}
+.wrap{max-width:900px;margin:30px auto}
+.panel{background:#151322;border:1px solid #30264b;border-radius:16px;padding:20px;margin-bottom:16px}
+h2{color:#a78bfa}
+.muted{color:#aaa;font-size:13px;line-height:2}
+.order{background:#211a35;border:1px solid #382b55;border-radius:12px;padding:15px;margin-top:14px}
+button,select{padding:11px;border-radius:9px;border:0;font-family:inherit}
+button{background:#8b5cf6;color:white;cursor:pointer}
+select{background:#090811;color:white;border:1px solid #594080}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.status{color:#c4b5fd}
+.error{color:#fca5a5}
+.success{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <h2>مدیریت سفارش‌های BlockNova</h2>
+    <p class="muted" id="message">در حال بررسی دسترسی مدیر...</p>
+    <button id="refresh" hidden>بروزرسانی سفارش‌ها</button>
+  </div>
+  <div id="orders"></div>
+</div>
+
+<script type="module">
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient(
+  "https://rxynsocnofdakbjbsgry.supabase.co",
+  "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+);
+
+const message = document.getElementById("message");
+const ordersBox = document.getElementById("orders");
+const refresh = document.getElementById("refresh");
+
+const labels = {
+  pending:"در انتظار پرداخت",
+  paid:"پرداخت‌شده",
+  failed:"ناموفق",
+  cancelled:"لغوشده"
+};
+
+function say(text,type=""){
+  message.textContent=text;
+  message.className=type;
+}
+
+async function loadOrders(){
+  ordersBox.replaceChildren();
+  say("در حال دریافت سفارش‌ها...");
+
+  const {data,error}=await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    say("خطا در دریافت سفارش‌ها: "+error.message,"error");
+    return;
+  }
+
+  if(!data || data.length===0){
+    say("هنوز سفارشی ثبت نشده است.");
+    return;
+  }
+
+  say("تعداد سفارش‌ها: "+data.length,"success");
+
+  data.forEach(order=>{
+    const card=document.createElement("div");
+    card.className="order";
+
+    const title=document.createElement("h3");
+    title.textContent="اشتراک "+order.plan_name;
+
+    const info=document.createElement("p");
+    info.className="muted";
+    info.textContent=
+      "شماره سفارش: "+order.id.slice(0,8)+
+      " | کاربر: "+order.user_id+
+      " | قیمت: "+Number(order.price_toman).toLocaleString("fa-IR")+
+      " تومان | مدت: "+order.duration_days+" روز";
+
+    const status=document.createElement("p");
+    status.className="status";
+    status.textContent="وضعیت فعلی: "+(labels[order.status]||order.status);
+
+    const row=document.createElement("div");
+    row.className="row";
+
+    const select=document.createElement("select");
+    ["pending","paid","failed","cancelled"].forEach(value=>{
+      const option=document.createElement("option");
+      option.value=value;
+      option.textContent=labels[value];
+      select.appendChild(option);
+    });
+    select.value=labels[order.status]?order.status:"pending";
+
+    const save=document.createElement("button");
+    save.textContent="ذخیره وضعیت";
+
+    save.addEventListener("click",async()=>{
+      save.disabled=true;
+      save.textContent="در حال ذخیره...";
+
+      const {error}=await supabase
+        .from("orders")
+        .update({status:select.value})
+        .eq("id",order.id);
+
+      if(error){
+        alert("خطا در تغییر وضعیت: "+error.message);
+        save.disabled=false;
+        save.textContent="ذخیره وضعیت";
+        return;
+      }
+
+      alert("وضعیت سفارش تغییر کرد.");
+      await loadOrders();
+    });
+
+    row.append(select,save);
+    card.append(title,info,status,row);
+    ordersBox.appendChild(card);
+  });
+}
+
+async function start(){
+  const {data:{session},error}=await supabase.auth.getSession();
+
+  if(error || !session){
+    location.href="login.html";
+    return;
+  }
+
+  const {data:admin,error:adminError}=await supabase
+    .from("admins")
+    .select("user_id")
+    .eq("user_id",session.user.id)
+    .maybeSingle();
+
+  if(adminError || !admin){
+    say("دسترسی غیرمجاز: این حساب مدیر سایت نیست.","error");
+    return;
+  }
+
+  say("دسترسی مدیر تأیید شد.","success");
+  refresh.hidden=false;
+  await loadOrders();
+}
+
+refresh.addEventListener("click",loadOrders);
+start();
+</script>
+</body>
+  </html>
+  
