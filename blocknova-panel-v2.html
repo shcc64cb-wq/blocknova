@@ -19,10 +19,11 @@ h1{font-size:23px;margin:8px 0}.sub{color:var(--muted);font-size:13px;line-heigh
 .stat small{color:var(--muted)}.num{font-size:27px;font-weight:800;margin-top:10px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 button{border:0;border-radius:12px;padding:12px 16px;font-weight:700;font-size:14px;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:linear-gradient(100deg,var(--purple2),var(--purple));color:white}
 .secondary{background:#29233c;color:#eee;border:1px solid #493c65}
 .servers-head{display:flex;justify-content:space-between;align-items:center;margin:26px 0 12px}
-.server{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.server{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .server-title{font-weight:800;font-size:16px}
 .meta{color:var(--muted);font-size:12px;line-height:2;margin-top:7px}
 .status{color:var(--yellow);font-size:12px;background:#493716;padding:6px 10px;border-radius:30px}
@@ -63,20 +64,20 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 
   <div class="actions">
     <button class="primary" id="create">＋ ساخت سرور آزمایشی</button>
-    <button class="secondary" onclick="alert('بخش تنظیمات در مرحله بعد ساخته می‌شود.')">تنظیمات پنل</button>
+    <button class="secondary" id="settings">تنظیمات پنل</button>
   </div>
 
   <div class="servers-head">
     <h2 style="font-size:18px;margin:0">سرورهای من</h2>
-    <span class="tag">فهرست آزمایشی</span>
+    <span class="tag">ذخیره‌شده در حساب شما</span>
   </div>
 
-  <div id="servers" class="empty">هنوز سروری در این پنل ثبت نشده است.</div>
+  <div id="servers" class="empty">در حال دریافت اطلاعات...</div>
 
   <div class="notice">
     <b>توجه:</b>
-    این پنل به حساب Firebase متصل است؛ اما سرورها فعلاً نمایشی هستند.
-    ساخت، روشن/خاموش کردن و مدیریت سرور واقعی به زیرساخت میزبانی و بک‌اند نیاز دارد.
+    اطلاعات سرورها در Firebase ذخیره می‌شوند؛ اما سرورها فعلاً نمایشی هستند.
+    ساخت و روشن کردن سرور واقعی به زیرساخت میزبانی و بک‌اند نیاز دارد.
   </div>
 
   <footer>© BlockNova</footer>
@@ -85,11 +86,20 @@ footer{color:#766f89;text-align:center;font-size:11px;margin-top:30px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
 import {
   getAuth,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArXiu4eEaMmvfkhHT-7HoC2yTTT8DvgHQ",
@@ -103,21 +113,142 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 const loading = document.getElementById("loading");
 const dashboard = document.getElementById("app");
+const serversElement = document.getElementById("servers");
+const createButton = document.getElementById("create");
 
-onAuthStateChanged(auth, user => {
+let currentUser = null;
+let serverCount = 0;
+
+function showEmpty(message) {
+  serversElement.className = "empty";
+  serversElement.textContent = message;
+}
+
+function renderServers(docs) {
+  serversElement.replaceChildren();
+  serverCount = docs.length;
+
+  document.getElementById("total").textContent =
+    String(serverCount).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+
+  document.getElementById("online").textContent = "۰";
+
+  if (docs.length === 0) {
+    showEmpty("هنوز سروری در این پنل ثبت نشده است.");
+    return;
+  }
+
+  serversElement.className = "";
+
+  docs.forEach(serverDoc => {
+    const data = serverDoc.data();
+
+    const card = document.createElement("div");
+    card.className = "server";
+
+    const info = document.createElement("div");
+
+    const title = document.createElement("div");
+    title.className = "server-title";
+    title.textContent = data.name || "Minecraft Test Server";
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = "نوع: Java · نرم‌افزار: Fabric · نسخه: 1.21.1 · آدرس: هنوز تنظیم نشده";
+
+    info.append(title, meta);
+
+    const status = document.createElement("span");
+    status.className = "status";
+    status.textContent = "در انتظار اتصال";
+
+    const manage = document.createElement("button");
+    manage.className = "secondary";
+    manage.textContent = "مدیریت";
+
+    manage.addEventListener("click", () => {
+      alert("مدیریت واقعی سرور پس از اتصال زیرساخت فعال می‌شود.");
+    });
+
+    card.append(info, status, manage);
+    serversElement.appendChild(card);
+  });
+}
+
+async function loadServers(user) {
+  showEmpty("در حال دریافت سرورها...");
+
+  const serversRef = collection(db, "users", user.uid, "servers");
+  const snapshot = await getDocs(serversRef);
+
+  renderServers(snapshot.docs);
+}
+
+onAuthStateChanged(auth, async user => {
   if (!user) {
     location.replace("login.html");
     return;
   }
 
+  currentUser = user;
   document.getElementById("userEmail").textContent = user.email || "";
+
   loading.hidden = true;
   dashboard.hidden = false;
-}, error => {
-  loading.textContent = "خطا در بررسی حساب: " + error.message;
+
+  try {
+    await loadServers(user);
+  } catch (error) {
+    showEmpty("خطا در دریافت اطلاعات: " + error.message);
+  }
+});
+
+createButton.addEventListener("click", async () => {
+  if (!currentUser) return;
+
+  if (serverCount >= 1) {
+    alert("در نسخه آزمایشی فقط یک نمونه سرور برای هر حساب مجاز است.");
+    return;
+  }
+
+  createButton.disabled = true;
+  createButton.textContent = "در حال ذخیره...";
+
+  try {
+    const serversRef = collection(
+      db,
+      "users",
+      currentUser.uid,
+      "servers"
+    );
+
+    await addDoc(serversRef, {
+      name: "Minecraft Test Server",
+      type: "Java",
+      software: "Fabric",
+      version: "1.21.1",
+      status: "waiting",
+      createdAt: serverTimestamp()
+    });
+
+    await loadServers(currentUser);
+
+    alert("سرور آزمایشی با موفقیت در حساب شما ذخیره شد.");
+
+  } catch (error) {
+    alert("خطا در ذخیره سرور: " + error.message);
+  } finally {
+    createButton.disabled = false;
+    createButton.textContent = "＋ ساخت سرور آزمایشی";
+  }
+});
+
+document.getElementById("settings").addEventListener("click", () => {
+  alert("بخش تنظیمات در مرحله بعد ساخته می‌شود.");
 });
 
 document.getElementById("logout").addEventListener("click", async () => {
@@ -127,38 +258,6 @@ document.getElementById("logout").addEventListener("click", async () => {
   } catch (error) {
     alert("خطا در خروج: " + error.message);
   }
-});
-
-let count = 0;
-
-document.getElementById("create").addEventListener("click", () => {
-  if (count >= 1) {
-    alert("در نسخه نمایشی فقط یک نمونه سرور ساخته می‌شود.");
-    return;
-  }
-
-  count = 1;
-  document.getElementById("total").textContent = "۱";
-  const servers = document.getElementById("servers");
-  servers.className = "";
-  servers.innerHTML = `
-    <div class="server">
-      <div>
-        <div class="server-title">Minecraft Test Server</div>
-        <div class="meta">
-          نوع: Java · نرم‌افزار: Fabric<br>
-          نسخه: 1.21.1 · آدرس: هنوز تنظیم نشده
-        </div>
-      </div>
-      <span class="status">در انتظار اتصال</span>
-      <button class="secondary" id="manage">مدیریت</button>
-    </div>`;
-
-  document.getElementById("manage").addEventListener("click", () => {
-    alert("مدیریت واقعی سرور پس از اتصال زیرساخت فعال می‌شود.");
-  });
-
-  alert("نمونه سرور اضافه شد؛ این سرور واقعی نیست.");
 });
 </script>
 </body>
