@@ -4,76 +4,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090811">
 <title>مدیریت سرور | BlockNova</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#090811;color:#fff;font-family:Tahoma,Arial,sans-serif;padding:20px}
-.wrap{max-width:850px;margin:30px auto}
-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+body{
+ margin:0;background:#090811;color:#fff;
+ font-family:Tahoma,Arial,sans-serif;padding:18px
+}
+.wrap{max-width:850px;margin:25px auto}
+header{
+ display:flex;justify-content:space-between;
+ align-items:center;flex-wrap:wrap;gap:12px
+}
 .logo{font-size:25px;font-weight:bold;color:#a78bfa}
-.panel{background:#171426;border:1px solid #30264a;border-radius:18px;padding:22px;margin-top:22px}
+.panel{
+ background:#171426;border:1px solid #30264a;
+ border-radius:18px;padding:20px;margin-top:20px
+}
 h1{font-size:23px}
-h2{font-size:18px;color:#c4b5fd}
-p{color:#c4bfd3;line-height:2}
-.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:20px}
-.item{background:#211a35;padding:15px;border-radius:12px}
+h2{font-size:18px;color:#c4b5fd;margin-top:25px}
+p{color:#c4bfd3;line-height:2;overflow-wrap:anywhere}
+.info{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+ gap:12px;margin-top:20px
+}
+.item{background:#211a35;padding:15px;border-radius:12px;min-width:0}
 .item small{display:block;color:#aaa;margin-bottom:10px}
-.item b{overflow-wrap:anywhere}
-button,a{border:0;border-radius:10px;padding:12px 17px;background:#8b5cf6;color:white;text-decoration:none;font-weight:bold;cursor:pointer}
+.item b{overflow-wrap:anywhere;font-size:14px}
+button,a{
+ border:0;border-radius:10px;padding:12px 16px;
+ background:#8b5cf6;color:white;text-decoration:none;
+ font-family:inherit;font-weight:bold;cursor:pointer;
+ display:inline-block
+}
 .secondary{background:#30264a}
-.notice{background:#2b2140;border:1px solid #594080;padding:14px;border-radius:12px;margin-top:18px;line-height:2;color:#ddd}
+button:disabled{opacity:.5;cursor:not-allowed}
+.notice{
+ background:#2b2140;border:1px solid #594080;
+ padding:14px;border-radius:12px;margin-top:18px;
+ line-height:2;color:#ddd
+}
 .status{color:#facc15}
-#message{color:#fca5a5}
+#message{color:#c4b5fd;font-size:13px}
+.error{color:#fca5a5!important}
+.success{color:#86efac!important}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:480px){
+ body{padding:12px}
+ .panel{padding:15px}
+ header{align-items:flex-start}
+ .logo{font-size:21px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
 <header>
-<div class="logo">✦ BlockNova</div>
-<a class="secondary" href="blocknova-panel-v2.html">بازگشت به پنل</a>
+ <div class="logo">✦ BlockNova</div>
+ <a class="secondary" href="blocknova-panel-v2.html">
+  بازگشت به پنل
+ </a>
 </header>
 
 <div class="panel">
-<h1>مدیریت سرور</h1>
-<p id="message">در حال دریافت اطلاعات سرور...</p>
+ <h1>مدیریت سرور</h1>
+ <p id="message">در حال دریافت اطلاعات سرور...</p>
 
-<div id="serverInfo" hidden>
-<h2 id="serverName">سرور من</h2>
-<div class="info">
-<div class="item"><small>نوع سرور</small><b id="type">-</b></div>
-<div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
-<div class="item"><small>نسخه بازی</small><b id="version">-</b></div>
-<div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
-<div class="item"><small>وضعیت</small><b class="status" id="status">-</b></div>
+ <div id="serverInfo" hidden>
+  <h2 id="serverName">سرور من</h2>
+
+  <div class="info">
+   <div class="item">
+    <small>نوع سرور</small>
+    <b id="type">-</b>
+   </div>
+
+   <div class="item">
+    <small>نرم‌افزار</small>
+    <b id="software">-</b>
+   </div>
+
+   <div class="item">
+    <small>نسخه بازی</small>
+    <b id="version">-</b>
+   </div>
+
+   <div class="item">
+    <small>حافظه RAM</small>
+    <b id="ram">-</b>
+   </div>
+
+   <div class="item">
+    <small>وضعیت</small>
+    <b class="status" id="status">-</b>
+   </div>
+
+   <div class="item">
+    <small>شناسه سرور</small>
+    <b id="serverId">-</b>
+   </div>
+
+   <div class="item">
+    <small>تاریخ ساخت</small>
+    <b id="created">-</b>
+   </div>
+  </div>
+
+  <div class="notice">
+   <strong>وضعیت زیرساخت:</strong><br>
+   این سرور فعلاً آزمایشی است و اطلاعات آن در حساب شما ذخیره شده است.
+   هنوز به سخت‌افزار میزبانی Minecraft متصل نیست.
+  </div>
+
+  <h2>کنترل سرور</h2>
+
+  <div class="actions">
+   <button disabled>روشن کردن سرور</button>
+   <button disabled class="secondary">خاموش کردن سرور</button>
+  </div>
+
+  <p>
+   کنترل واقعی سرور پس از اتصال زیرساخت میزبانی فعال خواهد شد.
+  </p>
+
+  <div class="actions">
+   <button id="refresh">بروزرسانی اطلاعات</button>
+   <a class="secondary" href="blocknova-panel-v2.html">
+    بازگشت به پنل
+   </a>
+  </div>
+ </div>
 </div>
 
-<div class="notice">
-<strong>وضعیت زیرساخت:</strong><br>
-این سرور فعلاً آزمایشی و اطلاعات آن ذخیره‌شده در حساب شماست. هنوز به سخت‌افزار میزبانی متصل نیست.
-</div>
-
-<h2>کنترل سرور</h2>
-<button disabled>روشن کردن سرور</button>
-<button disabled class="secondary">خاموش کردن سرور</button>
-<p>کنترل واقعی سرور پس از اتصال زیرساخت فعال می‌شود.</p>
-</div>
-</div>
 </div>
 
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import {createClient} from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const supabase = createClient(
+const supabase=createClient(
  "https://rxynsocnofdakbjbsgry.supabase.co",
  "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
 );
 
-const message = document.getElementById("message");
+const message=document.getElementById("message");
+const serverInfo=document.getElementById("serverInfo");
+const refresh=document.getElementById("refresh");
+
+function setMessage(text,type=""){
+ message.textContent=text;
+ message.className=type;
+}
+
+function statusText(status){
+ const values={
+  active:"فعال",
+  waiting:"در انتظار",
+  stopped:"متوقف‌شده"
+ };
+ return values[status]||status||"نامشخص";
+}
 
 async function loadServer(){
+ refresh.disabled=true;
+ setMessage("در حال دریافت اطلاعات سرور...");
+
  try{
-  const {data:{session},error:sessionError}=await supabase.auth.getSession();
-  if(sessionError) throw sessionError;
+  const {data:{session},error:sessionError}=
+   await supabase.auth.getSession();
+
+  if(sessionError)throw sessionError;
 
   if(!session){
    location.href="login.html";
@@ -83,31 +187,65 @@ async function loadServer(){
   const params=new URLSearchParams(location.search);
   const serverId=params.get("id");
 
-  let query=supabase.from("servers").select("*")
+  let query=supabase.from("servers")
+   .select("*")
    .eq("user_id",session.user.id);
 
-  if(serverId) query=query.eq("id",serverId);
+  if(serverId){
+   query=query.eq("id",serverId);
+  }
 
-  const {data,error}=await query.order("created_at",{ascending:false}).limit(1).maybeSingle();
-  if(error) throw error;
+  const {data,error}=await query
+   .order("created_at",{ascending:false})
+   .limit(1)
+   .maybeSingle();
+
+  if(error)throw error;
+
   if(!data){
-   message.textContent="هیچ سروری در حساب شما پیدا نشد.";
+   serverInfo.hidden=true;
+   setMessage("هیچ سروری در حساب شما پیدا نشد.","error");
    return;
   }
 
-  document.getElementById("serverName").textContent=data.name || "سرور من";
-  document.getElementById("type").textContent=data.type || "-";
-  document.getElementById("software").textContent=data.software || "-";
-  document.getElementById("version").textContent=data.version || "-";
-  document.getElementById("ram").textContent=data.ram_gb ? data.ram_gb+" گیگابایت" : "تنظیم نشده";
-  document.getElementById("status").textContent=data.status || "نامشخص";
+  document.getElementById("serverName").textContent=
+   data.name||"سرور من";
 
-  document.getElementById("serverInfo").hidden=false;
-  message.textContent="اطلاعات سرور با موفقیت دریافت شد.";
+  document.getElementById("type").textContent=
+   data.type||"-";
+
+  document.getElementById("software").textContent=
+   data.software||"-";
+
+  document.getElementById("version").textContent=
+   data.version||"-";
+
+  document.getElementById("ram").textContent=
+   data.ram_gb?data.ram_gb+" گیگابایت":"تنظیم نشده";
+
+  document.getElementById("status").textContent=
+   statusText(data.status);
+
+  document.getElementById("serverId").textContent=
+   data.id||"-";
+
+  document.getElementById("created").textContent=
+   data.created_at
+    ?new Date(data.created_at).toLocaleString("fa-IR")
+    :"نامشخص";
+
+  serverInfo.hidden=false;
+  setMessage("اطلاعات سرور با موفقیت دریافت شد.","success");
+
  }catch(error){
-  message.textContent="خطا در دریافت اطلاعات: "+error.message;
+  serverInfo.hidden=true;
+  setMessage("خطا در دریافت اطلاعات: "+error.message,"error");
+ }finally{
+  refresh.disabled=false;
  }
 }
+
+refresh.addEventListener("click",loadServer);
 loadServer();
 </script>
 </body>
