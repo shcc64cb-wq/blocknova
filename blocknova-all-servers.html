@@ -4,20 +4,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090811">
 <title>مدیریت سرورها | BlockNova</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:18px;background:#090811;color:white;font-family:Tahoma,Arial,sans-serif}
-.wrap{max-width:950px;margin:30px auto}
+.wrap{max-width:950px;margin:25px auto}
 .panel,.server{background:#151322;border:1px solid #30264b;border-radius:15px;padding:18px;margin-bottom:15px}
 h2{color:#a78bfa}
 .muted{color:#aaa;font-size:13px;line-height:2;overflow-wrap:anywhere}
 .server{background:#211a35}
 .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:15px}
-.item{background:#090811;padding:12px;border-radius:9px}
+.item{background:#090811;padding:12px;border-radius:9px;overflow-wrap:anywhere}
 .item small{display:block;color:#aaa;margin-bottom:8px}
-.item strong{color:#c4b5fd;font-size:14px;overflow-wrap:anywhere}
-button,select,input{padding:12px 16px;border:1px solid #514078;border-radius:9px;background:#090811;color:white;font-family:inherit;margin:5px 0;max-width:100%}
+.item strong{color:#c4b5fd;font-size:14px}
+button,select,input{padding:12px 14px;border:1px solid #514078;border-radius:9px;background:#090811;color:white;font-family:inherit;margin:5px 0;max-width:100%}
 button{background:#8b5cf6;border:0;cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
 .delete{background:#b91c1c}
@@ -27,16 +28,52 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .editor input,.editor select{width:100%}
 .error{color:#fca5a5}
 .success{color:#86efac}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.stat{flex:1;min-width:130px;background:#090811;padding:13px;border-radius:10px;color:#c4b5fd}
+.stat strong{display:block;font-size:23px;margin-top:8px}
+#search{width:100%;margin:12px 0}
+.empty{background:#151322;border-radius:12px;padding:20px;text-align:center;color:#aaa}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 </style>
 </head>
 <body>
 <div class="wrap">
- <div class="panel">
-  <h2>مدیریت تمام سرورهای BlockNova</h2>
-  <p id="message" class="muted">در حال بررسی دسترسی مدیر...</p>
-  <button id="refresh" hidden>بروزرسانی سرورها</button>
+
+<div class="panel">
+ <h2>BlockNova</h2>
+ <p class="muted">
+  <a href="blocknova-panel-v2.html" style="color:#a78bfa">بازگشت به پنل</a>
+ </p>
+ <h2>مدیریت تمام سرورها</h2>
+ <p id="message" class="muted">در حال بررسی دسترسی مدیر...</p>
+ <button id="refresh" hidden>بروزرسانی سرورها</button>
+
+ <div class="stats" id="statistics" hidden>
+  <div class="stat">
+   کل سرورها
+   <strong id="total">۰</strong>
+  </div>
+  <div class="stat">
+   سرورهای فعال
+   <strong id="active">۰</strong>
+  </div>
+  <div class="stat">
+   در انتظار
+   <strong id="waiting">۰</strong>
+  </div>
+  <div class="stat">
+   متوقف‌شده
+   <strong id="stopped">۰</strong>
+  </div>
  </div>
- <div id="servers"></div>
+</div>
+
+<div class="panel" id="searchPanel" hidden>
+ <h3>جستجوی سرورها</h3>
+ <input id="search" type="search" placeholder="نام سرور، ایمیل یا شناسه سرور...">
+</div>
+
+<div id="servers"></div>
 </div>
 
 <script type="module">
@@ -51,6 +88,15 @@ const supabase=createClient(
 const message=document.getElementById("message");
 const box=document.getElementById("servers");
 const refresh=document.getElementById("refresh");
+const search=document.getElementById("search");
+const statistics=document.getElementById("statistics");
+const searchPanel=document.getElementById("searchPanel");
+
+let allServers=[];
+
+function fa(value){
+ return Number(value||0).toLocaleString("fa-IR");
+}
 
 function field(label,value){
  const div=document.createElement("div");
@@ -58,7 +104,7 @@ function field(label,value){
  const small=document.createElement("small");
  small.textContent=label;
  const strong=document.createElement("strong");
- strong.textContent=value ?? "تنظیم نشده";
+ strong.textContent=value??"تنظیم نشده";
  div.append(small,strong);
  return div;
 }
@@ -75,7 +121,19 @@ function makeSelect(values,current){
  return select;
 }
 
+function updateStats(){
+ document.getElementById("total").textContent=fa(allServers.length);
+ document.getElementById("active").textContent=
+  fa(allServers.filter(s=>s.server_status==="active").length);
+ document.getElementById("waiting").textContent=
+  fa(allServers.filter(s=>s.server_status==="waiting").length);
+ document.getElementById("stopped").textContent=
+  fa(allServers.filter(s=>s.server_status==="stopped").length);
+}
+
 async function changeStatus(server,status,button){
+ if(!confirm("وضعیت این سرور تغییر کند؟"))return;
+
  button.disabled=true;
  message.textContent="در حال ذخیره وضعیت جدید...";
 
@@ -93,19 +151,19 @@ async function changeStatus(server,status,button){
  }
 
  if(data!==true){
-  message.textContent="سرور پیدا نشد.";
+  message.textContent="سرور پیدا نشد یا تغییر انجام نشد.";
   message.className="muted error";
   return;
  }
 
- message.textContent="وضعیت سرور تغییر کرد.";
+ message.textContent="وضعیت سرور با موفقیت تغییر کرد.";
  message.className="muted success";
  await loadServers();
 }
 
 async function deleteServer(server,button){
- if(!confirm("آیا از حذف دائمی سرور «"+
-  (server.server_name||"بدون نام")+"» مطمئنی؟"))return;
+ if(!confirm("حذف دائمی سرور «"+
+  (server.server_name||"بدون نام")+"» انجام شود؟ این کار قابل بازگشت نیست."))return;
 
  button.disabled=true;
  message.textContent="در حال حذف سرور...";
@@ -124,7 +182,7 @@ async function deleteServer(server,button){
  }
 
  if(data!==true){
-  message.textContent="سرور پیدا نشد.";
+  message.textContent="سرور پیدا نشد یا حذف انجام نشد.";
   message.className="muted error";
   return;
  }
@@ -137,13 +195,14 @@ async function deleteServer(server,button){
 async function editServer(server,editor,button){
  const inputs=editor.querySelectorAll("[data-field]");
  const values={};
+
  inputs.forEach(input=>{
   values[input.dataset.field]=input.value.trim();
  });
 
  const ram=Number(values.ram);
 
- if(!values.name || !values.software || !values.version){
+ if(!values.name||!values.software||!values.version){
   message.textContent="همه فیلدها را کامل کن.";
   message.className="muted error";
   return;
@@ -181,7 +240,7 @@ async function editServer(server,editor,button){
  }
 
  if(data!==true){
-  message.textContent="سرور پیدا نشد.";
+  message.textContent="سرور پیدا نشد یا ویرایش انجام نشد.";
   message.className="muted error";
   return;
  }
@@ -191,29 +250,29 @@ async function editServer(server,editor,button){
  await loadServers();
 }
 
-async function loadServers(){
+function showServers(){
+ const term=search.value.trim().toLowerCase();
+ const filtered=allServers.filter(server=>{
+  return [
+   server.server_name,
+   server.server_id,
+   server.user_email
+  ].some(value=>String(value||"").toLowerCase().includes(term));
+ });
+
  box.replaceChildren();
- message.textContent="در حال دریافت سرورها...";
 
- const {data,error}=await supabase.rpc("admin_list_servers");
-
- if(error){
-  message.textContent="خطا: "+error.message;
-  message.className="muted error";
+ if(filtered.length===0){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent=allServers.length
+   ?"سروری با این مشخصات پیدا نشد."
+   :"هنوز سروری ثبت نشده است.";
+  box.append(empty);
   return;
  }
 
- if(!data || data.length===0){
-  message.textContent="هنوز سروری ثبت نشده است.";
-  message.className="muted";
-  return;
- }
-
- message.textContent="تعداد کل سرورها: "+
-  data.length.toLocaleString("fa-IR");
- message.className="muted success";
-
- data.forEach(server=>{
+ filtered.forEach(server=>{
   const card=document.createElement("div");
   card.className="server";
 
@@ -226,7 +285,7 @@ async function loadServers(){
 
   const id=document.createElement("p");
   id.className="muted";
-  id.textContent="شناسه سرور: "+server.server_id;
+  id.textContent="شناسه سرور: "+(server.server_id||"نامشخص");
 
   const info=document.createElement("div");
   info.className="info";
@@ -240,7 +299,7 @@ async function loadServers(){
 
   const statusLabel=document.createElement("p");
   statusLabel.className="muted";
-  statusLabel.textContent="تغییر وضعیت سرور:";
+  statusLabel.textContent="تغییر وضعیت:";
 
   const statusSelect=makeSelect(
    ["waiting","active","stopped"],
@@ -267,14 +326,15 @@ async function loadServers(){
    input.dataset.field=key;
    input.value=value??"";
    editor.append(label,input);
-   return input;
   }
 
   addInput("نام سرور","name",server.server_name);
 
   const typeLabel=document.createElement("label");
   typeLabel.textContent="نوع سرور";
-  const typeSelect=makeSelect(["Java","Bedrock"],server.server_type||"Java");
+  const typeSelect=makeSelect(
+   ["Java","Bedrock"],server.server_type||"Java"
+  );
   typeSelect.dataset.field="type";
   editor.append(typeLabel,typeSelect);
 
@@ -283,7 +343,9 @@ async function loadServers(){
 
   const ramLabel=document.createElement("label");
   ramLabel.textContent="حافظه RAM";
-  const ramSelect=makeSelect(["2","4","6"],String(server.ram_gb||2));
+  const ramSelect=makeSelect(
+   ["2","4","6"],String(server.ram_gb||2)
+  );
   ramSelect.dataset.field="ram";
   editor.append(ramLabel,ramSelect);
 
@@ -307,14 +369,45 @@ async function loadServers(){
    deleteServer(server,remove);
   });
 
-  card.append(
-   title,owner,id,info,
-   statusLabel,statusSelect,saveStatus,
-   editButton,editor,remove
-  );
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.append(statusSelect,saveStatus,editButton,remove);
 
+  card.append(title,owner,id,info,statusLabel,actions,editor);
   box.append(card);
  });
+}
+
+async function loadServers(){
+ refresh.disabled=true;
+ box.replaceChildren();
+ message.textContent="در حال دریافت سرورها...";
+
+ const {data,error}=await supabase.rpc("admin_list_servers");
+
+ refresh.disabled=false;
+
+ if(error){
+  message.textContent="خطا در دریافت سرورها: "+error.message;
+  message.className="muted error";
+  return;
+ }
+
+ if(!Array.isArray(data)){
+  message.textContent="اطلاعات دریافتی معتبر نیست.";
+  message.className="muted error";
+  return;
+ }
+
+ allServers=data;
+ statistics.hidden=false;
+ searchPanel.hidden=false;
+ updateStats();
+
+ message.textContent="سرورها با موفقیت دریافت شدند. تعداد: "+fa(data.length);
+ message.className="muted success";
+
+ showServers();
 }
 
 async function start(){
@@ -344,6 +437,8 @@ async function start(){
 }
 
 refresh.addEventListener("click",loadServers);
+search.addEventListener("input",showServers);
+
 start();
 </script>
 </body>
