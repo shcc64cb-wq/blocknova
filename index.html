@@ -87,7 +87,6 @@ padding:13px 16px;border-radius:13px;font-size:13px;margin-top:17px
 .how p{color:var(--muted);font-size:14px;margin-bottom:0}
 footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:13px}
 .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.lang{font-size:13px;padding:8px 12px;white-space:nowrap}
 html[dir="ltr"] body{font-family:Arial,Tahoma,sans-serif}
 html[dir="ltr"] .hero p{direction:ltr}
 @media(max-width:760px){
@@ -113,8 +112,6 @@ html[dir="ltr"] .hero p{direction:ltr}
 <a href="#plans" id="navPlans">پلن‌ها</a>
 <a href="#how" id="navHow">نحوه کار</a>
 </nav>
-
-<button class="secondary lang" id="langBtn">English</button>
 </div>
 </header>
 
@@ -262,162 +259,21 @@ html[dir="ltr"] .hero p{direction:ltr}
 </div>
 </footer>
 
+<!-- سیستم زبان مشترک سایت -->
+<script src="language.js"></script>
+
 <script>
-const LANGUAGE_KEY = "blocknova-language";
-
-const translations = {
-fa: {
-dir:"rtl",
-eyebrow:"هاستینگ ماینکرافت، ساده و سریع",
-heroTitle:'دنیای ماینکرافت خودت را <span class="glow">بساز و مدیریت کن</span>',
-heroText:"با BlockNova برای دوستانت سرور بساز؛ از نسخه Java و Bedrock پشتیبانی می‌کنیم. ساده، قابل مدیریت و با پلن‌های زمانی.",
-heroCta:"مشاهده پلن‌ها",
-heroMore:"چطور کار می‌کند؟",
-loginBtn:"ورود / ثبت‌نام",
-navFeatures:"امکانات",
-navPlans:"پلن‌ها",
-navHow:"نحوه کار",
-s1:"پشتیبانی از دو نسخه",
-s2:"هدف دسترس‌پذیری سرویس",
-simpleValue:"ساده",
-s3:"مدیریت از پنل کاربری",
-featuresTitle:"امکانات BlockNova",
-featuresSub:"همه‌چیز برای شروع یک دنیای چندنفره",
-f1t:"راه‌اندازی آسان",
-f1p:"فرایند ساخت سرور از داخل پنل، بدون نیاز به دانش فنی پیچیده.",
-f2t:"Java و Bedrock",
-f2p:"امکان ارائه سرورهای سازگار با بازیکنان کامپیوتر و موبایل.",
-f3t:"مدیریت مستقل",
-f3p:"هر مشتری دنیای جداگانه و تنظیمات مخصوص سرور خودش را دارد.",
-plansTitle:"پلن‌های اشتراکی",
-plansSub:"قیمت‌های نمونه؛ تا زمان آماده شدن زیرساخت، فروش فعال نیست.",
-p1tag:"شروع",
-p2tag:"پیشنهادی",
-p3tag:"بلندمدت",
-p1name:"یک‌روزه",
-p2name:"سه‌روزه",
-p3name:"هفت‌روزه",
-price1:"۵۰٬۰۰۰",
-price2:"۱۲۰٬۰۰۰",
-price3:"۲۵۰٬۰۰۰",
-currency1:"تومان / ۲۴ ساعت",
-currency2:"تومان / ۳ روز",
-currency3:"تومان / ۷ روز",
-p1list:"<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدیریت از پنل</li>",
-p2list:"<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>مدت بیشتر با قیمت کمتر</li>",
-p3list:"<li>یک سرور مستقل</li><li>نسخه Java یا Bedrock</li><li>تمدید اشتراک</li>",
-p1btn:"به‌زودی",
-p2btn:"به‌زودی",
-p3btn:"به‌زودی",
-priceNote:"توجه: این قیمت‌ها فقط نمونه اولیه‌اند. قبل از فروش باید هزینه منابع، ظرفیت هر میزبان، پشتیبانی و حاشیه سود محاسبه شود. هیچ پرداختی در این نسخه انجام نمی‌شود.",
-howTitle:"چطور کار می‌کند؟",
-howSub:"مسیر ساده مشتری در BlockNova",
-h1t:"ثبت‌نام",
-h1p:"کاربر حساب می‌سازد و وارد پنل می‌شود.",
-h2t:"انتخاب پلن",
-h2p:"مدت اشتراک و نسخه Java یا Bedrock را انتخاب می‌کند.",
-h3t:"دریافت سرور",
-h3p:"پس از فعال شدن پرداخت و زیرساخت، سرور ساخته و اطلاعات اتصال نمایش داده می‌شود.",
-rights:"تمام حقوق محفوظ است.",
-status:"نسخه نمایشی — سفارش و سرور هنوز فعال نیست",
-planAlert:"ثبت سفارش هنوز فعال نشده است. زیرساخت سرورها و پرداخت باید راه‌اندازی شود."
-},
-
-en: {
-dir:"ltr",
-eyebrow:"Minecraft hosting, made simple",
-heroTitle:'Build and manage your <span class="glow">own Minecraft world</span>',
-heroText:"Create a server for your friends with BlockNova. Java and Bedrock support, simple management and time-based plans.",
-heroCta:"View plans",
-heroMore:"How it works",
-loginBtn:"Login / Sign up",
-navFeatures:"Features",
-navPlans:"Plans",
-navHow:"How it works",
-s1:"Two editions supported",
-s2:"Service availability goal",
-simpleValue:"Simple",
-s3:"Manage from your panel",
-featuresTitle:"BlockNova Features",
-featuresSub:"Everything you need to start a multiplayer world",
-f1t:"Easy Setup",
-f1p:"Create a server from your panel without complicated technical steps.",
-f2t:"Java and Bedrock",
-f2p:"Options for players on computers and mobile devices.",
-f3t:"Independent Management",
-f3p:"Each customer gets a separate world and server settings.",
-plansTitle:"Subscription Plans",
-plansSub:"Sample prices. Sales are not active until infrastructure is ready.",
-p1tag:"Starter",
-p2tag:"Popular",
-p3tag:"Longer Term",
-p1name:"1 Day",
-p2name:"3 Days",
-p3name:"7 Days",
-price1:"50,000",
-price2:"120,000",
-price3:"250,000",
-currency1:"Toman / 24 hours",
-currency2:"Toman / 3 days",
-currency3:"Toman / 7 days",
-p1list:"<li>One separate server</li><li>Java or Bedrock</li><li>Panel management</li>",
-p2list:"<li>One separate server</li><li>Java or Bedrock</li><li>More time for a lower daily price</li>",
-p3list:"<li>One separate server</li><li>Java or Bedrock</li><li>Subscription renewal</li>",
-p1btn:"Coming Soon",
-p2btn:"Coming Soon",
-p3btn:"Coming Soon",
-priceNote:"Note: These are draft prices only. Resource costs, host capacity, support and margin must be calculated before sales. No payment is processed in this demo.",
-howTitle:"How It Works",
-howSub:"A simple customer journey on BlockNova",
-h1t:"Sign Up",
-h1p:"The user creates an account and opens the panel.",
-h2t:"Choose a Plan",
-h2p:"They choose a subscription period and Java or Bedrock.",
-h3t:"Get a Server",
-h3p:"Once payments and infrastructure are ready, the server is created and connection details are shown.",
-rights:"All rights reserved.",
-status:"Demo version — orders and servers are not active",
-planAlert:"Ordering is not available yet. Server infrastructure and payment processing must be set up first."
-}
-};
-
-function applyLanguage(language) {
-const lang = translations[language] ? language : "fa";
-const d = translations[lang];
-
-document.documentElement.lang = lang;
-document.documentElement.dir = d.dir;
-
-for (const [key, value] of Object.entries(d)) {
-const element = document.getElementById(key);
-
-if (!element) continue;
-
-if (key.endsWith("list") || key === "heroTitle") {
-element.innerHTML = value;
-} else {
-element.textContent = value;
-}
-}
-
-document.getElementById("langBtn").textContent =
-lang === "fa" ? "English" : "فارسی";
-
-localStorage.setItem(LANGUAGE_KEY, lang);
-}
-
 function showPlanMessage() {
-const lang = localStorage.getItem(LANGUAGE_KEY) || "fa";
-alert(translations[lang].planAlert);
+  const lang = localStorage.getItem("blocknova-language") || "fa";
+
+  alert(
+    lang === "en"
+      ? "Ordering is not available yet. Server infrastructure and payment processing must be set up first."
+      : "ثبت سفارش هنوز فعال نشده است. زیرساخت سرورها و پرداخت باید راه‌اندازی شود."
+  );
 }
-
-document.getElementById("langBtn").addEventListener("click", () => {
-const current = localStorage.getItem(LANGUAGE_KEY) || "fa";
-applyLanguage(current === "fa" ? "en" : "fa");
-});
-
-const savedLanguage = localStorage.getItem(LANGUAGE_KEY) || "fa";
-applyLanguage(savedLanguage);
 </script>
+
 </body>
-</html>
+  </html>
+  
