@@ -1,60 +1,112 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BlockNova | مدیریت سرور</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت سرور | BlockNova</title>
 <style>
-:root{--bg:#090811;--panel:#171426;--panel2:#211a35;--purple:#8b5cf6;--text:#f5f3ff;--muted:#aaa3bd;--line:#382d50;--gold:#fbbf24}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,#28164b 0,transparent 35%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
-header{padding:22px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-size:23px;font-weight:800}.brand span{color:#a78bfa}.tag{font-size:12px;color:var(--muted);margin-top:6px}
-main{max-width:850px;margin:auto;padding:22px 16px 45px}h1{font-size:23px;margin:8px 0}.muted{color:var(--muted);font-size:13px;line-height:1.9}
-.panel{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:18px}
-.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.status{display:inline-block;color:var(--gold);background:#453516;border-radius:30px;padding:7px 11px;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}.item{background:#100d1b;border:1px solid var(--line);border-radius:13px;padding:14px}.item small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.item b{font-size:15px}
-button{border:0;border-radius:12px;padding:13px 17px;font-weight:700;font-size:14px;cursor:pointer}.primary{background:linear-gradient(100deg,#6d28d9,var(--purple));color:white}.secondary{background:#2a233d;color:white;border:1px solid #4a3c64}.danger{background:#3a1d2b;color:#fecdd3;border:1px solid #713047}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.notice{border:1px solid #66512a;background:#211a28;border-radius:14px;padding:14px;color:#c9c1d8;font-size:12px;line-height:2;margin-top:18px}.notice strong{color:#fcd34d}
-.address{direction:ltr;text-align:left;word-break:break-all;background:#100d1b;padding:13px;border-radius:10px;border:1px dashed #51416e;color:#c4b5fd;margin-top:10px}
-footer{text-align:center;color:#766f89;font-size:11px;margin-top:28px}
-@media(max-width:560px){.grid,.actions{grid-template-columns:1fr}}
-</style></head>
+*{box-sizing:border-box}
+body{margin:0;background:#090811;color:#fff;font-family:Tahoma,Arial,sans-serif;padding:20px}
+.wrap{max-width:850px;margin:30px auto}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.logo{font-size:25px;font-weight:bold;color:#a78bfa}
+.panel{background:#171426;border:1px solid #30264a;border-radius:18px;padding:22px;margin-top:22px}
+h1{font-size:23px}
+h2{font-size:18px;color:#c4b5fd}
+p{color:#c4bfd3;line-height:2}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:20px}
+.item{background:#211a35;padding:15px;border-radius:12px}
+.item small{display:block;color:#aaa;margin-bottom:10px}
+.item b{overflow-wrap:anywhere}
+button,a{border:0;border-radius:10px;padding:12px 17px;background:#8b5cf6;color:white;text-decoration:none;font-weight:bold;cursor:pointer}
+.secondary{background:#30264a}
+.notice{background:#2b2140;border:1px solid #594080;padding:14px;border-radius:12px;margin-top:18px;line-height:2;color:#ddd}
+.status{color:#facc15}
+#message{color:#fca5a5}
+</style>
+</head>
 <body>
-<header><div><div class="brand">Block<span>Nova</span></div><div class="tag">مدیریت سرور ماینکرافت</div></div><div class="tag">نسخه آزمایشی · Demo</div></header>
-<main>
- <div class="muted">داشبورد / سرورهای من / مدیریت سرور</div>
- <section class="panel">
-  <div class="top"><div><h1 id="serverName">Minecraft Server</h1><div class="muted">مشخصات و کنترل‌های سرور</div></div><span class="status">آزمایشی · بدون اتصال</span></div>
-  <div class="grid">
-   <div class="item"><small>نسخه بازی</small><b id="edition">Java Edition</b></div>
-   <div class="item"><small>نسخه ماینکرافت</small><b id="version">1.21.1</b></div>
-   <div class="item"><small>نرم‌افزار</small><b id="software">Fabric</b></div>
-   <div class="item"><small>رم انتخابی</small><b id="ram">1 GB</b></div>
-   <div class="item"><small>وضعیت</small><b>در انتظار اتصال</b></div>
-   <div class="item"><small>بازیکنان آنلاین</small><b>۰ / نامشخص</b></div>
-  </div>
-  <h3 style="font-size:15px;margin:22px 0 8px">آدرس سرور</h3>
-  <div class="muted">پس از اتصال زیرساخت واقعی، آدرس اینجا نمایش داده می‌شود.</div>
-  <div class="address">Not assigned</div>
-  <div class="actions">
-   <button class="primary" onclick="demoAction('روشن کردن')">روشن کردن سرور</button>
-   <button class="secondary" onclick="demoAction('خاموش کردن')">خاموش کردن سرور</button>
-   <button class="secondary" onclick="demoAction('راه‌اندازی مجدد')">راه‌اندازی مجدد</button>
-   <button class="secondary" onclick="demoAction('کنسول')">مشاهده کنسول</button>
-  </div>
- </section>
- <div class="notice"><strong>مهم:</strong> این صفحه فقط نمونه ظاهری پنل مدیریت است. دکمه‌ها سرور را روشن یا خاموش نمی‌کنند و به هیچ میزبان واقعی متصل نیستند. برای فعال شدن کنترل‌ها به بک‌اند امن، ماشین میزبان و اتصال API نیاز داریم. از این نسخه برای فروش سرویس استفاده نکن.</div>
- <footer>© BlockNova · پنل آزمایشی</footer>
-</main>
-<script>
-function demoAction(action){alert('عملیات «'+action+'» هنوز فعال نیست؛ ابتدا باید بک‌اند و زیرساخت واقعی متصل شوند.');}
-try{
- const q=new URLSearchParams(location.search);
- const name=q.get('name'),edition=q.get('edition'),version=q.get('version'),software=q.get('software'),ram=q.get('ram');
- if(name)document.getElementById('serverName').textContent=name;
- if(edition)document.getElementById('edition').textContent=edition==='Bedrock'?'Bedrock Edition':'Java Edition';
- if(version)document.getElementById('version').textContent=version;
- if(software)document.getElementById('software').textContent=software;
- if(ram)document.getElementById('ram').textContent=ram+' GB';
-}catch(e){}
+<div class="wrap">
+<header>
+<div class="logo">✦ BlockNova</div>
+<a class="secondary" href="blocknova-panel-v2.html">بازگشت به پنل</a>
+</header>
+
+<div class="panel">
+<h1>مدیریت سرور</h1>
+<p id="message">در حال دریافت اطلاعات سرور...</p>
+
+<div id="serverInfo" hidden>
+<h2 id="serverName">سرور من</h2>
+<div class="info">
+<div class="item"><small>نوع سرور</small><b id="type">-</b></div>
+<div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
+<div class="item"><small>نسخه بازی</small><b id="version">-</b></div>
+<div class="item"><small>وضعیت</small><b class="status" id="status">-</b></div>
+</div>
+
+<div class="notice">
+<strong>وضعیت زیرساخت:</strong><br>
+این سرور فعلاً آزمایشی و اطلاعات آن ذخیره‌شده در حساب شماست. هنوز به سخت‌افزار میزبانی متصل نیست.
+</div>
+
+<h2>کنترل سرور</h2>
+<button disabled>روشن کردن سرور</button>
+<button disabled class="secondary">خاموش کردن سرور</button>
+<p>کنترل واقعی سرور پس از اتصال زیرساخت فعال می‌شود.</p>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient(
+ "https://rxynsocnofdakbjbsgry.supabase.co",
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+);
+
+const message = document.getElementById("message");
+
+async function loadServer(){
+ try{
+  const {data:{session},error:sessionError}=await supabase.auth.getSession();
+  if(sessionError) throw sessionError;
+
+  if(!session){
+   location.href="login.html";
+   return;
+  }
+
+  const params=new URLSearchParams(location.search);
+  const serverId=params.get("id");
+
+  let query=supabase.from("servers").select("*")
+   .eq("user_id",session.user.id);
+
+  if(serverId) query=query.eq("id",serverId);
+
+  const {data,error}=await query.order("created_at",{ascending:false}).limit(1).maybeSingle();
+  if(error) throw error;
+  if(!data){
+   message.textContent="هیچ سروری در حساب شما پیدا نشد.";
+   return;
+  }
+
+  document.getElementById("serverName").textContent=data.name || "سرور من";
+  document.getElementById("type").textContent=data.type || "-";
+  document.getElementById("software").textContent=data.software || "-";
+  document.getElementById("version").textContent=data.version || "-";
+  document.getElementById("status").textContent=data.status || "نامشخص";
+
+  document.getElementById("serverInfo").hidden=false;
+  message.textContent="اطلاعات سرور با موفقیت دریافت شد.";
+ }catch(error){
+  message.textContent="خطا در دریافت اطلاعات: "+error.message;
+ }
+}
+loadServer();
 </script>
-</body></html>
+</body>
+</html>
