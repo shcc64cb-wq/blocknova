@@ -17,10 +17,14 @@ h2{color:#a78bfa}
 .item{background:#090811;padding:12px;border-radius:9px}
 .item small{display:block;color:#aaa;margin-bottom:8px}
 .item strong{color:#c4b5fd;font-size:14px;overflow-wrap:anywhere}
-button,select{padding:12px 16px;border:0;border-radius:9px;background:#8b5cf6;color:white;font-family:inherit;cursor:pointer;margin:5px 0}
-select{background:#090811;border:1px solid #8b5cf6}
+button,select,input{padding:12px 16px;border:1px solid #514078;border-radius:9px;background:#090811;color:white;font-family:inherit;margin:5px 0;max-width:100%}
+button{background:#8b5cf6;border:0;cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
 .delete{background:#b91c1c}
+.edit{background:#2563eb}
+.editor{display:none;background:#151322;padding:14px;border-radius:10px;margin-top:12px}
+.editor label{display:block;color:#c4b5fd;font-size:13px;margin-top:10px}
+.editor input,.editor select{width:100%}
 .error{color:#fca5a5}
 .success{color:#86efac}
 </style>
@@ -59,16 +63,25 @@ function field(label,value){
  return div;
 }
 
+function makeSelect(values,current){
+ const select=document.createElement("select");
+ values.forEach(value=>{
+  const option=document.createElement("option");
+  option.value=value;
+  option.textContent=value;
+  select.append(option);
+ });
+ select.value=current;
+ return select;
+}
+
 async function changeStatus(server,status,button){
  button.disabled=true;
  message.textContent="در حال ذخیره وضعیت جدید...";
 
  const {data,error}=await supabase.rpc(
   "admin_update_server_status",
-  {
-   p_server_id:server.server_id,
-   p_status:status
-  }
+  {p_server_id:server.server_id,p_status:status}
  );
 
  button.disabled=false;
@@ -80,50 +93,100 @@ async function changeStatus(server,status,button){
  }
 
  if(data!==true){
-  message.textContent="سرور موردنظر پیدا نشد.";
+  message.textContent="سرور پیدا نشد.";
   message.className="muted error";
   return;
  }
 
- message.textContent="وضعیت سرور با موفقیت تغییر کرد.";
+ message.textContent="وضعیت سرور تغییر کرد.";
  message.className="muted success";
  await loadServers();
 }
 
 async function deleteServer(server,button){
- const confirmed=confirm(
-  "آیا مطمئنی می‌خواهی سرور «"+
-  (server.server_name || "بدون نام")+
-  "» را برای همیشه حذف کنی؟\nاین کار قابل برگشت نیست."
- );
-
- if(!confirmed)return;
+ if(!confirm("آیا از حذف دائمی سرور «"+
+  (server.server_name||"بدون نام")+"» مطمئنی؟"))return;
 
  button.disabled=true;
  message.textContent="در حال حذف سرور...";
 
  const {data,error}=await supabase.rpc(
   "admin_delete_server",
+  {p_server_id:server.server_id}
+ );
+
+ button.disabled=false;
+
+ if(error){
+  message.textContent="خطا در حذف: "+error.message;
+  message.className="muted error";
+  return;
+ }
+
+ if(data!==true){
+  message.textContent="سرور پیدا نشد.";
+  message.className="muted error";
+  return;
+ }
+
+ message.textContent="سرور حذف شد.";
+ message.className="muted success";
+ await loadServers();
+}
+
+async function editServer(server,editor,button){
+ const inputs=editor.querySelectorAll("[data-field]");
+ const values={};
+ inputs.forEach(input=>{
+  values[input.dataset.field]=input.value.trim();
+ });
+
+ const ram=Number(values.ram);
+
+ if(!values.name || !values.software || !values.version){
+  message.textContent="همه فیلدها را کامل کن.";
+  message.className="muted error";
+  return;
+ }
+
+ if(![2,4,6].includes(ram)){
+  message.textContent="مقدار RAM معتبر نیست.";
+  message.className="muted error";
+  return;
+ }
+
+ if(!confirm("تغییرات مشخصات این سرور ذخیره شود؟"))return;
+
+ button.disabled=true;
+ message.textContent="در حال ذخیره مشخصات...";
+
+ const {data,error}=await supabase.rpc(
+  "admin_edit_server",
   {
-   p_server_id:server.server_id
+   p_server_id:server.server_id,
+   p_name:values.name,
+   p_type:values.type,
+   p_software:values.software,
+   p_version:values.version,
+   p_ram:ram
   }
  );
 
  button.disabled=false;
 
  if(error){
-  message.textContent="خطا در حذف سرور: "+error.message;
+  message.textContent="خطا در ویرایش: "+error.message;
   message.className="muted error";
   return;
  }
 
  if(data!==true){
-  message.textContent="سرور موردنظر پیدا نشد.";
+  message.textContent="سرور پیدا نشد.";
   message.className="muted error";
   return;
  }
 
- message.textContent="سرور با موفقیت حذف شد.";
+ message.textContent="مشخصات سرور با موفقیت ویرایش شد.";
  message.className="muted success";
  await loadServers();
 }
@@ -135,7 +198,7 @@ async function loadServers(){
  const {data,error}=await supabase.rpc("admin_list_servers");
 
  if(error){
-  message.textContent="خطا در دریافت سرورها: "+error.message;
+  message.textContent="خطا: "+error.message;
   message.className="muted error";
   return;
  }
@@ -155,12 +218,11 @@ async function loadServers(){
   card.className="server";
 
   const title=document.createElement("h3");
-  title.textContent=server.server_name || "بدون نام";
+  title.textContent=server.server_name||"بدون نام";
 
   const owner=document.createElement("p");
   owner.className="muted";
-  owner.textContent="صاحب سرور: "+
-   (server.user_email || "نامشخص");
+  owner.textContent="صاحب سرور: "+(server.user_email||"نامشخص");
 
   const id=document.createElement("p");
   id.className="muted";
@@ -168,39 +230,74 @@ async function loadServers(){
 
   const info=document.createElement("div");
   info.className="info";
-
   info.append(
    field("نوع سرور",server.server_type),
    field("نرم‌افزار",server.server_software),
    field("نسخه بازی",server.server_version),
-   field("حافظه RAM",server.ram_gb
-    ? server.ram_gb+" گیگابایت":"تنظیم نشده"),
+   field("حافظه RAM",server.ram_gb?server.ram_gb+" گیگابایت":"تنظیم نشده"),
    field("وضعیت",server.server_status)
   );
 
-  const label=document.createElement("p");
-  label.className="muted";
-  label.textContent="تغییر وضعیت سرور:";
+  const statusLabel=document.createElement("p");
+  statusLabel.className="muted";
+  statusLabel.textContent="تغییر وضعیت سرور:";
 
-  const select=document.createElement("select");
+  const statusSelect=makeSelect(
+   ["waiting","active","stopped"],
+   server.server_status||"waiting"
+  );
 
-  [
-   ["waiting","در انتظار"],
-   ["active","فعال"],
-   ["stopped","متوقف‌شده"]
-  ].forEach(([value,text])=>{
-   const option=document.createElement("option");
-   option.value=value;
-   option.textContent=text;
-   select.append(option);
+  const saveStatus=document.createElement("button");
+  saveStatus.textContent="ذخیره وضعیت";
+  saveStatus.addEventListener("click",()=>{
+   changeStatus(server,statusSelect.value,saveStatus);
   });
 
-  select.value=server.server_status || "waiting";
+  const editButton=document.createElement("button");
+  editButton.className="edit";
+  editButton.textContent="ویرایش مشخصات";
 
-  const save=document.createElement("button");
-  save.textContent="ذخیره وضعیت";
-  save.addEventListener("click",()=>{
-   changeStatus(server,select.value,save);
+  const editor=document.createElement("div");
+  editor.className="editor";
+
+  function addInput(labelText,key,value){
+   const label=document.createElement("label");
+   label.textContent=labelText;
+   const input=document.createElement("input");
+   input.dataset.field=key;
+   input.value=value??"";
+   editor.append(label,input);
+   return input;
+  }
+
+  addInput("نام سرور","name",server.server_name);
+
+  const typeLabel=document.createElement("label");
+  typeLabel.textContent="نوع سرور";
+  const typeSelect=makeSelect(["Java","Bedrock"],server.server_type||"Java");
+  typeSelect.dataset.field="type";
+  editor.append(typeLabel,typeSelect);
+
+  addInput("نرم‌افزار","software",server.server_software);
+  addInput("نسخه بازی","version",server.server_version);
+
+  const ramLabel=document.createElement("label");
+  ramLabel.textContent="حافظه RAM";
+  const ramSelect=makeSelect(["2","4","6"],String(server.ram_gb||2));
+  ramSelect.dataset.field="ram";
+  editor.append(ramLabel,ramSelect);
+
+  const saveEdit=document.createElement("button");
+  saveEdit.textContent="ذخیره ویرایش";
+  saveEdit.addEventListener("click",()=>{
+   editServer(server,editor,saveEdit);
+  });
+
+  editor.append(saveEdit);
+
+  editButton.addEventListener("click",()=>{
+   editor.style.display=
+    editor.style.display==="block"?"none":"block";
   });
 
   const remove=document.createElement("button");
@@ -210,7 +307,12 @@ async function loadServers(){
    deleteServer(server,remove);
   });
 
-  card.append(title,owner,id,info,label,select,save,remove);
+  card.append(
+   title,owner,id,info,
+   statusLabel,statusSelect,saveStatus,
+   editButton,editor,remove
+  );
+
   box.append(card);
  });
 }
@@ -218,7 +320,7 @@ async function loadServers(){
 async function start(){
  const {data:{session},error}=await supabase.auth.getSession();
 
- if(error || !session){
+ if(error||!session){
   location.href="login.html";
   return;
  }
@@ -229,7 +331,7 @@ async function start(){
   .eq("user_id",session.user.id)
   .maybeSingle();
 
- if(adminError || !admin){
+ if(adminError||!admin){
   message.textContent="دسترسی غیرمجاز؛ این حساب مدیر نیست.";
   message.className="muted error";
   return;
