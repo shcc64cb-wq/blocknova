@@ -7,11 +7,20 @@
 <title>ورود | BlockNova</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#090712;color:white;font-family:Arial,sans-serif;display:grid;place-items:center;padding:20px}
-.card{width:100%;max-width:390px;background:#171326;border:1px solid #7139b5;border-radius:18px;padding:28px}
+body{
+ margin:0;min-height:100vh;background:#090712;color:white;
+ font-family:Arial,sans-serif;display:grid;place-items:center;padding:20px
+}
+.card{
+ width:100%;max-width:390px;background:#171326;
+ border:1px solid #7139b5;border-radius:18px;padding:28px
+}
 h1{text-align:center;color:#b77aff}
 p{text-align:center;color:#bbb}
-input,button{width:100%;padding:14px;margin-top:13px;border-radius:9px;font-size:15px}
+input,button{
+ width:100%;padding:14px;margin-top:13px;
+ border-radius:9px;font-size:15px
+}
 input{background:#0c0915;border:1px solid #55416e;color:white}
 button{background:#8b42d6;color:white;border:0;font-weight:bold}
 button.secondary{background:#302344}
@@ -20,19 +29,24 @@ button:disabled{opacity:.5}
 </style>
 </head>
 <body>
+
 <div class="card">
 <h1>BlockNova</h1>
 <p>ورود یا ساخت حساب کاربری</p>
+
 <input id="email" type="email" placeholder="ایمیل" autocomplete="email">
-<input id="password" type="password" placeholder="رمز عبور (حداقل ۶ کاراکتر)" autocomplete="current-password">
+<input id="password" type="password" placeholder="رمز عبور" autocomplete="current-password">
+
 <button id="register">ساخت حساب</button>
 <button id="login" class="secondary">ورود به حساب</button>
 <button id="logout" class="secondary" hidden>خروج از حساب</button>
-<p id="message"></p>
+
+<p id="message">به BlockNova خوش آمدی</p>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
 import {
  getAuth,
  createUserWithEmailAndPassword,
@@ -61,47 +75,63 @@ const register = document.getElementById("register");
 const login = document.getElementById("login");
 const logout = document.getElementById("logout");
 
-const panelURL = "./blocknova-panel-v2.html";
+const panelURL = "https://shcc64cb-wq.github.io/blocknova/blocknova-panel-v2.html";
 
-function goToPanel() {
- message.textContent = "ورود موفق بود! در حال انتقال به پنل...";
- window.location.replace(panelURL);
+function goToPanel(){
+ message.textContent = "ورود موفق بود؛ در حال انتقال...";
+ window.location.href = panelURL;
 }
 
 register.onclick = async () => {
  try {
   register.disabled = true;
+  login.disabled = true;
+
   const result = await createUserWithEmailAndPassword(
-   auth, email.value.trim(), password.value
+   auth,email.value.trim(),password.value
   );
+
   if(result.user) goToPanel();
- } catch(e) {
-  message.textContent = "خطا: " + e.message;
+
+ } catch(error) {
+  message.textContent = "خطا: " + error.message;
   register.disabled = false;
+  login.disabled = false;
  }
 };
 
 login.onclick = async () => {
  try {
   login.disabled = true;
+  register.disabled = true;
+
   const result = await signInWithEmailAndPassword(
-   auth, email.value.trim(), password.value
+   auth,email.value.trim(),password.value
   );
+
   if(result.user) goToPanel();
- } catch(e) {
-  message.textContent = "خطا: " + e.message;
+
+ } catch(error) {
+  message.textContent = "خطا: " + error.message;
   login.disabled = false;
+  register.disabled = false;
  }
 };
 
 logout.onclick = async () => {
- await signOut(auth);
- message.textContent = "از حساب خارج شدی.";
+ try {
+  await signOut(auth);
+  message.textContent = "از حساب خارج شدی.";
+  logout.hidden = true;
+ } catch(error) {
+  message.textContent = "خطا در خروج: " + error.message;
+ }
 };
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth,user => {
  logout.hidden = !user;
 });
 </script>
+
 </body>
 </html>
