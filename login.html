@@ -45,28 +45,13 @@ button:disabled{opacity:.5}
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-import {
- getAuth,
- createUserWithEmailAndPassword,
- signInWithEmailAndPassword,
- signOut,
- onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+const SUPABASE_URL = "https://rxynsocnofdakbjbsgry.supabase.co";
+const SUPABASE_KEY = "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9";
 
-const firebaseConfig = {
- apiKey: "AIzaSyArXiu4eEaMmvfkhHT-7Ho2CyTTT8DvgHQ",
- authDomain: "blocknova-ea03e.firebaseapp.com",
- projectId: "blocknova-ea03e",
- storageBucket: "blocknova-ea03e.firebasestorage.app",
- messagingSenderId: "594671551477",
- appId: "1:594671551477:web:ca5fd2e5500665f18dd6bc",
- measurementId: "G-FRHHEHCR6N"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const email = document.getElementById("email");
 const password = document.getElementById("password");
@@ -75,61 +60,78 @@ const register = document.getElementById("register");
 const login = document.getElementById("login");
 const logout = document.getElementById("logout");
 
-const panelURL = "https://shcc64cb-wq.github.io/blocknova/blocknova-panel-v2.html";
+const panelURL =
+"https://shcc64cb-wq.github.io/blocknova/blocknova-panel-v2.html";
 
-function goToPanel(){
- message.textContent = "ورود موفق بود؛ در حال انتقال...";
- window.location.href = panelURL;
+function setLoading(value){
+ register.disabled = value;
+ login.disabled = value;
 }
 
 register.onclick = async () => {
  try {
-  register.disabled = true;
-  login.disabled = true;
+  setLoading(true);
+  message.textContent = "در حال ساخت حساب...";
 
-  const result = await createUserWithEmailAndPassword(
-   auth,email.value.trim(),password.value
-  );
+  const {data, error} = await supabase.auth.signUp({
+   email: email.value.trim(),
+   password: password.value,
+   options: {
+    emailRedirectTo: panelURL
+   }
+  });
 
-  if(result.user) goToPanel();
+  if(error) throw error;
 
+  if(data.session){
+   message.textContent = "حساب ساخته شد؛ در حال انتقال...";
+   window.location.href = panelURL;
+  } else {
+   message.textContent =
+   "حساب ساخته شد! ایمیلت را بررسی کن و لینک تأیید را بزن.";
+   setLoading(false);
+  }
  } catch(error) {
   message.textContent = "خطا: " + error.message;
-  register.disabled = false;
-  login.disabled = false;
+  setLoading(false);
  }
 };
 
 login.onclick = async () => {
  try {
-  login.disabled = true;
-  register.disabled = true;
+  setLoading(true);
+  message.textContent = "در حال ورود...";
 
-  const result = await signInWithEmailAndPassword(
-   auth,email.value.trim(),password.value
-  );
+  const {data, error} = await supabase.auth.signInWithPassword({
+   email: email.value.trim(),
+   password: password.value
+  });
 
-  if(result.user) goToPanel();
+  if(error) throw error;
 
+  if(data.session){
+   message.textContent = "ورود موفق بود؛ در حال انتقال...";
+   window.location.href = panelURL;
+  }
  } catch(error) {
   message.textContent = "خطا: " + error.message;
-  login.disabled = false;
-  register.disabled = false;
+  setLoading(false);
  }
 };
 
 logout.onclick = async () => {
- try {
-  await signOut(auth);
+ const {error} = await supabase.auth.signOut();
+
+ if(error){
+  message.textContent = "خطا در خروج: " + error.message;
+ } else {
   message.textContent = "از حساب خارج شدی.";
   logout.hidden = true;
- } catch(error) {
-  message.textContent = "خطا در خروج: " + error.message;
  }
 };
 
-onAuthStateChanged(auth,user => {
- logout.hidden = !user;
+supabase.auth.onAuthStateChange((event, session) => {
+ logout.hidden = !session;
 });
 </script>
 
