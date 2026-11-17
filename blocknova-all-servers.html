@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت سرورها | BlockNova</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:18px;background:#090811;color:white;font-family:Tahoma,Arial,sans-serif}
+.wrap{max-width:950px;margin:30px auto}
+.panel,.server{background:#151322;border:1px solid #30264b;border-radius:15px;padding:18px;margin-bottom:15px}
+h2{color:#a78bfa}
+.muted{color:#aaa;font-size:13px;line-height:2;overflow-wrap:anywhere}
+.server{background:#211a35}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:15px}
+.item{background:#090811;padding:12px;border-radius:9px}
+.item small{display:block;color:#aaa;margin-bottom:8px}
+.item strong{color:#c4b5fd;font-size:14px;overflow-wrap:anywhere}
+button{padding:12px 16px;border:0;border-radius:9px;background:#8b5cf6;color:white;font-family:inherit;cursor:pointer}
+.error{color:#fca5a5}
+.success{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="panel">
+  <h2>مدیریت تمام سرورهای BlockNova</h2>
+  <p id="message" class="muted">در حال بررسی دسترسی مدیر...</p>
+  <button id="refresh" hidden>بروزرسانی سرورها</button>
+ </div>
+ <div id="servers"></div>
+</div>
+
+<script type="module">
+import {createClient} from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase=createClient(
+ "https://rxynsocnofdakbjbsgry.supabase.co",
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+);
+
+const message=document.getElementById("message");
+const box=document.getElementById("servers");
+const refresh=document.getElementById("refresh");
+
+function field(label,value){
+ const div=document.createElement("div");
+ div.className="item";
+
+ const small=document.createElement("small");
+ small.textContent=label;
+
+ const strong=document.createElement("strong");
+ strong.textContent=value ?? "تنظیم نشده";
+
+ div.append(small,strong);
+ return div;
+}
+
+async function loadServers(){
+ box.replaceChildren();
+ message.textContent="در حال دریافت سرورها...";
+
+ const {data,error}=await supabase.rpc("admin_list_servers");
+
+ if(error){
+  message.textContent="خطا در دریافت سرورها: "+error.message;
+  message.className="muted error";
+  return;
+ }
+
+ if(!data || data.length===0){
+  message.textContent="هنوز سروری ثبت نشده است.";
+  return;
+ }
+
+ message.textContent="تعداد کل سرورها: "+
+  data.length.toLocaleString("fa-IR");
+ message.className="muted success";
+
+ data.forEach(server=>{
+  const card=document.createElement("div");
+  card.className="server";
+
+  const title=document.createElement("h3");
+  title.textContent=server.server_name || "بدون نام";
+
+  const owner=document.createElement("p");
+  owner.className="muted";
+  owner.textContent="صاحب سرور: "+
+   (server.user_email || "نامشخص");
+
+  const id=document.createElement("p");
+  id.className="muted";
+  id.textContent="شناسه سرور: "+server.server_id;
+
+  const info=document.createElement("div");
+  info.className="info";
+
+  info.append(
+   field("نوع سرور",server.server_type),
+   field("نرم‌افزار",server.server_software),
+   field("نسخه بازی",server.server_version),
+   field("حافظه RAM",server.ram_gb
+    ? server.ram_gb+" گیگابایت":"تنظیم نشده"),
+   field("وضعیت",server.server_status)
+  );
+
+  card.append(title,owner,id,info);
+  box.append(card);
+ });
+}
+
+async function start(){
+ const {data:{session},error}=await supabase.auth.getSession();
+
+ if(error || !session){
+  location.href="login.html";
+  return;
+ }
+
+ const {data:admin,error:adminError}=await supabase
+  .from("admins")
+  .select("user_id")
+  .eq("user_id",session.user.id)
+  .maybeSingle();
+
+ if(adminError || !admin){
+  message.textContent="دسترسی غیرمجاز؛ این حساب مدیر نیست.";
+  message.className="muted error";
+  return;
+ }
+
+ message.textContent="دسترسی مدیر تأیید شد.";
+ message.className="muted success";
+ refresh.hidden=false;
+
+ await loadServers();
+}
+
+refresh.addEventListener("click",loadServers);
+start();
+</script>
+</body>
+</html>
