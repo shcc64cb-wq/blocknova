@@ -1,0 +1,132 @@
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlockNova | خرید اشتراک</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090811;color:#f5f3ff;
+ font-family:Tahoma,Arial,sans-serif;
+ background-image:radial-gradient(circle at 80% 0,#28164c,transparent 38%);
+}
+header{
+ padding:22px 18px;border-bottom:1px solid #302943;
+ display:flex;justify-content:space-between;align-items:center;
+ flex-wrap:wrap;gap:12px
+}
+.brand{font-size:24px;font-weight:900}
+.brand span{color:#a78bfa}
+.back{
+ color:white;text-decoration:none;background:#29233c;
+ padding:11px 15px;border-radius:10px;font-size:13px
+}
+.wrap{max-width:1050px;margin:auto;padding:35px 16px}
+h1{text-align:center;font-size:27px}
+.intro{text-align:center;color:#aaa3bd;line-height:2;font-size:13px}
+.plans{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+ gap:15px;margin-top:30px
+}
+.plan{
+ background:linear-gradient(145deg,#211a35,#151322);
+ border:1px solid #39304e;border-radius:18px;
+ padding:22px;text-align:center;position:relative
+}
+.plan.featured{border:2px solid #8b5cf6}
+.plan h2{font-size:19px;margin:8px 0 15px}
+.price{font-size:25px;font-weight:900;color:#c4b5fd}
+.unit{font-size:12px;color:#aaa3bd;margin-top:7px}
+.details{color:#c4bdd2;font-size:12px;line-height:2.2;margin:18px 0}
+button{
+ width:100%;border:0;border-radius:11px;padding:13px;
+ background:linear-gradient(100deg,#6d28d9,#8b5cf6);
+ color:white;font-weight:bold;font-size:14px;cursor:pointer
+}
+.featured-label{
+ position:absolute;top:-12px;right:50%;transform:translateX(50%);
+ background:#8b5cf6;padding:5px 13px;border-radius:20px;
+ font-size:11px;white-space:nowrap
+}
+.notice{
+ margin-top:25px;padding:16px;border:1px solid #59472a;
+ border-radius:14px;color:#fcd34d;font-size:12px;line-height:2
+}
+footer{text-align:center;color:#766f89;font-size:11px;padding:25px}
+@media(max-width:500px){h1{font-size:22px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">Block<span>Nova</span></div>
+ <a class="back" href="blocknova-panel-v2.html">بازگشت به پنل</a>
+</header>
+
+<main class="wrap">
+ <h1>انتخاب اشتراک سرور</h1>
+ <div class="intro">
+  اشتراک موردنظرت را انتخاب کن و ماجراجویی ماینکرافتت را شروع کن.
+ </div>
+
+ <section class="plans">
+  <article class="plan">
+   <h2>اشتراک یک روزه</h2>
+   <div class="price">۱۵٬۰۰۰</div>
+   <div class="unit">تومان</div>
+   <div class="details">مدت اشتراک: ۱ روز<br>مناسب برای آزمایش کوتاه</div>
+   <button onclick="choosePlan('یک روزه',15000)">انتخاب اشتراک</button>
+  </article>
+
+  <article class="plan">
+   <h2>اشتراک سه روزه</h2>
+   <div class="price">۲۹٬۰۰۰</div>
+   <div class="unit">تومان</div>
+   <div class="details">مدت اشتراک: ۳ روز<br>مناسب برای بازی کوتاه‌مدت</div>
+   <button onclick="choosePlan('سه روزه',29000)">انتخاب اشتراک</button>
+  </article>
+
+  <article class="plan">
+   <h2>اشتراک هفت روزه</h2>
+   <div class="price">۴۹٬۰۰۰</div>
+   <div class="unit">تومان</div>
+   <div class="details">مدت اشتراک: ۷ روز<br>یک هفته استفاده</div>
+   <button onclick="choosePlan('هفت روزه',49000)">انتخاب اشتراک</button>
+  </article>
+
+  <article class="plan featured">
+   <div class="featured-label">پیشنهاد ویژه</div>
+   <h2>اشتراک یک ماهه</h2>
+   <div class="price">۷۹٬۰۰۰</div>
+   <div class="unit">تومان</div>
+   <div class="details">مدت اشتراک: یک ماه<br>مناسب استفاده روزانه</div>
+   <button onclick="choosePlan('یک ماهه',79000)">انتخاب اشتراک</button>
+  </article>
+
+  <article class="plan">
+   <h2>اشتراک سه ماهه</h2>
+   <div class="price">۲۱۹٬۰۰۰</div>
+   <div class="unit">تومان</div>
+   <div class="details">مدت اشتراک: سه ماه<br>برای استفاده طولانی‌مدت</div>
+   <button onclick="choosePlan('سه ماهه',219000)">انتخاب اشتراک</button>
+  </article>
+ </section>
+
+ <div class="notice">
+  توجه: این صفحه فعلاً برای نمایش پلن‌ها و ثبت انتخاب آزمایشی است.
+  پرداخت آنلاین و فعال‌سازی واقعی اشتراک هنوز راه‌اندازی نشده است.
+ </div>
+</main>
+
+<footer>© BlockNova</footer>
+
+<script>
+function choosePlan(name,price){
+ alert("اشتراک انتخاب‌شده: "+name+
+ "\nقیمت: "+price.toLocaleString("fa-IR")+" تومان"+
+ "\n\nثبت سفارش و پرداخت در مرحله بعد فعال خواهد شد.");
+}
+</script>
+</body>
+</html>
