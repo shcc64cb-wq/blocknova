@@ -183,6 +183,11 @@ color:#e9d4ae;
 padding:13px;border-radius:12px;
 font-size:12px;
 }
+#versionStatus{
+color:var(--muted);
+font-size:12px;
+margin-top:7px;
+}
 #result{
 display:none;margin-top:15px;
 background:#12251e;
@@ -251,7 +256,10 @@ font-size:12px;text-align:center;
 
 <div class="field">
 <label for="version">نسخه ماینکرافت</label>
-<select id="version"></select>
+<select id="version">
+<option>در حال دریافت نسخه‌ها...</option>
+</select>
+<div id="versionStatus">در حال اتصال به فهرست نسخه‌ها...</div>
 </div>
 </section>
 
@@ -293,7 +301,7 @@ font-size:12px;text-align:center;
 <span>نرم‌افزار</span><strong id="sumSoftware">Paper</strong>
 </div>
 <div class="summary-row">
-<span>نسخه بازی</span><strong id="sumVersion">1.21.1</strong>
+<span>نسخه بازی</span><strong id="sumVersion">در حال دریافت</strong>
 </div>
 <div class="summary-row">
 <span>حافظه RAM</span><strong id="sumRam">2 GB</strong>
@@ -307,7 +315,7 @@ font-size:12px;text-align:center;
 </div>
 
 <div class="notice">
-⚠️ این صفحه در حال حاضر نمایشی است. انتخاب‌ها و خلاصه تنظیمات کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود فایل‌های نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند.
+⚠️ این صفحه فعلاً نمایشی است. انتخاب نسخه و تنظیمات کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند. همچنین پشتیبانی واقعی هر نسخه به نرم‌افزار و میزبان بستگی دارد.
 </div>
 </section>
 
@@ -335,28 +343,34 @@ Bedrock: [
 ]
 };
 
-const versions = [
-"1.21.10","1.21.9","1.21.8","1.21.7",
-"1.21.6","1.21.5","1.21.4","1.21.3",
-"1.21.2","1.21.1","1.21","1.20.6",
-"1.20.4","1.20.2","1.20.1","1.19.4",
-"1.19.2","1.18.2","1.16.5","1.12.2"
-];
+const JAVA_URL =
+"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
+
+const BEDROCK_URL =
+"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/bedrock/common/protocolVersions.json";
 
 let edition = "Java";
 let software = "Paper";
 let ram = "2";
 
+let javaVersions = [];
+let bedrockVersions = [];
+let javaLoaded = false;
+let bedrockLoaded = false;
+
 const softwareGrid = document.getElementById("softwareGrid");
 const versionSelect = document.getElementById("version");
+const versionStatus = document.getElementById("versionStatus");
 
 function renderSoftware(){
 softwareGrid.innerHTML = "";
 
 softwareOptions[edition].forEach(item=>{
 const button = document.createElement("button");
+
 button.className = "software" +
 (item.name === software ? " active" : "");
+
 button.innerHTML =
 `<strong>${item.name}</strong><small>${item.desc}</small>`;
 
@@ -368,27 +382,175 @@ updateSummary();
 
 softwareGrid.appendChild(button);
 });
-
 }
 
-function renderVersions(){
+function fillVersionOptions(){
 versionSelect.innerHTML = "";
+
+let list = [];
+
+if(edition === "Java"){
+if(!javaLoaded) return;
+
+const types = [
+{key:"release",label:"نسخه‌های رسمی"},
+{key:"snapshot",label:"نسخه‌های آزمایشی و Snapshot"},
+{key:"old_beta",label:"نسخه‌های Beta قدیمی"},
+{key:"old_alpha",label:"نسخه‌های Alpha قدیمی"}
+];
+
+types.forEach(type=>{
+const versions = javaVersions.filter(v=>v.type===type.key);
+
+if(!versions.length) return;
+
+const group = document.createElement("optgroup");
+group.label = type.label;
 
 versions.forEach(v=>{
 const option = document.createElement("option");
-option.value = v;
-option.textContent = "Minecraft " + v;
-versionSelect.appendChild(option);
+option.value = v.id;
+option.textContent = "Minecraft " + v.id;
+group.appendChild(option);
 });
 
-versionSelect.value = "1.21.1";
+versionSelect.appendChild(group);
+});
+
+const latest = javaVersions.find(v=>v.type==="release");
+
+if(latest){
+versionSelect.value = latest.id;
+}
+
+versionStatus.textContent =
+"تعداد نسخه‌های دریافت‌شده Java: " + javaVersions.length;
+
+}else{
+if(!bedrockLoaded) return;
+
+const group = document.createElement("optgroup");
+group.label = "نسخه‌های شناخته‌شده Bedrock";
+
+bedrockVersions.forEach(v=>{
+const option = document.createElement("option");
+option.value = v;
+option.textContent = "Minecraft " + v;
+group.appendChild(option);
+});
+
+versionSelect.appendChild(group);
+
+if(bedrockVersions.length){
+versionSelect.value = bedrockVersions[0];
+}
+
+versionStatus.textContent =
+"تعداد نسخه‌های موجود Bedrock در دیتابیس: " +
+bedrockVersions.length;
+}
+
 updateSummary();
+}
+
+async function loadJavaVersions(){
+try{
+const response = await fetch(JAVA_URL);
+
+if(!response.ok) throw new Error("Java version list unavailable");
+
+const data = await response.json();
+
+javaVersions = data.versions || [];
+
+if(!javaVersions.length) throw new Error("Empty Java version list");
+
+javaLoaded = true;
+
+if(edition === "Java"){
+fillVersionOptions();
+}
+
+}catch(error){
+console.error("Java versions:",error);
+
+if(edition === "Java"){
+versionSelect.innerHTML =
+'<option value="">دریافت نسخه‌های Java ناموفق بود</option>';
+
+versionStatus.textContent =
+"اتصال ناموفق بود. اینترنت را بررسی و صفحه را دوباره بارگذاری کن.";
+
+updateSummary();
+}
+}
+}
+
+async function loadBedrockVersions(){
+try{
+const response = await fetch(BEDROCK_URL);
+
+if(!response.ok) throw new Error("Bedrock version list unavailable");
+
+const data = await response.json();
+
+bedrockVersions = [
+...new Set(
+data
+.filter(v=>v.releaseType==="release")
+.map(v=>v.minecraftVersion)
+)
+];
+
+if(!bedrockVersions.length) throw new Error("Empty Bedrock list");
+
+bedrockLoaded = true;
+
+if(edition === "Bedrock"){
+fillVersionOptions();
+}
+
+}catch(error){
+console.error("Bedrock versions:",error);
+
+if(edition === "Bedrock"){
+versionSelect.innerHTML =
+'<option value="">دریافت نسخه‌های Bedrock ناموفق بود</option>';
+
+versionStatus.textContent =
+"دریافت فهرست Bedrock ناموفق بود. اینترنت را بررسی کن.";
+
+updateSummary();
+}
+}
+}
+
+function renderVersions(){
+versionSelect.innerHTML =
+'<option value="">در حال دریافت نسخه‌ها...</option>';
+
+versionStatus.textContent = "در حال دریافت فهرست نسخه‌ها...";
+
+if(edition === "Java"){
+if(javaLoaded){
+fillVersionOptions();
+}else{
+loadJavaVersions();
+}
+}else{
+if(bedrockLoaded){
+fillVersionOptions();
+}else{
+loadBedrockVersions();
+}
+}
 }
 
 function updateSummary(){
 document.getElementById("sumEdition").textContent = edition;
 document.getElementById("sumSoftware").textContent = software;
-document.getElementById("sumVersion").textContent = versionSelect.value;
+document.getElementById("sumVersion").textContent =
+versionSelect.value || "در حال دریافت...";
 document.getElementById("sumRam").textContent = ram + " GB";
 }
 
@@ -396,12 +558,14 @@ document.querySelectorAll("[data-edition]").forEach(button=>{
 button.addEventListener("click",()=>{
 edition = button.dataset.edition;
 
-document.querySelectorAll("[data-edition]").forEach(b=>
-b.classList.toggle("active",b===button)
-);
+document.querySelectorAll("[data-edition]").forEach(b=>{
+b.classList.toggle("active",b===button);
+});
 
 software = softwareOptions[edition][0].name;
+
 renderSoftware();
+renderVersions();
 updateSummary();
 });
 });
@@ -410,9 +574,9 @@ document.querySelectorAll("[data-ram]").forEach(button=>{
 button.addEventListener("click",()=>{
 ram = button.dataset.ram;
 
-document.querySelectorAll("[data-ram]").forEach(b=>
-b.classList.toggle("active",b===button)
-);
+document.querySelectorAll("[data-ram]").forEach(b=>{
+b.classList.toggle("active",b===button);
+});
 
 updateSummary();
 });
@@ -422,10 +586,10 @@ versionSelect.addEventListener("change",updateSummary);
 
 document.getElementById("createButton").addEventListener("click",()=>{
 const result = document.getElementById("result");
+
 result.style.display = "block";
-result.innerHTML =
-"تنظیمات شما با موفقیت انتخاب شد. " +
-"ساخت واقعی سرور هنوز فعال نشده است.";
+result.textContent =
+"تنظیمات شما با موفقیت انتخاب شد. ساخت واقعی سرور هنوز فعال نشده است.";
 });
 
 renderSoftware();
