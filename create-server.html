@@ -9,197 +9,67 @@
 
 <style>
 :root{
---bg:#090711;
---panel:#141020;
---panel2:#1b142b;
---purple:#8b5cf6;
---purple2:#a78bfa;
---text:#f7f3ff;
---muted:#aaa1bd;
---line:#302442;
---green:#5ee6a8;
+--bg:#090711;--panel:#141020;--panel2:#1b142b;
+--purple:#8b5cf6;--purple2:#a78bfa;
+--text:#f7f3ff;--muted:#aaa1bd;--line:#302442;
 }
 *{box-sizing:border-box}
 body{
-margin:0;
-background:radial-gradient(ellipse at 80% -10%,#38205e 0,transparent 36%),var(--bg);
-color:var(--text);
-font-family:Tahoma,Arial,sans-serif;
-line-height:1.8;
+margin:0;background:radial-gradient(ellipse at 80% -10%,#38205e 0,transparent 36%),var(--bg);
+color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.8;
 }
 a{text-decoration:none;color:inherit}
 button,select,input{font:inherit}
 .wrap{width:min(1000px,92%);margin:auto}
-header{
-position:sticky;top:0;z-index:5;
-background:#0b0813ef;
-border-bottom:1px solid var(--line);
-backdrop-filter:blur(12px);
-}
-.nav{
-display:flex;align-items:center;
-justify-content:space-between;
-padding:14px 0;gap:12px;
-}
-.brand{
-font-size:23px;font-weight:900;
-direction:ltr;
-}
+header{position:sticky;top:0;z-index:5;background:#0b0813ef;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
+.brand{font-size:23px;font-weight:900;direction:ltr}
 .brand span{color:var(--purple2)}
-.back{
-background:#211832;
-border:1px solid #493467;
-padding:8px 14px;
-border-radius:11px;
-font-size:13px;
-}
+.back{background:#211832;border:1px solid #493467;padding:8px 14px;border-radius:11px;font-size:13px}
 main{padding:40px 0 65px}
 .heading{text-align:center;margin-bottom:30px}
 .heading h1{font-size:clamp(28px,5vw,42px);margin:0 0 8px}
 .heading p{color:var(--muted);margin:0}
-.panel{
-background:linear-gradient(160deg,var(--panel2),var(--panel));
-border:1px solid var(--line);
-border-radius:20px;
-padding:23px;
-margin-bottom:18px;
-}
-.step-title{
-display:flex;align-items:center;
-gap:11px;margin-bottom:17px;
-}
-.number{
-width:35px;height:35px;
-display:grid;place-items:center;
-border-radius:11px;
-background:#39245a;color:#d9c8ff;
-font-weight:900;
-}
+.panel{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:20px;padding:23px;margin-bottom:18px}
+.step-title{display:flex;align-items:center;gap:11px;margin-bottom:17px}
+.number{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#39245a;color:#d9c8ff;font-weight:900}
 .step-title h2{font-size:18px;margin:0}
-.options{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-}
-.option{
-background:#100c1b;
-border:1px solid var(--line);
-border-radius:14px;
-padding:16px;
-cursor:pointer;
-transition:.2s;
-text-align:right;
-color:var(--text);
-width:100%;
-}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.option{background:#100c1b;border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;text-align:right;color:var(--text);width:100%;transition:.2s}
 .option:hover{border-color:#8961c7}
-.option.active{
-border-color:var(--purple2);
-background:#2a1b40;
-box-shadow:0 0 20px #8b5cf622;
-}
+.option.active{border-color:var(--purple2);background:#2a1b40;box-shadow:0 0 20px #8b5cf622}
 .option .emoji{font-size:27px;display:block}
 .option strong{display:block;font-size:16px}
 .option small{color:var(--muted);font-size:12px}
-.software-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-}
-.software{
-background:#100c1b;
-border:1px solid var(--line);
-border-radius:12px;
-padding:13px 8px;
-color:var(--text);
-cursor:pointer;
-text-align:center;
-}
-.software.active{
-background:#2a1b40;
-border-color:var(--purple2);
-}
+.software-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.software{background:#100c1b;border:1px solid var(--line);border-radius:12px;padding:13px 8px;color:var(--text);cursor:pointer;text-align:center}
+.software.active{background:#2a1b40;border-color:var(--purple2)}
 .software strong{display:block;font-size:14px}
 .software small{font-size:11px;color:var(--muted)}
 .field{margin-top:16px}
-.field label{
-display:block;margin-bottom:8px;
-font-size:14px;font-weight:bold;
-}
-select{
-width:100%;
-padding:13px;
-border-radius:12px;
-background:#100c1b;
-border:1px solid var(--line);
-color:white;
-outline:none;
-}
+.field label{display:block;margin-bottom:8px;font-size:14px;font-weight:bold}
+select{width:100%;padding:13px;border-radius:12px;background:#100c1b;border:1px solid var(--line);color:white;outline:none}
 select:focus{border-color:var(--purple2)}
-.ram-grid{
-display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-}
-.ram{
-background:#100c1b;
-border:1px solid var(--line);
-border-radius:12px;
-padding:13px 5px;
-text-align:center;
-color:white;cursor:pointer;
-}
-.ram.active{
-background:#2a1b40;border-color:var(--purple2);
-}
+.advanced{margin-top:14px;padding:13px;background:#100c1b;border:1px solid var(--line);border-radius:12px}
+.advanced label{display:flex;align-items:center;gap:9px;cursor:pointer;margin:0}
+.advanced input{width:18px;height:18px;accent-color:var(--purple)}
+.hint{color:var(--muted);font-size:12px;margin-top:7px}
+.ram-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ram{background:#100c1b;border:1px solid var(--line);border-radius:12px;padding:13px 5px;text-align:center;color:white;cursor:pointer}
+.ram.active{background:#2a1b40;border-color:var(--purple2)}
 .ram strong{display:block;font-size:17px}
 .ram small{font-size:11px;color:var(--muted)}
-.summary{
-background:#100c1b;
-border:1px solid #493467;
-border-radius:15px;
-padding:17px;
-}
+.summary{background:#100c1b;border:1px solid #493467;border-radius:15px;padding:17px}
 .summary h3{margin:0 0 12px}
-.summary-row{
-display:flex;justify-content:space-between;
-gap:10px;padding:7px 0;
-border-bottom:1px solid #302442;
-font-size:14px;
-}
-.summary-row:last-child{border:0}
+.summary-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #302442;font-size:14px}
+.summary-row:last-of-type{border:0}
 .summary-row span:first-child{color:var(--muted)}
-.submit{
-width:100%;margin-top:17px;
-padding:14px;border:0;border-radius:13px;
-background:linear-gradient(135deg,#7c3aed,#a78bfa);
-color:white;font-weight:900;cursor:pointer;
-font-size:16px;
-}
+.submit{width:100%;margin-top:17px;padding:14px;border:0;border-radius:13px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;font-weight:900;cursor:pointer;font-size:16px}
 .submit:hover{filter:brightness(1.1)}
-.notice{
-margin-top:15px;
-background:#211a12;
-border:1px solid #59442b;
-color:#e9d4ae;
-padding:13px;border-radius:12px;
-font-size:12px;
-}
-#versionStatus{
-color:var(--muted);
-font-size:12px;
-margin-top:7px;
-}
-#result{
-display:none;margin-top:15px;
-background:#12251e;
-border:1px solid #32664e;
-border-radius:12px;padding:14px;
-font-size:13px;
-}
-footer{
-border-top:1px solid var(--line);
-padding:22px 0;color:var(--muted);
-font-size:12px;text-align:center;
-}
+.notice{margin-top:15px;background:#211a12;border:1px solid #59442b;color:#e9d4ae;padding:13px;border-radius:12px;font-size:12px}
+#versionStatus{color:var(--muted);font-size:12px;margin-top:7px}
+#result{display:none;margin-top:15px;background:#12251e;border:1px solid #32664e;border-radius:12px;padding:14px;font-size:13px}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
 @media(max-width:650px){
 .options{grid-template-columns:1fr}
 .software-grid{grid-template-columns:repeat(2,1fr)}
@@ -210,7 +80,6 @@ font-size:12px;text-align:center;
 </head>
 
 <body>
-
 <header>
 <div class="wrap nav">
 <a class="brand" href="index.html">Block<span>Nova</span></a>
@@ -219,7 +88,6 @@ font-size:12px;text-align:center;
 </header>
 
 <main class="wrap">
-
 <div class="heading">
 <h1>ساخت سرور جدید 🚀</h1>
 <p>سرور ماینکرافت خودت را با تنظیمات دلخواه بساز.</p>
@@ -230,14 +98,12 @@ font-size:12px;text-align:center;
 <div class="number">۱</div>
 <h2>نوع سرور را انتخاب کن</h2>
 </div>
-
 <div class="options">
 <button class="option active" data-edition="Java">
 <span class="emoji">☕</span>
 <strong>Java Edition</strong>
 <small>مناسب کامپیوتر و لانچرهای جاوا</small>
 </button>
-
 <button class="option" data-edition="Bedrock">
 <span class="emoji">📱</span>
 <strong>Bedrock Edition</strong>
@@ -257,9 +123,17 @@ font-size:12px;text-align:center;
 <div class="field">
 <label for="version">نسخه ماینکرافت</label>
 <select id="version">
-<option>در حال دریافت نسخه‌ها...</option>
+<option value="">در حال دریافت نسخه‌ها...</option>
 </select>
 <div id="versionStatus">در حال اتصال به فهرست نسخه‌ها...</div>
+</div>
+
+<div class="advanced" id="advancedBox">
+<label>
+<input type="checkbox" id="showAdvanced">
+نمایش نسخه‌های پیشرفته (Snapshot، Beta و Alpha)
+</label>
+<div class="hint">این نسخه‌ها برای آزمایش و تجربه نسخه‌های قدیمی هستند و ممکن است برای همه نرم‌افزارها قابل استفاده نباشند.</div>
 </div>
 </section>
 
@@ -268,20 +142,11 @@ font-size:12px;text-align:center;
 <div class="number">۳</div>
 <h2>حافظه RAM سرور</h2>
 </div>
-
 <div class="ram-grid">
-<button class="ram active" data-ram="2">
-<strong>2 GB</strong><small>رم سرور</small>
-</button>
-<button class="ram" data-ram="4">
-<strong>4 GB</strong><small>رم سرور</small>
-</button>
-<button class="ram" data-ram="6">
-<strong>6 GB</strong><small>رم سرور</small>
-</button>
-<button class="ram" data-ram="8">
-<strong>8 GB</strong><small>رم سرور</small>
-</button>
+<button class="ram active" data-ram="2"><strong>2 GB</strong><small>رم سرور</small></button>
+<button class="ram" data-ram="4"><strong>4 GB</strong><small>رم سرور</small></button>
+<button class="ram" data-ram="6"><strong>6 GB</strong><small>رم سرور</small></button>
+<button class="ram" data-ram="8"><strong>8 GB</strong><small>رم سرور</small></button>
 </div>
 </section>
 
@@ -290,313 +155,307 @@ font-size:12px;text-align:center;
 <div class="number">۴</div>
 <h2>خلاصه تنظیمات سرور</h2>
 </div>
-
 <div class="summary">
 <h3>مشخصات سرور شما</h3>
-
-<div class="summary-row">
-<span>نوع بازی</span><strong id="sumEdition">Java</strong>
-</div>
-<div class="summary-row">
-<span>نرم‌افزار</span><strong id="sumSoftware">Paper</strong>
-</div>
-<div class="summary-row">
-<span>نسخه بازی</span><strong id="sumVersion">در حال دریافت</strong>
-</div>
-<div class="summary-row">
-<span>حافظه RAM</span><strong id="sumRam">2 GB</strong>
-</div>
-
-<button class="submit" id="createButton">
-تأیید تنظیمات سرور
-</button>
-
+<div class="summary-row"><span>نوع بازی</span><strong id="sumEdition">Java</strong></div>
+<div class="summary-row"><span>نرم‌افزار</span><strong id="sumSoftware">Paper</strong></div>
+<div class="summary-row"><span>نسخه بازی</span><strong id="sumVersion">در حال دریافت</strong></div>
+<div class="summary-row"><span>حافظه RAM</span><strong id="sumRam">2 GB</strong></div>
+<button class="submit" id="createButton">تأیید تنظیمات سرور</button>
 <div id="result"></div>
 </div>
-
 <div class="notice">
-⚠️ این صفحه فعلاً نمایشی است. انتخاب نسخه و تنظیمات کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند. همچنین پشتیبانی واقعی هر نسخه به نرم‌افزار و میزبان بستگی دارد.
+⚠️ این صفحه فعلاً نمایشی است. انتخاب‌ها و فهرست نسخه‌ها کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند. نمایش یک نسخه به معنی تضمین نصب آن روی میزبان نیست.
 </div>
 </section>
-
 </main>
 
-<footer>
-© 2026 BlockNova — تمام حقوق محفوظ است.
-</footer>
+<footer>© 2026 BlockNova — تمام حقوق محفوظ است.</footer>
 
 <script>
 const softwareOptions = {
-Java: [
+Java:[
 {name:"Vanilla",desc:"نسخه رسمی و ساده"},
 {name:"Paper",desc:"مناسب پلاگین‌ها"},
 {name:"Spigot",desc:"سرور پلاگین‌پذیر"},
-{name:"Purpur",desc:"امکانات و تنظیمات بیشتر"},
+{name:"Purpur",desc:"امکانات بیشتر"},
 {name:"Fabric",desc:"مناسب مودها"},
 {name:"Forge",desc:"مودهای ماینکرافت"},
 {name:"NeoForge",desc:"مودلودر جدید"}
 ],
-Bedrock: [
+Bedrock:[
 {name:"Bedrock Dedicated Server",desc:"سرور رسمی بدراک"},
 {name:"PocketMine-MP",desc:"سرور پلاگین‌پذیر"},
 {name:"Nukkit",desc:"سرور بدراک"}
 ]
 };
 
-const JAVA_URL =
-"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
+const URLS={
+java:"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+paper:"https://api.papermc.io/v2/projects/paper",
+purpur:"https://api.purpurmc.org/v2/purpur",
+fabric:"https://meta.fabricmc.net/v2/versions/game",
+forge:"https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json",
+bedrock:"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/bedrock/common/protocolVersions.json"
+};
 
-const BEDROCK_URL =
-"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/bedrock/common/protocolVersions.json";
+let edition="Java";
+let software="Paper";
+let ram="2";
 
-let edition = "Java";
-let software = "Paper";
-let ram = "2";
+let javaVersions=[];
+let bedrockVersions=[];
+let compatibility={};
+let advanced=false;
 
-let javaVersions = [];
-let bedrockVersions = [];
-let javaLoaded = false;
-let bedrockLoaded = false;
+const softwareGrid=document.getElementById("softwareGrid");
+const versionSelect=document.getElementById("version");
+const versionStatus=document.getElementById("versionStatus");
 
-const softwareGrid = document.getElementById("softwareGrid");
-const versionSelect = document.getElementById("version");
-const versionStatus = document.getElementById("versionStatus");
+async function getJSON(url){
+const response=await fetch(url);
+if(!response.ok) throw new Error("HTTP "+response.status);
+return response.json();
+}
 
 function renderSoftware(){
-softwareGrid.innerHTML = "";
-
+softwareGrid.innerHTML="";
 softwareOptions[edition].forEach(item=>{
-const button = document.createElement("button");
-
-button.className = "software" +
-(item.name === software ? " active" : "");
-
-button.innerHTML =
-`<strong>${item.name}</strong><small>${item.desc}</small>`;
-
+const button=document.createElement("button");
+button.className="software"+(item.name===software?" active":"");
+button.innerHTML=`<strong>${item.name}</strong><small>${item.desc}</small>`;
 button.addEventListener("click",()=>{
-software = item.name;
+software=item.name;
 renderSoftware();
+renderVersions();
 updateSummary();
 });
-
 softwareGrid.appendChild(button);
 });
 }
 
-function fillVersionOptions(){
-versionSelect.innerHTML = "";
+async function loadJava(){
+try{
+const data=await getJSON(URLS.java);
+javaVersions=data.versions||[];
+if(!javaVersions.length) throw new Error("No Java versions");
+}catch(error){
+console.error(error);
+versionStatus.textContent="دریافت نسخه‌های Java ناموفق بود. اتصال اینترنت را بررسی کن.";
+}
+}
 
-let list = [];
+async function loadCompatibility(){
+const jobs=[
+["Paper",async()=>{
+const d=await getJSON(URLS.paper);
+return d.versions||[];
+}],
+["Purpur",async()=>{
+const d=await getJSON(URLS.purpur);
+return d.versions||[];
+}],
+["Fabric",async()=>{
+const d=await getJSON(URLS.fabric);
+return d.filter(v=>v.stable).map(v=>v.version);
+}],
+["Forge",async()=>{
+const d=await getJSON(URLS.forge);
+const keys=Object.keys(d.promos||{});
+return [...new Set(keys.map(k=>k.replace(/-(recommended|latest)$/,"")))];
+}]
+];
 
-if(edition === "Java"){
-if(!javaLoaded) return;
+await Promise.all(jobs.map(async([name,fn])=>{
+try{
+compatibility[name]=await fn();
+}catch(error){
+console.warn("Compatibility list unavailable:",name,error);
+compatibility[name]=null;
+}
+}));
+}
 
-const types = [
+function getJavaList(){
+let list=javaVersions.slice();
+
+if(!advanced){
+list=list.filter(v=>v.type==="release");
+}
+
+if(software==="Vanilla"){
+return list;
+}
+
+if(software==="Paper"||software==="Purpur"||software==="Fabric"){
+const supported=compatibility[software];
+if(!supported) return list.filter(v=>v.type==="release");
+return list.filter(v=>supported.includes(v.id));
+}
+
+if(software==="Forge"){
+const supported=compatibility.Forge;
+if(!supported) return list.filter(v=>v.type==="release");
+return list.filter(v=>supported.includes(v.id));
+}
+
+// برای Spigot و NeoForge فهرست رسمی نمایش داده می‌شود.
+// بررسی قطعی سازگاری آن‌ها باید در مرحله اتصال نصب‌کننده انجام شود.
+return list;
+}
+
+function renderVersions(){
+versionSelect.innerHTML="";
+let versions=[];
+
+if(edition==="Java"){
+versions=getJavaList();
+
+const categories=[
 {key:"release",label:"نسخه‌های رسمی"},
 {key:"snapshot",label:"نسخه‌های آزمایشی و Snapshot"},
 {key:"old_beta",label:"نسخه‌های Beta قدیمی"},
 {key:"old_alpha",label:"نسخه‌های Alpha قدیمی"}
 ];
 
-types.forEach(type=>{
-const versions = javaVersions.filter(v=>v.type===type.key);
+categories.forEach(category=>{
+const groupItems=versions.filter(v=>v.type===category.key);
+if(!groupItems.length)return;
 
-if(!versions.length) return;
+const group=document.createElement("optgroup");
+group.label=category.label;
 
-const group = document.createElement("optgroup");
-group.label = type.label;
+groupItems.forEach(v=>{
+const option=document.createElement("option");
+option.value=v.id;
+option.textContent="Minecraft "+v.id;
+group.appendChild(option);
+});
+
+versionSelect.appendChild(group);
+});
+
+const latest=versions.find(v=>v.type==="release");
+if(latest)versionSelect.value=latest.id;
+
+versionStatus.textContent=versions.length
++" نسخه متناسب با فهرست انتخابی دریافت شد.";
+
+if(["Spigot","NeoForge"].includes(software)){
+versionStatus.textContent+=" سازگاری دقیق این نرم‌افزار باید هنگام نصب بررسی شود.";
+}
+
+}else{
+versions=bedrockVersions;
+
+const group=document.createElement("optgroup");
+group.label="نسخه‌های Bedrock";
 
 versions.forEach(v=>{
-const option = document.createElement("option");
-option.value = v.id;
-option.textContent = "Minecraft " + v.id;
-group.appendChild(option);
-});
-
-versionSelect.appendChild(group);
-});
-
-const latest = javaVersions.find(v=>v.type==="release");
-
-if(latest){
-versionSelect.value = latest.id;
-}
-
-versionStatus.textContent =
-"تعداد نسخه‌های دریافت‌شده Java: " + javaVersions.length;
-
-}else{
-if(!bedrockLoaded) return;
-
-const group = document.createElement("optgroup");
-group.label = "نسخه‌های شناخته‌شده Bedrock";
-
-bedrockVersions.forEach(v=>{
-const option = document.createElement("option");
-option.value = v;
-option.textContent = "Minecraft " + v;
+const option=document.createElement("option");
+option.value=v;
+option.textContent="Minecraft "+v;
 group.appendChild(option);
 });
 
 versionSelect.appendChild(group);
 
-if(bedrockVersions.length){
-versionSelect.value = bedrockVersions[0];
+if(versions.length){
+versionSelect.value=versions[0];
 }
 
-versionStatus.textContent =
-"تعداد نسخه‌های موجود Bedrock در دیتابیس: " +
-bedrockVersions.length;
+versionStatus.textContent=versions.length
++" نسخه Bedrock در فهرست موجود است.";
+}
+
+if(!versions.length){
+const option=document.createElement("option");
+option.value="";
+option.textContent="نسخه‌ای دریافت نشد";
+versionSelect.appendChild(option);
 }
 
 updateSummary();
 }
 
-async function loadJavaVersions(){
+async function loadBedrock(){
 try{
-const response = await fetch(JAVA_URL);
+const data=await getJSON(URLS.bedrock);
+let raw=Array.isArray(data)?data:(data.versions||data.protocolVersions||[]);
 
-if(!response.ok) throw new Error("Java version list unavailable");
+bedrockVersions=[...new Set(raw.map(v=>{
+if(typeof v==="string")return v;
+return v.minecraftVersion||v.version||v.minecraft_version||"";
+}).filter(v=>/^\d+\.\d+(\.\d+)?$/.test(v)))];
 
-const data = await response.json();
-
-javaVersions = data.versions || [];
-
-if(!javaVersions.length) throw new Error("Empty Java version list");
-
-javaLoaded = true;
-
-if(edition === "Java"){
-fillVersionOptions();
+bedrockVersions.sort((a,b)=>{
+const aa=a.split(".").map(Number);
+const bb=b.split(".").map(Number);
+for(let i=0;i<Math.max(aa.length,bb.length);i++){
+if((aa[i]||0)!==(bb[i]||0))return (bb[i]||0)-(aa[i]||0);
 }
+return 0;
+});
 
+if(!bedrockVersions.length)throw new Error("No Bedrock versions");
 }catch(error){
-console.error("Java versions:",error);
-
-if(edition === "Java"){
-versionSelect.innerHTML =
-'<option value="">دریافت نسخه‌های Java ناموفق بود</option>';
-
-versionStatus.textContent =
-"اتصال ناموفق بود. اینترنت را بررسی و صفحه را دوباره بارگذاری کن.";
-
-updateSummary();
-}
-}
-}
-
-async function loadBedrockVersions(){
-try{
-const response = await fetch(BEDROCK_URL);
-
-if(!response.ok) throw new Error("Bedrock version list unavailable");
-
-const data = await response.json();
-
-bedrockVersions = [
-...new Set(
-data
-.filter(v=>v.releaseType==="release")
-.map(v=>v.minecraftVersion)
-)
-];
-
-if(!bedrockVersions.length) throw new Error("Empty Bedrock list");
-
-bedrockLoaded = true;
-
-if(edition === "Bedrock"){
-fillVersionOptions();
-}
-
-}catch(error){
-console.error("Bedrock versions:",error);
-
-if(edition === "Bedrock"){
-versionSelect.innerHTML =
-'<option value="">دریافت نسخه‌های Bedrock ناموفق بود</option>';
-
-versionStatus.textContent =
-"دریافت فهرست Bedrock ناموفق بود. اینترنت را بررسی کن.";
-
-updateSummary();
-}
-}
-}
-
-function renderVersions(){
-versionSelect.innerHTML =
-'<option value="">در حال دریافت نسخه‌ها...</option>';
-
-versionStatus.textContent = "در حال دریافت فهرست نسخه‌ها...";
-
-if(edition === "Java"){
-if(javaLoaded){
-fillVersionOptions();
-}else{
-loadJavaVersions();
-}
-}else{
-if(bedrockLoaded){
-fillVersionOptions();
-}else{
-loadBedrockVersions();
-}
+console.error(error);
+versionStatus.textContent="دریافت خودکار Bedrock ناموفق بود. فهرست نسخه‌ها در دسترس نیست.";
 }
 }
 
 function updateSummary(){
-document.getElementById("sumEdition").textContent = edition;
-document.getElementById("sumSoftware").textContent = software;
-document.getElementById("sumVersion").textContent =
-versionSelect.value || "در حال دریافت...";
-document.getElementById("sumRam").textContent = ram + " GB";
+document.getElementById("sumEdition").textContent=edition;
+document.getElementById("sumSoftware").textContent=software;
+document.getElementById("sumVersion").textContent=versionSelect.value||"انتخاب نشده";
+document.getElementById("sumRam").textContent=ram+" GB";
 }
 
 document.querySelectorAll("[data-edition]").forEach(button=>{
 button.addEventListener("click",()=>{
-edition = button.dataset.edition;
-
+edition=button.dataset.edition;
 document.querySelectorAll("[data-edition]").forEach(b=>{
 b.classList.toggle("active",b===button);
 });
-
-software = softwareOptions[edition][0].name;
-
+software=softwareOptions[edition][0].name;
 renderSoftware();
 renderVersions();
-updateSummary();
 });
 });
 
 document.querySelectorAll("[data-ram]").forEach(button=>{
 button.addEventListener("click",()=>{
-ram = button.dataset.ram;
-
+ram=button.dataset.ram;
 document.querySelectorAll("[data-ram]").forEach(b=>{
 b.classList.toggle("active",b===button);
 });
-
 updateSummary();
 });
+});
+
+document.getElementById("showAdvanced").addEventListener("change",event=>{
+advanced=event.target.checked;
+renderVersions();
 });
 
 versionSelect.addEventListener("change",updateSummary);
 
 document.getElementById("createButton").addEventListener("click",()=>{
-const result = document.getElementById("result");
-
-result.style.display = "block";
-result.textContent =
-"تنظیمات شما با موفقیت انتخاب شد. ساخت واقعی سرور هنوز فعال نشده است.";
+const result=document.getElementById("result");
+result.style.display="block";
+result.textContent="تنظیمات شما با موفقیت انتخاب شد. ساخت واقعی سرور هنوز فعال نشده است.";
 });
 
+async function start(){
 renderSoftware();
+versionStatus.textContent="در حال دریافت فهرست نسخه‌ها...";
+await Promise.all([loadJava(),loadBedrock(),loadCompatibility()]);
 renderVersions();
 updateSummary();
-</script>
+}
 
+start();
+</script>
 </body>
-  </html>
-  
+                                                                              </html>
+                                                                              
