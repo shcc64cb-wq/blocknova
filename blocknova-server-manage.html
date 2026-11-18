@@ -11,7 +11,7 @@
 :root{
  --bg:#090711;--panel:#171226;--purple:#8b5cf6;
  --purple2:#b69aff;--text:#f8f5ff;--muted:#aaa0bd;
- --line:#382b50;--green:#42d9a0;--yellow:#facc15;--red:#fb7185;
+ --line:#382b50;--green:#42d9a0;--red:#fb7185;
 }
 *{box-sizing:border-box}
 body{
@@ -50,7 +50,7 @@ main{padding:30px 0 65px}
 .section-icon{
  width:42px;height:42px;display:grid;place-items:center;
  border-radius:13px;background:linear-gradient(135deg,#7138d0,#a78bfa);
- font-size:20px
+ font-size:20px;flex-shrink:0
 }
 .section-title h2{font-size:16px;margin:0}
 .section-title p{font-size:11px;color:var(--muted);margin:2px 0}
@@ -90,6 +90,7 @@ main{padding:30px 0 65px}
  color:white;font-weight:bold;font-size:12px;cursor:pointer
 }
 .btn.secondary{background:#302442;border:1px solid #4b3965}
+.btn.danger{background:#451c29;border:1px solid #713347;color:#fda4af}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .field{margin-top:15px}
 .field label{display:block;font-size:12px;margin-bottom:7px;color:#ddd0f5}
@@ -101,9 +102,7 @@ main{padding:30px 0 65px}
  border-color:var(--purple2);box-shadow:0 0 0 3px #8b5cf622
 }
 .field select option{background:#171226;color:white}
-.settings-grid{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px
-}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .toggle-row{
  display:flex;align-items:center;justify-content:space-between;gap:12px;
  padding:14px;margin-top:14px;border:1px solid #ffffff12;
@@ -129,6 +128,17 @@ main{padding:30px 0 65px}
 }
 .message.error{color:#fda4af;background:#351925;border-color:#713347}
 .message.success{color:#86efac;background:#153328;border-color:#34795e}
+.player-list{display:grid;gap:10px;margin-top:18px}
+.player{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:13px;border:1px solid #ffffff12;border-radius:12px;background:#ffffff06
+}
+.player-name{font-weight:bold;font-size:13px;direction:ltr;text-align:left;overflow-wrap:anywhere}
+.player-date{font-size:10px;color:var(--muted)}
+.empty{
+ padding:20px;text-align:center;border:1px dashed #55436d;
+ border-radius:12px;color:var(--muted);font-size:12px
+}
 .loading{
  width:20px;height:20px;border:2px solid #ffffff33;
  border-top-color:white;border-radius:50%;display:inline-block;
@@ -149,6 +159,7 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
  .server-name{font-size:20px}
  .nav{padding:12px 0}.logo{font-size:21px}
  .settings-grid{grid-template-columns:1fr}
+ .player{align-items:flex-start}
 }
 </style>
 </head>
@@ -301,6 +312,44 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
   </div>
  </section>
 
+ <!-- مدیریت بازیکنان مجاز -->
+ <section class="panel">
+  <div class="section-title">
+   <div class="section-icon">🔒</div>
+   <div>
+    <h2>مدیریت بازیکنان مجاز</h2>
+    <p>بازیکنانی را که اجازه ورود به سرور دارند مدیریت کن.</p>
+   </div>
+  </div>
+
+  <div class="field">
+   <label for="playerName">نام کاربری Minecraft</label>
+   <input id="playerName" type="text" maxlength="16"
+    placeholder="مثلاً Steve" autocomplete="off"
+    dir="ltr" style="text-align:left">
+  </div>
+
+  <div class="actions">
+   <button class="btn" id="addPlayer">＋ افزودن بازیکن</button>
+   <button class="btn secondary" id="refreshPlayers">↻ بروزرسانی فهرست</button>
+  </div>
+
+  <div style="margin-top:20px">
+   <h3 style="font-size:14px;margin:0 0 12px">
+    فهرست بازیکنان
+    <span id="playerCount" style="color:var(--purple2)">(۰)</span>
+   </h3>
+   <div id="playerList" class="player-list">
+    <div class="empty">در حال دریافت فهرست...</div>
+   </div>
+  </div>
+
+  <div class="notice">
+   ⚠️ نام بازیکنان در حساب شما ذخیره می‌شود.
+   برای اعمال واقعی Whitelist باید بعداً این بخش به سرور Minecraft متصل شود.
+  </div>
+ </section>
+
  <section class="panel">
   <div class="section-title">
    <div class="section-icon">⚙️</div>
@@ -351,6 +400,7 @@ const serverContent=$("serverContent");
 const refresh=$("refresh");
 const renameButton=$("renameButton");
 const saveSettings=$("saveSettings");
+const addPlayerButton=$("addPlayer");
 
 let currentServerId="";
 let currentUserId="";
@@ -363,10 +413,8 @@ function showMessage(text,type=""){
 
 function statusText(status){
  const values={
-  active:"فعال",
-  waiting:"در انتظار اتصال",
-  stopped:"متوقف‌شده",
-  pending:"در انتظار",
+  active:"فعال",waiting:"در انتظار اتصال",
+  stopped:"متوقف‌شده",pending:"در انتظار",
   creating:"در حال ساخت"
  };
  return values[status]||status||"نامشخص";
@@ -407,6 +455,59 @@ async function loadSettings(){
  $("difficulty").value=data.difficulty||"normal";
  $("pvp").checked=data.pvp??true;
  $("whitelist").checked=data.whitelist??false;
+}
+
+async function loadPlayers(){
+ const list=$("playerList");
+ list.innerHTML='<div class="empty">در حال دریافت فهرست...</div>';
+
+ const {data,error}=await supabase
+  .from("whitelist_players")
+  .select("id,player_name,created_at")
+  .eq("server_id",currentServerId)
+  .eq("user_id",currentUserId)
+  .order("created_at",{ascending:false});
+
+ if(error)throw error;
+
+ $("playerCount").textContent="("+data.length+")";
+ list.replaceChildren();
+
+ if(data.length===0){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent="هنوز بازیکنی به فهرست اضافه نشده است.";
+  list.appendChild(empty);
+  return;
+ }
+
+ data.forEach(player=>{
+  const row=document.createElement("div");
+  row.className="player";
+
+  const details=document.createElement("div");
+
+  const name=document.createElement("div");
+  name.className="player-name";
+  name.textContent=player.player_name;
+
+  const date=document.createElement("div");
+  date.className="player-date";
+  date.textContent=player.created_at
+   ?new Date(player.created_at).toLocaleDateString("fa-IR")
+   :"";
+
+  details.append(name,date);
+
+  const remove=document.createElement("button");
+  remove.className="btn danger";
+  remove.textContent="حذف";
+  remove.type="button";
+  remove.addEventListener("click",()=>deletePlayer(player.id,remove));
+
+  row.append(details,remove);
+  list.appendChild(row);
+ });
 }
 
 async function loadServer(){
@@ -472,9 +573,10 @@ async function loadServer(){
   status.className="status "+statusClass(data.status);
 
   await loadSettings();
+  await loadPlayers();
 
   serverContent.hidden=false;
-  showMessage("اطلاعات سرور و تنظیمات با موفقیت دریافت شدند.","success");
+  showMessage("اطلاعات سرور و بازیکنان با موفقیت دریافت شدند.","success");
 
  }catch(error){
   console.error(error);
@@ -485,6 +587,7 @@ async function loadServer(){
  }
 }
 
+// تغییر نام سرور
 renameButton.addEventListener("click",async()=>{
  if(!currentServerId||!currentUserId)return;
 
@@ -512,10 +615,7 @@ renameButton.addEventListener("click",async()=>{
    .select("id,name");
 
   if(error)throw error;
-
-  if(!data||data.length===0){
-   throw new Error("نام سرور ذخیره نشد. دسترسی ویرایش را بررسی کنیم.");
-  }
+  if(!data||data.length===0)throw new Error("نام سرور ذخیره نشد.");
 
   $("serverName").textContent=data[0].name;
   $("newServerName").value=data[0].name;
@@ -529,6 +629,7 @@ renameButton.addEventListener("click",async()=>{
  }
 });
 
+// ذخیره تنظیمات بازی
 saveSettings.addEventListener("click",async()=>{
  if(!currentServerId||!currentUserId)return;
 
@@ -556,7 +657,6 @@ saveSettings.addEventListener("click",async()=>{
   showMessage("تنظیمات سرور با موفقیت ذخیره شدند.","success");
 
  }catch(error){
-  console.error(error);
   showMessage("خطا در ذخیره تنظیمات: "+error.message,"error");
  }finally{
   saveSettings.disabled=false;
@@ -572,20 +672,8 @@ $("resetSettings").addEventListener("click",()=>{
  );
 });
 
-$("copyId").addEventListener("click",async()=>{
- if(!currentServerId)return;
+// افزودن بازیکن
+addPlayerButton.addEventListener("click",async()=>{
+ if(!currentServerId||!currentUserId)return;
 
- try{
-  await navigator.clipboard.writeText(String(currentServerId));
-  $("copyId").textContent="✓ شناسه کپی شد";
- }catch(error){
-  window.prompt("شناسه سرور:",String(currentServerId));
- }
-});
-
-refresh.addEventListener("click",loadServer);
-loadServer();
-</script>
-</body>
- </html>
- 
+ const playerNam
