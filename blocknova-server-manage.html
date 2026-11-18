@@ -4,13 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090811">
+<meta name="theme-color" content="#090711">
 <title>مدیریت سرور | BlockNova</title>
 
 <style>
 :root{
  --bg:#090711;
  --panel:#171226;
+ --panel2:#100d1b;
  --purple:#8b5cf6;
  --purple2:#b69aff;
  --text:#f8f5ff;
@@ -18,153 +19,274 @@
  --line:#382b50;
  --green:#42d9a0;
  --red:#fb7185;
+ --gold:#f5cc78;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
  margin:0;min-height:100vh;
- background:radial-gradient(ellipse at 80% 0%,#39205b55,transparent 38%),var(--bg);
+ background:
+ radial-gradient(ellipse at 80% 0%,#49287955,transparent 35%),
+ radial-gradient(ellipse at 0% 50%,#29184933,transparent 40%),
+ var(--bg);
  color:var(--text);
  font-family:Tahoma,Arial,sans-serif;
  line-height:1.8;
 }
 button,input{font:inherit}
 a{text-decoration:none;color:inherit}
-.wrap{width:min(1000px,92%);margin:auto}
+.wrap{width:min(1050px,92%);margin:auto}
+
 header{
- position:sticky;top:0;z-index:10;
+ position:sticky;top:0;z-index:20;
  background:#0c0916ed;
  border-bottom:1px solid #ffffff12;
- backdrop-filter:blur(15px);
+ backdrop-filter:blur(16px);
 }
 .nav{
  display:flex;justify-content:space-between;
- align-items:center;gap:12px;padding:15px 0;
+ align-items:center;gap:12px;padding:14px 0;
 }
-.logo{font-size:25px;font-weight:1000;direction:ltr}
+.logo{
+ font-size:25px;font-weight:1000;
+ direction:ltr;letter-spacing:-1px;
+}
 .logo span{color:var(--purple2)}
 .back{
- padding:9px 14px;border:1px solid var(--line);
+ padding:9px 15px;border:1px solid var(--line);
  border-radius:12px;background:#ffffff08;
  color:#ddd0f5;font-size:12px;
+ transition:.2s;
 }
-main{padding:30px 0 65px}
+.back:hover{background:#ffffff12;border-color:var(--purple)}
+
+main{padding:28px 0 65px}
+
 .hero{
- padding:27px;margin-bottom:20px;
- border:1px solid #7650b755;border-radius:22px;
- background:linear-gradient(120deg,#302044,#151021);
+ position:relative;overflow:hidden;
+ padding:28px;margin-bottom:20px;
+ border:1px solid #7650b766;border-radius:24px;
+ background:linear-gradient(125deg,#302044,#171126 65%,#211638);
+ box-shadow:0 15px 45px #0003;
 }
-.eyebrow{color:var(--purple2);font-size:11px}
+.hero:after{
+ content:"";position:absolute;
+ width:180px;height:180px;border-radius:50%;
+ background:#9b6bff18;left:-50px;top:-65px;
+ filter:blur(5px);
+}
+.eyebrow{
+ color:var(--purple2);font-size:10px;
+ letter-spacing:1.5px;direction:ltr;
+}
 .hero h1{font-size:27px;margin:8px 0}
 .hero p{color:var(--muted);font-size:12px;margin:0}
+.hero-top{
+ display:flex;align-items:center;
+ justify-content:space-between;gap:15px;
+}
+.hero-icon{
+ width:58px;height:58px;flex-shrink:0;
+ display:grid;place-items:center;
+ border-radius:18px;
+ background:linear-gradient(135deg,#7138d0,#a78bfa);
+ font-size:27px;
+ box-shadow:0 8px 25px #8b5cf644;
+}
+
+.quick-nav{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:10px;margin:20px 0;
+}
+.quick-link{
+ display:flex;align-items:center;justify-content:center;
+ gap:8px;padding:12px 8px;
+ border:1px solid var(--line);
+ border-radius:13px;background:#171226cc;
+ color:#d9c9f4;font-size:11px;
+ transition:.2s;
+}
+.quick-link:hover{
+ border-color:var(--purple);
+ background:#241a37;
+ transform:translateY(-2px);
+}
+
+.message{
+ padding:14px 16px;border-radius:13px;
+ background:#211832;border:1px solid var(--line);
+ color:#d8c5ff;font-size:12px;
+ overflow-wrap:anywhere;margin-bottom:18px;
+}
+.message.error{color:#fda4af;background:#351925;border-color:#713347}
+.message.success{color:#86efac;background:#153328;border-color:#34795e}
+
 .panel{
- padding:22px;margin-bottom:18px;
- border:1px solid var(--line);border-radius:19px;
+ padding:23px;margin-bottom:18px;
+ border:1px solid var(--line);border-radius:21px;
  background:linear-gradient(145deg,#1b152b,#110d1c);
  box-shadow:0 12px 35px #0003;
+ scroll-margin-top:90px;
 }
 .section-title{
- display:flex;align-items:center;gap:12px;margin-bottom:18px;
+ display:flex;align-items:center;
+ gap:13px;margin-bottom:20px;
 }
 .section-icon{
- width:42px;height:42px;display:grid;place-items:center;
- border-radius:13px;background:linear-gradient(135deg,#7138d0,#a78bfa);
- font-size:20px;flex-shrink:0;
+ width:46px;height:46px;display:grid;
+ place-items:center;border-radius:15px;
+ background:linear-gradient(135deg,#7138d0,#a78bfa);
+ font-size:21px;flex-shrink:0;
+ box-shadow:0 7px 20px #8b5cf633;
 }
 .section-title h2{font-size:16px;margin:0}
 .section-title p{font-size:11px;color:var(--muted);margin:2px 0}
-.server-name{font-size:24px;font-weight:bold;overflow-wrap:anywhere}
+
+.server-heading{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:12px;flex-wrap:wrap;
+ padding:18px;border-radius:16px;
+ border:1px solid #ffffff12;
+ background:linear-gradient(110deg,#211832,#151020);
+}
+.server-name{
+ font-size:23px;font-weight:bold;
+ overflow-wrap:anywhere;
+}
 .status{
  display:inline-flex;align-items:center;gap:7px;
  padding:6px 13px;border-radius:30px;
  font-size:11px;background:#302641;color:#d8c5ff;
+ white-space:nowrap;
 }
-.status::before{
+.status:before{
  content:"";width:7px;height:7px;
  border-radius:50%;background:currentColor;
 }
 .status.active{background:#123b2d;color:#86efac}
 .status.waiting{background:#453517;color:#fcd34d}
 .status.stopped{background:#451c29;color:#fda4af}
+
 .info{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin-top:15px;
 }
 .item{
- min-width:0;padding:15px;border:1px solid #ffffff0c;
- border-radius:13px;background:#ffffff06;
+ min-width:0;padding:15px;
+ border:1px solid #ffffff0c;
+ border-radius:14px;background:#ffffff06;
+ transition:.2s;
 }
+.item:hover{border-color:#8b5cf644;background:#ffffff0a}
 .item small{
- display:block;color:var(--muted);font-size:10px;margin-bottom:7px;
+ display:block;color:var(--muted);
+ font-size:10px;margin-bottom:7px;
 }
-.item b{display:block;font-size:14px;overflow-wrap:anywhere}
+.item b{
+ display:block;font-size:14px;
+ overflow-wrap:anywhere;
+}
 .ltr{direction:ltr;text-align:right}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+
+.actions{
+ display:flex;flex-wrap:wrap;
+ gap:10px;margin-top:17px;
+}
 .btn{
- display:inline-flex;justify-content:center;align-items:center;
- gap:7px;padding:11px 16px;border:0;border-radius:11px;
- background:var(--purple);color:white;font-weight:bold;
+ display:inline-flex;justify-content:center;
+ align-items:center;gap:7px;
+ padding:11px 17px;border:1px solid transparent;
+ border-radius:12px;
+ background:linear-gradient(135deg,#8b5cf6,#7041d4);
+ color:white;font-weight:bold;
  font-size:12px;cursor:pointer;
+ transition:.2s;
 }
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
 .btn.secondary{
- background:#302442;border:1px solid #4b3965;
+ background:#302442;border-color:#4b3965;
 }
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
 .field{margin-top:15px}
 .field label{
- display:block;font-size:12px;margin-bottom:7px;color:#ddd0f5;
+ display:block;font-size:12px;
+ margin-bottom:8px;color:#ddd0f5;
 }
 .field input{
- width:100%;padding:13px;border:1px solid #49385f;
- border-radius:11px;background:#0c0915;color:white;outline:none;
+ width:100%;padding:14px;
+ border:1px solid #49385f;
+ border-radius:12px;background:#0c0915;
+ color:white;outline:none;
 }
 .field input:focus{
  border-color:var(--purple2);
  box-shadow:0 0 0 3px #8b5cf622;
 }
-.message{
- padding:14px;border-radius:12px;
- background:#211832;border:1px solid var(--line);
- color:#d8c5ff;font-size:12px;overflow-wrap:anywhere;
- margin-bottom:18px;
+.field input::placeholder{color:#756a86}
+
+.control-box{
+ margin-top:5px;padding:19px;
+ border:1px solid var(--line);
+ border-radius:15px;background:#100c1b;
 }
-.message.error{color:#fda4af;background:#351925;border-color:#713347}
-.message.success{color:#86efac;background:#153328;border-color:#34795e}
+.control-box h3{font-size:14px;margin:0 0 8px}
+.control-box p{
+ font-size:11px;color:var(--muted);
+ margin:0;line-height:2.1;
+}
+.notice{
+ margin-top:16px;padding:15px;
+ border:1px solid #66502d;
+ border-radius:13px;background:#2a2115;
+ color:#e8d3aa;font-size:11px;line-height:2;
+}
+.coming{
+ display:inline-block;margin-top:12px;
+ padding:4px 10px;border-radius:20px;
+ background:#302442;color:#cbb6fa;
+ font-size:10px;
+}
+
 .loading{
  width:18px;height:18px;display:inline-block;
- border:2px solid #ffffff33;border-top-color:white;
- border-radius:50%;animation:spin .8s linear infinite;
+ border:2px solid #ffffff33;
+ border-top-color:white;border-radius:50%;
+ animation:spin .8s linear infinite;
  vertical-align:middle;margin-left:7px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.notice{
- margin-top:18px;padding:15px;border:1px solid #66502d;
- border-radius:13px;background:#2a2115;color:#e8d3aa;
- font-size:11px;line-height:2;
-}
-.control-box{
- margin-top:20px;padding:17px;
- border:1px solid var(--line);border-radius:14px;
- background:#100c1b;
-}
-.control-box h3{font-size:14px;margin:0 0 8px}
-.control-box p{font-size:11px;color:var(--muted);margin:0}
+
 footer{
  padding:25px 0;border-top:1px solid var(--line);
  text-align:center;color:var(--muted);font-size:11px;
 }
-footer b{color:var(--purple2);direction:ltr;display:inline-block}
+footer b{
+ color:var(--purple2);
+ direction:ltr;display:inline-block;
+}
 [hidden]{display:none!important}
-@media(max-width:550px){
+
+@media(max-width:650px){
  .wrap{width:92%}
  main{padding-top:20px}
- .hero{padding:20px}
+ .hero{padding:21px}
  .hero h1{font-size:22px}
- .panel{padding:16px}
- .info{grid-template-columns:1fr 1fr}
+ .panel{padding:17px}
+ .info{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
  .item{padding:12px}
  .item b{font-size:12px}
  .server-name{font-size:20px}
  .nav{padding:12px 0}
  .logo{font-size:21px}
+ .quick-nav{grid-template-columns:repeat(2,1fr)}
+ .quick-link{padding:11px 5px}
+}
+@media(max-width:360px){
+ .back{font-size:10px;padding:8px}
+ .logo{font-size:19px}
+ .hero-top{align-items:flex-start}
 }
 </style>
 </head>
@@ -178,11 +300,24 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
 </header>
 
 <main class="wrap">
+
  <section class="hero">
-  <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
-  <h1>مدیریت سرور</h1>
-  <p>اطلاعات و تنظیمات سرور خودت را از این قسمت مدیریت کن.</p>
+  <div class="hero-top">
+   <div>
+    <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
+    <h1>مدیریت سرور</h1>
+    <p>همه اطلاعات سرورت را از یک بخش مدیریت کن.</p>
+   </div>
+   <div class="hero-icon">🖥️</div>
+  </div>
  </section>
+
+ <nav class="quick-nav">
+  <a class="quick-link" href="#serverInfo">🖥️ مشخصات سرور</a>
+  <a class="quick-link" href="#rename">✏️ تغییر نام</a>
+  <a class="quick-link" href="#gameSettings">🎮 تنظیمات بازی</a>
+  <a class="quick-link" href="#players">🔒 بازیکنان</a>
+ </nav>
 
  <div id="message" class="message">
   <span class="loading"></span>
@@ -190,7 +325,8 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
  </div>
 
  <section id="serverContent" hidden>
-  <section class="panel">
+
+  <section class="panel" id="serverInfo">
    <div class="section-title">
     <div class="section-icon">🖥️</div>
     <div>
@@ -199,38 +335,57 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
     </div>
    </div>
 
-   <div class="server-name" id="serverName">سرور من</div>
-   <div style="margin-top:12px">
+   <div class="server-heading">
+    <div class="server-name" id="serverName">سرور من</div>
     <span class="status" id="status">نامشخص</span>
    </div>
 
-   <div class="info" style="margin-top:20px">
-    <div class="item"><small>نوع بازی</small><b id="type">-</b></div>
-    <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
-    <div class="item"><small>نسخه بازی</small><b id="version" class="ltr">-</b></div>
-    <div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
-    <div class="item"><small>شناسه سرور</small><b id="serverId" class="ltr">-</b></div>
-    <div class="item"><small>تاریخ ثبت</small><b id="created">-</b></div>
+   <div class="info">
+    <div class="item">
+     <small>نوع بازی</small>
+     <b id="type">-</b>
+    </div>
+    <div class="item">
+     <small>نرم‌افزار</small>
+     <b id="software">-</b>
+    </div>
+    <div class="item">
+     <small>نسخه بازی</small>
+     <b id="version" class="ltr">-</b>
+    </div>
+    <div class="item">
+     <small>حافظه RAM</small>
+     <b id="ram">-</b>
+    </div>
+    <div class="item">
+     <small>شناسه سرور</small>
+     <b id="serverId" class="ltr">-</b>
+    </div>
+    <div class="item">
+     <small>تاریخ ثبت</small>
+     <b id="created">-</b>
+    </div>
    </div>
 
    <div class="actions">
-    <button class="btn secondary" id="copyId">کپی شناسه سرور</button>
+    <button class="btn secondary" id="copyId">📋 کپی شناسه</button>
     <button class="btn secondary" id="refresh">↻ بروزرسانی اطلاعات</button>
    </div>
   </section>
 
-  <section class="panel">
+  <section class="panel" id="rename">
    <div class="section-title">
     <div class="section-icon">✏️</div>
     <div>
      <h2>تغییر نام سرور</h2>
-     <p>یک نام دلخواه برای سرورت انتخاب کن.</p>
+     <p>برای سرورت یک نام دلخواه انتخاب کن.</p>
     </div>
    </div>
 
    <div class="field">
     <label for="newServerName">نام جدید سرور</label>
-    <input id="newServerName" maxlength="40" placeholder="مثلاً سرور دوستان من">
+    <input id="newServerName" maxlength="40"
+     placeholder="مثلاً سرور دوستان من">
    </div>
 
    <div class="actions">
@@ -238,7 +393,7 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
    </div>
   </section>
 
-  <section class="panel">
+  <section class="panel" id="gameSettings">
    <div class="section-title">
     <div class="section-icon">🎮</div>
     <div>
@@ -250,58 +405,69 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
    <div class="control-box">
     <h3>تنظیمات بازی</h3>
     <p>
-     بخش تنظیمات پیشرفته پس از آماده‌سازی جداول پایگاه داده و اتصال
-     به زیرساخت Minecraft فعال خواهد شد.
+     بخش تنظیمات پیشرفته پس از آماده‌سازی جداول پایگاه داده
+     و اتصال به زیرساخت Minecraft فعال خواهد شد.
     </p>
+    <span class="coming">در دست توسعه</span>
    </div>
+
    <div class="notice">
     ⚠️ در حال حاضر این سایت به سرور واقعی Minecraft متصل نیست.
     تغییرات این صفحه هنوز تنظیمات داخل بازی را تغییر نمی‌دهند.
    </div>
   </section>
 
-  <section class="panel">
+  <section class="panel" id="players">
    <div class="section-title">
     <div class="section-icon">🔒</div>
     <div>
      <h2>مدیریت بازیکنان مجاز</h2>
-     <p>فهرست سفید بازیکنان</p>
+     <p>فهرست سفید بازیکنان سرور</p>
     </div>
    </div>
+
    <div class="control-box">
-    <h3>به‌زودی</h3>
+    <h3>مدیریت بازیکنان</h3>
     <p>
      پس از آماده‌سازی پایگاه داده و اتصال سرور واقعی،
      امکان افزودن و حذف بازیکنان از این قسمت فراهم می‌شود.
     </p>
+    <span class="coming">به‌زودی</span>
    </div>
   </section>
 
-  <section class="panel">
+  <section class="panel" id="serverControl">
    <div class="section-title">
     <div class="section-icon">⚙️</div>
     <div>
      <h2>کنترل سرور</h2>
-     <p>مدیریت وضعیت سرور</p>
+     <p>مدیریت وضعیت و اجرای سرور</p>
     </div>
    </div>
+
    <div class="control-box">
     <h3>زیرساخت میزبانی</h3>
     <p>
      سرور شما فعلاً به زیرساخت واقعی Minecraft متصل نشده است.
-     پس از راه‌اندازی سیستم میزبانی، امکان روشن و خاموش کردن سرور فراهم می‌شود.
+     پس از راه‌اندازی سیستم میزبانی، امکان روشن و خاموش کردن
+     و راه‌اندازی مجدد سرور فراهم می‌شود.
     </p>
+    <span class="coming">زیرساخت در دست توسعه</span>
    </div>
+
    <div class="actions">
     <button class="btn" disabled>▶ روشن کردن</button>
     <button class="btn secondary" disabled>■ خاموش کردن</button>
     <button class="btn secondary" disabled>↻ راه‌اندازی مجدد</button>
    </div>
   </section>
+
  </section>
 </main>
 
-<footer>© 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.</footer>
+<footer>
+ © 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.
+</footer>
 
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -337,7 +503,8 @@ function withTimeout(promise, milliseconds, label) {
    reject(new Error(label + " بیشتر از حد معمول طول کشید. لطفاً اینترنت را بررسی کن و دوباره امتحان کن."));
   }, milliseconds);
  });
- return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+ return Promise.race([promise, timeoutPromise])
+  .finally(() => clearTimeout(timer));
 }
 
 function statusText(status) {
@@ -418,7 +585,10 @@ async function loadServer() {
   $("type").textContent = data.type || "-";
   $("software").textContent = data.software || "-";
   $("version").textContent = data.version || "-";
-  $("ram").textContent = data.ram_gb ? data.ram_gb + " گیگابایت" : "تنظیم نشده";
+  $("ram").textContent = data.ram_gb
+   ? data.ram_gb + " گیگابایت"
+   : "تنظیم نشده";
+
   $("serverId").textContent = data.id || "-";
   $("created").textContent = data.created_at
    ? new Date(data.created_at).toLocaleString("fa-IR")
@@ -432,7 +602,6 @@ async function loadServer() {
 
  } catch (error) {
   console.error("BlockNova management error:", error);
-
   const detail = error?.message || "خطای ناشناخته";
   showMessage("خطا در دریافت اطلاعات: " + detail, "error");
 
@@ -483,7 +652,10 @@ async function renameServer() {
 
  } catch (error) {
   console.error(error);
-  showMessage("خطا در تغییر نام: " + (error.message || "خطای ناشناخته"), "error");
+  showMessage(
+   "خطا در تغییر نام: " + (error.message || "خطای ناشناخته"),
+   "error"
+  );
 
  } finally {
   button.disabled = false;
@@ -501,12 +673,15 @@ $("copyId").addEventListener("click", async () => {
   await navigator.clipboard.writeText(currentServerId);
   showMessage("شناسه سرور کپی شد.", "success");
  } catch (error) {
-  showMessage("کپی خودکار انجام نشد. شناسه را به‌صورت دستی کپی کن.", "error");
+  showMessage(
+   "کپی خودکار انجام نشد. شناسه را به‌صورت دستی کپی کن.",
+   "error"
+  );
  }
 });
 
 loadServer();
 </script>
 </body>
-                                </html>
-
+ </html>
+ 
