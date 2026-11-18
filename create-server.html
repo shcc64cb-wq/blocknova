@@ -1,0 +1,438 @@
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090711">
+<title>ساخت سرور | BlockNova</title>
+
+<style>
+:root{
+--bg:#090711;
+--panel:#141020;
+--panel2:#1b142b;
+--purple:#8b5cf6;
+--purple2:#a78bfa;
+--text:#f7f3ff;
+--muted:#aaa1bd;
+--line:#302442;
+--green:#5ee6a8;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+background:radial-gradient(ellipse at 80% -10%,#38205e 0,transparent 36%),var(--bg);
+color:var(--text);
+font-family:Tahoma,Arial,sans-serif;
+line-height:1.8;
+}
+a{text-decoration:none;color:inherit}
+button,select,input{font:inherit}
+.wrap{width:min(1000px,92%);margin:auto}
+header{
+position:sticky;top:0;z-index:5;
+background:#0b0813ef;
+border-bottom:1px solid var(--line);
+backdrop-filter:blur(12px);
+}
+.nav{
+display:flex;align-items:center;
+justify-content:space-between;
+padding:14px 0;gap:12px;
+}
+.brand{
+font-size:23px;font-weight:900;
+direction:ltr;
+}
+.brand span{color:var(--purple2)}
+.back{
+background:#211832;
+border:1px solid #493467;
+padding:8px 14px;
+border-radius:11px;
+font-size:13px;
+}
+main{padding:40px 0 65px}
+.heading{text-align:center;margin-bottom:30px}
+.heading h1{font-size:clamp(28px,5vw,42px);margin:0 0 8px}
+.heading p{color:var(--muted);margin:0}
+.panel{
+background:linear-gradient(160deg,var(--panel2),var(--panel));
+border:1px solid var(--line);
+border-radius:20px;
+padding:23px;
+margin-bottom:18px;
+}
+.step-title{
+display:flex;align-items:center;
+gap:11px;margin-bottom:17px;
+}
+.number{
+width:35px;height:35px;
+display:grid;place-items:center;
+border-radius:11px;
+background:#39245a;color:#d9c8ff;
+font-weight:900;
+}
+.step-title h2{font-size:18px;margin:0}
+.options{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+.option{
+background:#100c1b;
+border:1px solid var(--line);
+border-radius:14px;
+padding:16px;
+cursor:pointer;
+transition:.2s;
+text-align:right;
+color:var(--text);
+width:100%;
+}
+.option:hover{border-color:#8961c7}
+.option.active{
+border-color:var(--purple2);
+background:#2a1b40;
+box-shadow:0 0 20px #8b5cf622;
+}
+.option .emoji{font-size:27px;display:block}
+.option strong{display:block;font-size:16px}
+.option small{color:var(--muted);font-size:12px}
+.software-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+.software{
+background:#100c1b;
+border:1px solid var(--line);
+border-radius:12px;
+padding:13px 8px;
+color:var(--text);
+cursor:pointer;
+text-align:center;
+}
+.software.active{
+background:#2a1b40;
+border-color:var(--purple2);
+}
+.software strong{display:block;font-size:14px}
+.software small{font-size:11px;color:var(--muted)}
+.field{margin-top:16px}
+.field label{
+display:block;margin-bottom:8px;
+font-size:14px;font-weight:bold;
+}
+select{
+width:100%;
+padding:13px;
+border-radius:12px;
+background:#100c1b;
+border:1px solid var(--line);
+color:white;
+outline:none;
+}
+select:focus{border-color:var(--purple2)}
+.ram-grid{
+display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+}
+.ram{
+background:#100c1b;
+border:1px solid var(--line);
+border-radius:12px;
+padding:13px 5px;
+text-align:center;
+color:white;cursor:pointer;
+}
+.ram.active{
+background:#2a1b40;border-color:var(--purple2);
+}
+.ram strong{display:block;font-size:17px}
+.ram small{font-size:11px;color:var(--muted)}
+.summary{
+background:#100c1b;
+border:1px solid #493467;
+border-radius:15px;
+padding:17px;
+}
+.summary h3{margin:0 0 12px}
+.summary-row{
+display:flex;justify-content:space-between;
+gap:10px;padding:7px 0;
+border-bottom:1px solid #302442;
+font-size:14px;
+}
+.summary-row:last-child{border:0}
+.summary-row span:first-child{color:var(--muted)}
+.submit{
+width:100%;margin-top:17px;
+padding:14px;border:0;border-radius:13px;
+background:linear-gradient(135deg,#7c3aed,#a78bfa);
+color:white;font-weight:900;cursor:pointer;
+font-size:16px;
+}
+.submit:hover{filter:brightness(1.1)}
+.notice{
+margin-top:15px;
+background:#211a12;
+border:1px solid #59442b;
+color:#e9d4ae;
+padding:13px;border-radius:12px;
+font-size:12px;
+}
+#result{
+display:none;margin-top:15px;
+background:#12251e;
+border:1px solid #32664e;
+border-radius:12px;padding:14px;
+font-size:13px;
+}
+footer{
+border-top:1px solid var(--line);
+padding:22px 0;color:var(--muted);
+font-size:12px;text-align:center;
+}
+@media(max-width:650px){
+.options{grid-template-columns:1fr}
+.software-grid{grid-template-columns:repeat(2,1fr)}
+.ram-grid{grid-template-columns:repeat(2,1fr)}
+.panel{padding:17px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="wrap nav">
+<a class="brand" href="index.html">Block<span>Nova</span></a>
+<a class="back" href="index.html">بازگشت به صفحه اصلی ←</a>
+</div>
+</header>
+
+<main class="wrap">
+
+<div class="heading">
+<h1>ساخت سرور جدید 🚀</h1>
+<p>سرور ماینکرافت خودت را با تنظیمات دلخواه بساز.</p>
+</div>
+
+<section class="panel">
+<div class="step-title">
+<div class="number">۱</div>
+<h2>نوع سرور را انتخاب کن</h2>
+</div>
+
+<div class="options">
+<button class="option active" data-edition="Java">
+<span class="emoji">☕</span>
+<strong>Java Edition</strong>
+<small>مناسب کامپیوتر و لانچرهای جاوا</small>
+</button>
+
+<button class="option" data-edition="Bedrock">
+<span class="emoji">📱</span>
+<strong>Bedrock Edition</strong>
+<small>مناسب موبایل، کنسول و ویندوز</small>
+</button>
+</div>
+</section>
+
+<section class="panel">
+<div class="step-title">
+<div class="number">۲</div>
+<h2>نرم‌افزار سرور را انتخاب کن</h2>
+</div>
+
+<div class="software-grid" id="softwareGrid"></div>
+
+<div class="field">
+<label for="version">نسخه ماینکرافت</label>
+<select id="version"></select>
+</div>
+</section>
+
+<section class="panel">
+<div class="step-title">
+<div class="number">۳</div>
+<h2>حافظه RAM سرور</h2>
+</div>
+
+<div class="ram-grid">
+<button class="ram active" data-ram="2">
+<strong>2 GB</strong><small>رم سرور</small>
+</button>
+<button class="ram" data-ram="4">
+<strong>4 GB</strong><small>رم سرور</small>
+</button>
+<button class="ram" data-ram="6">
+<strong>6 GB</strong><small>رم سرور</small>
+</button>
+<button class="ram" data-ram="8">
+<strong>8 GB</strong><small>رم سرور</small>
+</button>
+</div>
+</section>
+
+<section class="panel">
+<div class="step-title">
+<div class="number">۴</div>
+<h2>خلاصه تنظیمات سرور</h2>
+</div>
+
+<div class="summary">
+<h3>مشخصات سرور شما</h3>
+
+<div class="summary-row">
+<span>نوع بازی</span><strong id="sumEdition">Java</strong>
+</div>
+<div class="summary-row">
+<span>نرم‌افزار</span><strong id="sumSoftware">Paper</strong>
+</div>
+<div class="summary-row">
+<span>نسخه بازی</span><strong id="sumVersion">1.21.1</strong>
+</div>
+<div class="summary-row">
+<span>حافظه RAM</span><strong id="sumRam">2 GB</strong>
+</div>
+
+<button class="submit" id="createButton">
+تأیید تنظیمات سرور
+</button>
+
+<div id="result"></div>
+</div>
+
+<div class="notice">
+⚠️ این صفحه در حال حاضر نمایشی است. انتخاب‌ها و خلاصه تنظیمات کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود فایل‌های نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند.
+</div>
+</section>
+
+</main>
+
+<footer>
+© 2026 BlockNova — تمام حقوق محفوظ است.
+</footer>
+
+<script>
+const softwareOptions = {
+Java: [
+{name:"Vanilla",desc:"نسخه رسمی و ساده"},
+{name:"Paper",desc:"مناسب پلاگین‌ها"},
+{name:"Spigot",desc:"سرور پلاگین‌پذیر"},
+{name:"Purpur",desc:"امکانات و تنظیمات بیشتر"},
+{name:"Fabric",desc:"مناسب مودها"},
+{name:"Forge",desc:"مودهای ماینکرافت"},
+{name:"NeoForge",desc:"مودلودر جدید"}
+],
+Bedrock: [
+{name:"Bedrock Dedicated Server",desc:"سرور رسمی بدراک"},
+{name:"PocketMine-MP",desc:"سرور پلاگین‌پذیر"},
+{name:"Nukkit",desc:"سرور بدراک"}
+]
+};
+
+const versions = [
+"1.21.10","1.21.9","1.21.8","1.21.7",
+"1.21.6","1.21.5","1.21.4","1.21.3",
+"1.21.2","1.21.1","1.21","1.20.6",
+"1.20.4","1.20.2","1.20.1","1.19.4",
+"1.19.2","1.18.2","1.16.5","1.12.2"
+];
+
+let edition = "Java";
+let software = "Paper";
+let ram = "2";
+
+const softwareGrid = document.getElementById("softwareGrid");
+const versionSelect = document.getElementById("version");
+
+function renderSoftware(){
+softwareGrid.innerHTML = "";
+
+softwareOptions[edition].forEach(item=>{
+const button = document.createElement("button");
+button.className = "software" +
+(item.name === software ? " active" : "");
+button.innerHTML =
+`<strong>${item.name}</strong><small>${item.desc}</small>`;
+
+button.addEventListener("click",()=>{
+software = item.name;
+renderSoftware();
+updateSummary();
+});
+
+softwareGrid.appendChild(button);
+});
+
+}
+
+function renderVersions(){
+versionSelect.innerHTML = "";
+
+versions.forEach(v=>{
+const option = document.createElement("option");
+option.value = v;
+option.textContent = "Minecraft " + v;
+versionSelect.appendChild(option);
+});
+
+versionSelect.value = "1.21.1";
+updateSummary();
+}
+
+function updateSummary(){
+document.getElementById("sumEdition").textContent = edition;
+document.getElementById("sumSoftware").textContent = software;
+document.getElementById("sumVersion").textContent = versionSelect.value;
+document.getElementById("sumRam").textContent = ram + " GB";
+}
+
+document.querySelectorAll("[data-edition]").forEach(button=>{
+button.addEventListener("click",()=>{
+edition = button.dataset.edition;
+
+document.querySelectorAll("[data-edition]").forEach(b=>
+b.classList.toggle("active",b===button)
+);
+
+software = softwareOptions[edition][0].name;
+renderSoftware();
+updateSummary();
+});
+});
+
+document.querySelectorAll("[data-ram]").forEach(button=>{
+button.addEventListener("click",()=>{
+ram = button.dataset.ram;
+
+document.querySelectorAll("[data-ram]").forEach(b=>
+b.classList.toggle("active",b===button)
+);
+
+updateSummary();
+});
+});
+
+versionSelect.addEventListener("change",updateSummary);
+
+document.getElementById("createButton").addEventListener("click",()=>{
+const result = document.getElementById("result");
+result.style.display = "block";
+result.innerHTML =
+"تنظیمات شما با موفقیت انتخاب شد. " +
+"ساخت واقعی سرور هنوز فعال نشده است.";
+});
+
+renderSoftware();
+renderVersions();
+updateSummary();
+</script>
+
+</body>
+  </html>
+  
