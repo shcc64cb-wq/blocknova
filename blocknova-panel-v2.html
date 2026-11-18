@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -578,15 +579,12 @@ supabase.auth.onAuthStateChange((event)=>{
  if(event==="SIGNED_OUT")location.replace("login.html");
 });
 
+// ساخت سرور آزمایشی بدون محدودیت تعداد در داشبورد
 document.getElementById("create").addEventListener("click",()=>{
- if(!currentUser)return;
-
- if(serverCount>=1){
-  alert("در نسخه آزمایشی فقط یک نمونه سرور برای هر حساب مجاز است.");
+ if(!currentUser){
+  alert("لطفاً ابتدا وارد حساب کاربری شوید.");
   return;
  }
-
- // مسیر اصلاح‌شده صفحه ساخت سرور
  location.href="create-server.html";
 });
 
