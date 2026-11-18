@@ -11,7 +11,6 @@
 :root{
  --bg:#090711;
  --panel:#171226;
- --panel2:#100d1b;
  --purple:#8b5cf6;
  --purple2:#b69aff;
  --text:#f8f5ff;
@@ -19,145 +18,90 @@
  --line:#382b50;
  --green:#42d9a0;
  --red:#fb7185;
- --gold:#f5cc78;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
  margin:0;min-height:100vh;
- background:
- radial-gradient(ellipse at 80% 0%,#49287955,transparent 35%),
- radial-gradient(ellipse at 0% 50%,#29184933,transparent 40%),
- var(--bg);
+ background:radial-gradient(ellipse at 80% 0%,#49287955,transparent 35%),var(--bg);
  color:var(--text);
  font-family:Tahoma,Arial,sans-serif;
  line-height:1.8;
 }
-button,input{font:inherit}
+button,input,select{font:inherit}
 a{text-decoration:none;color:inherit}
 .wrap{width:min(1050px,92%);margin:auto}
-
 header{
- position:sticky;top:0;z-index:20;
+ position:sticky;top:0;z-index:10;
  background:#0c0916ed;
  border-bottom:1px solid #ffffff12;
- backdrop-filter:blur(16px);
+ backdrop-filter:blur(15px);
 }
 .nav{
  display:flex;justify-content:space-between;
  align-items:center;gap:12px;padding:14px 0;
 }
-.logo{
- font-size:25px;font-weight:1000;
- direction:ltr;letter-spacing:-1px;
-}
+.logo{font-size:25px;font-weight:1000;direction:ltr}
 .logo span{color:var(--purple2)}
 .back{
- padding:9px 15px;border:1px solid var(--line);
+ padding:9px 14px;border:1px solid var(--line);
  border-radius:12px;background:#ffffff08;
  color:#ddd0f5;font-size:12px;
- transition:.2s;
 }
-.back:hover{background:#ffffff12;border-color:var(--purple)}
-
 main{padding:28px 0 65px}
-
 .hero{
- position:relative;overflow:hidden;
- padding:28px;margin-bottom:20px;
- border:1px solid #7650b766;border-radius:24px;
- background:linear-gradient(125deg,#302044,#171126 65%,#211638);
- box-shadow:0 15px 45px #0003;
+ padding:26px;margin-bottom:20px;
+ border:1px solid #7650b766;border-radius:22px;
+ background:linear-gradient(120deg,#302044,#151021);
 }
-.hero:after{
- content:"";position:absolute;
- width:180px;height:180px;border-radius:50%;
- background:#9b6bff18;left:-50px;top:-65px;
- filter:blur(5px);
-}
-.eyebrow{
- color:var(--purple2);font-size:10px;
- letter-spacing:1.5px;direction:ltr;
-}
-.hero h1{font-size:27px;margin:8px 0}
+.eyebrow{color:var(--purple2);font-size:10px;direction:ltr}
+.hero h1{font-size:26px;margin:8px 0}
 .hero p{color:var(--muted);font-size:12px;margin:0}
-.hero-top{
- display:flex;align-items:center;
- justify-content:space-between;gap:15px;
-}
-.hero-icon{
- width:58px;height:58px;flex-shrink:0;
- display:grid;place-items:center;
- border-radius:18px;
- background:linear-gradient(135deg,#7138d0,#a78bfa);
- font-size:27px;
- box-shadow:0 8px 25px #8b5cf644;
-}
-
 .quick-nav{
  display:grid;grid-template-columns:repeat(4,1fr);
- gap:10px;margin:20px 0;
+ gap:10px;margin-bottom:20px;
 }
-.quick-link{
- display:flex;align-items:center;justify-content:center;
- gap:8px;padding:12px 8px;
- border:1px solid var(--line);
- border-radius:13px;background:#171226cc;
- color:#d9c9f4;font-size:11px;
- transition:.2s;
+.quick-nav a{
+ text-align:center;padding:11px 6px;
+ border:1px solid var(--line);border-radius:12px;
+ background:#171226;color:#d9c9f4;font-size:11px;
 }
-.quick-link:hover{
- border-color:var(--purple);
- background:#241a37;
- transform:translateY(-2px);
-}
-
 .message{
- padding:14px 16px;border-radius:13px;
+ padding:14px;border-radius:12px;
  background:#211832;border:1px solid var(--line);
  color:#d8c5ff;font-size:12px;
  overflow-wrap:anywhere;margin-bottom:18px;
 }
 .message.error{color:#fda4af;background:#351925;border-color:#713347}
 .message.success{color:#86efac;background:#153328;border-color:#34795e}
-
 .panel{
- padding:23px;margin-bottom:18px;
- border:1px solid var(--line);border-radius:21px;
+ padding:22px;margin-bottom:18px;
+ border:1px solid var(--line);border-radius:19px;
  background:linear-gradient(145deg,#1b152b,#110d1c);
  box-shadow:0 12px 35px #0003;
  scroll-margin-top:90px;
 }
 .section-title{
- display:flex;align-items:center;
- gap:13px;margin-bottom:20px;
+ display:flex;align-items:center;gap:12px;margin-bottom:18px;
 }
 .section-icon{
- width:46px;height:46px;display:grid;
- place-items:center;border-radius:15px;
- background:linear-gradient(135deg,#7138d0,#a78bfa);
+ width:44px;height:44px;display:grid;place-items:center;
+ border-radius:14px;background:linear-gradient(135deg,#7138d0,#a78bfa);
  font-size:21px;flex-shrink:0;
- box-shadow:0 7px 20px #8b5cf633;
 }
 .section-title h2{font-size:16px;margin:0}
 .section-title p{font-size:11px;color:var(--muted);margin:2px 0}
-
 .server-heading{
- display:flex;justify-content:space-between;
- align-items:center;gap:12px;flex-wrap:wrap;
- padding:18px;border-radius:16px;
- border:1px solid #ffffff12;
- background:linear-gradient(110deg,#211832,#151020);
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:12px;padding:17px;
+ border:1px solid #ffffff12;border-radius:15px;
+ background:#ffffff06;
 }
-.server-name{
- font-size:23px;font-weight:bold;
- overflow-wrap:anywhere;
-}
+.server-name{font-size:22px;font-weight:bold;overflow-wrap:anywhere}
 .status{
  display:inline-flex;align-items:center;gap:7px;
  padding:6px 13px;border-radius:30px;
  font-size:11px;background:#302641;color:#d8c5ff;
- white-space:nowrap;
 }
 .status:before{
  content:"";width:7px;height:7px;
@@ -166,127 +110,118 @@ main{padding:28px 0 65px}
 .status.active{background:#123b2d;color:#86efac}
 .status.waiting{background:#453517;color:#fcd34d}
 .status.stopped{background:#451c29;color:#fda4af}
-
 .info{
- display:grid;
- grid-template-columns:repeat(3,minmax(0,1fr));
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
  gap:12px;margin-top:15px;
 }
 .item{
- min-width:0;padding:15px;
- border:1px solid #ffffff0c;
- border-radius:14px;background:#ffffff06;
- transition:.2s;
+ min-width:0;padding:14px;
+ border:1px solid #ffffff0c;border-radius:13px;
+ background:#ffffff06;
 }
-.item:hover{border-color:#8b5cf644;background:#ffffff0a}
-.item small{
- display:block;color:var(--muted);
- font-size:10px;margin-bottom:7px;
-}
-.item b{
- display:block;font-size:14px;
- overflow-wrap:anywhere;
-}
+.item small{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
+.item b{display:block;font-size:13px;overflow-wrap:anywhere}
 .ltr{direction:ltr;text-align:right}
-
-.actions{
- display:flex;flex-wrap:wrap;
- gap:10px;margin-top:17px;
-}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
 .btn{
- display:inline-flex;justify-content:center;
- align-items:center;gap:7px;
- padding:11px 17px;border:1px solid transparent;
- border-radius:12px;
+ display:inline-flex;justify-content:center;align-items:center;
+ gap:7px;padding:11px 17px;border:0;border-radius:11px;
  background:linear-gradient(135deg,#8b5cf6,#7041d4);
- color:white;font-weight:bold;
- font-size:12px;cursor:pointer;
- transition:.2s;
+ color:white;font-weight:bold;font-size:12px;cursor:pointer;
 }
-.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.btn.secondary{
- background:#302442;border-color:#4b3965;
-}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-
+.btn.secondary{background:#302442;border:1px solid #4b3965}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .field{margin-top:15px}
 .field label{
- display:block;font-size:12px;
- margin-bottom:8px;color:#ddd0f5;
+ display:block;font-size:12px;margin-bottom:7px;color:#ddd0f5;
 }
-.field input{
- width:100%;padding:14px;
- border:1px solid #49385f;
- border-radius:12px;background:#0c0915;
- color:white;outline:none;
+.field input,.field select{
+ width:100%;padding:13px;
+ border:1px solid #49385f;border-radius:11px;
+ background:#0c0915;color:white;outline:none;
 }
-.field input:focus{
+.field input:focus,.field select:focus{
  border-color:var(--purple2);
  box-shadow:0 0 0 3px #8b5cf622;
 }
-.field input::placeholder{color:#756a86}
-
+.field select option{background:#171226;color:white}
+.settings-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:14px;
+}
+.setting{
+ padding:15px;border:1px solid #ffffff12;
+ border-radius:14px;background:#ffffff05;
+}
+.setting label{
+ display:block;font-size:12px;color:#ddd0f5;margin-bottom:8px;
+}
+.setting select,.setting input[type=number]{
+ width:100%;padding:12px;
+ border:1px solid #49385f;border-radius:10px;
+ background:#0c0915;color:white;outline:none;
+}
+.setting select:focus,.setting input:focus{border-color:var(--purple2)}
+.toggle{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;min-height:65px;
+}
+.toggle-text b{display:block;font-size:12px}
+.toggle-text small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.switch{
+ position:relative;width:48px;height:26px;flex-shrink:0;
+}
+.switch input{opacity:0;width:0;height:0}
+.switch span{
+ position:absolute;inset:0;border-radius:30px;
+ background:#493d5c;cursor:pointer;transition:.2s;
+}
+.switch span:before{
+ content:"";position:absolute;width:18px;height:18px;
+ right:4px;top:4px;border-radius:50%;
+ background:white;transition:.2s;
+}
+.switch input:checked+span{background:#8b5cf6}
+.switch input:checked+span:before{transform:translateX(-22px)}
+.note{
+ margin-top:16px;padding:14px;
+ border:1px solid #66502d;border-radius:12px;
+ background:#2a2115;color:#e8d3aa;
+ font-size:11px;line-height:2;
+}
 .control-box{
- margin-top:5px;padding:19px;
- border:1px solid var(--line);
- border-radius:15px;background:#100c1b;
+ padding:17px;border:1px solid var(--line);
+ border-radius:14px;background:#100c1b;
 }
-.control-box h3{font-size:14px;margin:0 0 8px}
-.control-box p{
- font-size:11px;color:var(--muted);
- margin:0;line-height:2.1;
-}
-.notice{
- margin-top:16px;padding:15px;
- border:1px solid #66502d;
- border-radius:13px;background:#2a2115;
- color:#e8d3aa;font-size:11px;line-height:2;
-}
-.coming{
- display:inline-block;margin-top:12px;
- padding:4px 10px;border-radius:20px;
- background:#302442;color:#cbb6fa;
- font-size:10px;
-}
-
+.control-box h3{font-size:14px;margin:0 0 7px}
+.control-box p{font-size:11px;color:var(--muted);margin:0}
 .loading{
  width:18px;height:18px;display:inline-block;
- border:2px solid #ffffff33;
- border-top-color:white;border-radius:50%;
- animation:spin .8s linear infinite;
+ border:2px solid #ffffff33;border-top-color:white;
+ border-radius:50%;animation:spin .8s linear infinite;
  vertical-align:middle;margin-left:7px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
 footer{
  padding:25px 0;border-top:1px solid var(--line);
  text-align:center;color:var(--muted);font-size:11px;
 }
-footer b{
- color:var(--purple2);
- direction:ltr;display:inline-block;
-}
+footer b{color:var(--purple2);direction:ltr;display:inline-block}
 [hidden]{display:none!important}
-
 @media(max-width:650px){
  .wrap{width:92%}
  main{padding-top:20px}
- .hero{padding:21px}
+ .hero{padding:20px}
  .hero h1{font-size:22px}
- .panel{padding:17px}
- .info{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .panel{padding:16px}
+ .info{grid-template-columns:repeat(2,minmax(0,1fr))}
  .item{padding:12px}
  .item b{font-size:12px}
- .server-name{font-size:20px}
+ .server-name{font-size:19px}
  .nav{padding:12px 0}
  .logo{font-size:21px}
  .quick-nav{grid-template-columns:repeat(2,1fr)}
- .quick-link{padding:11px 5px}
-}
-@media(max-width:360px){
- .back{font-size:10px;padding:8px}
- .logo{font-size:19px}
- .hero-top{align-items:flex-start}
+ .settings-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -300,23 +235,17 @@ footer b{
 </header>
 
 <main class="wrap">
-
  <section class="hero">
-  <div class="hero-top">
-   <div>
-    <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
-    <h1>مدیریت سرور</h1>
-    <p>همه اطلاعات سرورت را از یک بخش مدیریت کن.</p>
-   </div>
-   <div class="hero-icon">🖥️</div>
-  </div>
+  <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
+  <h1>مدیریت سرور</h1>
+  <p>مدیریت اطلاعات و تنظیمات سرور Minecraft</p>
  </section>
 
  <nav class="quick-nav">
-  <a class="quick-link" href="#serverInfo">🖥️ مشخصات سرور</a>
-  <a class="quick-link" href="#rename">✏️ تغییر نام</a>
-  <a class="quick-link" href="#gameSettings">🎮 تنظیمات بازی</a>
-  <a class="quick-link" href="#players">🔒 بازیکنان</a>
+  <a href="#serverInfo">🖥️ مشخصات سرور</a>
+  <a href="#rename">✏️ تغییر نام</a>
+  <a href="#gameSettings">🎮 تنظیمات بازی</a>
+  <a href="#serverControl">⚙️ کنترل سرور</a>
  </nav>
 
  <div id="message" class="message">
@@ -331,7 +260,7 @@ footer b{
     <div class="section-icon">🖥️</div>
     <div>
      <h2>مشخصات سرور</h2>
-     <p>اطلاعات ثبت‌شده در حساب کاربری شما</p>
+     <p>اطلاعات ثبت‌شده در حساب شما</p>
     </div>
    </div>
 
@@ -341,35 +270,17 @@ footer b{
    </div>
 
    <div class="info">
-    <div class="item">
-     <small>نوع بازی</small>
-     <b id="type">-</b>
-    </div>
-    <div class="item">
-     <small>نرم‌افزار</small>
-     <b id="software">-</b>
-    </div>
-    <div class="item">
-     <small>نسخه بازی</small>
-     <b id="version" class="ltr">-</b>
-    </div>
-    <div class="item">
-     <small>حافظه RAM</small>
-     <b id="ram">-</b>
-    </div>
-    <div class="item">
-     <small>شناسه سرور</small>
-     <b id="serverId" class="ltr">-</b>
-    </div>
-    <div class="item">
-     <small>تاریخ ثبت</small>
-     <b id="created">-</b>
-    </div>
+    <div class="item"><small>نوع بازی</small><b id="type">-</b></div>
+    <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
+    <div class="item"><small>نسخه بازی</small><b id="version" class="ltr">-</b></div>
+    <div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
+    <div class="item"><small>شناسه سرور</small><b id="serverId" class="ltr">-</b></div>
+    <div class="item"><small>تاریخ ثبت</small><b id="created">-</b></div>
    </div>
 
    <div class="actions">
     <button class="btn secondary" id="copyId">📋 کپی شناسه</button>
-    <button class="btn secondary" id="refresh">↻ بروزرسانی اطلاعات</button>
+    <button class="btn secondary" id="refresh">↻ بروزرسانی</button>
    </div>
   </section>
 
@@ -378,16 +289,14 @@ footer b{
     <div class="section-icon">✏️</div>
     <div>
      <h2>تغییر نام سرور</h2>
-     <p>برای سرورت یک نام دلخواه انتخاب کن.</p>
+     <p>نام دلخواه خودت را انتخاب کن.</p>
     </div>
    </div>
 
    <div class="field">
     <label for="newServerName">نام جدید سرور</label>
-    <input id="newServerName" maxlength="40"
-     placeholder="مثلاً سرور دوستان من">
+    <input id="newServerName" maxlength="40" placeholder="مثلاً سرور دوستان من">
    </div>
-
    <div class="actions">
     <button class="btn" id="renameButton">ذخیره نام جدید</button>
    </div>
@@ -398,41 +307,71 @@ footer b{
     <div class="section-icon">🎮</div>
     <div>
      <h2>تنظیمات گیم‌پلی</h2>
-     <p>مدیریت تنظیمات دنیای Minecraft</p>
+     <p>تنظیمات اختصاصی این سرور</p>
     </div>
    </div>
 
-   <div class="control-box">
-    <h3>تنظیمات بازی</h3>
-    <p>
-     بخش تنظیمات پیشرفته پس از آماده‌سازی جداول پایگاه داده
-     و اتصال به زیرساخت Minecraft فعال خواهد شد.
-    </p>
-    <span class="coming">در دست توسعه</span>
-   </div>
+   <div class="settings-grid">
+    <div class="setting">
+     <label for="gameMode">حالت بازی</label>
+     <select id="gameMode">
+      <option value="survival">Survival - بقا</option>
+      <option value="creative">Creative - خلاقانه</option>
+      <option value="adventure">Adventure - ماجراجویی</option>
+     </select>
+    </div>
 
-   <div class="notice">
-    ⚠️ در حال حاضر این سایت به سرور واقعی Minecraft متصل نیست.
-    تغییرات این صفحه هنوز تنظیمات داخل بازی را تغییر نمی‌دهند.
-   </div>
-  </section>
+    <div class="setting">
+     <label for="difficulty">درجه سختی</label>
+     <select id="difficulty">
+      <option value="peaceful">Peaceful - صلح‌آمیز</option>
+      <option value="easy">Easy - آسان</option>
+      <option value="normal">Normal - معمولی</option>
+      <option value="hard">Hard - سخت</option>
+     </select>
+    </div>
 
-  <section class="panel" id="players">
-   <div class="section-title">
-    <div class="section-icon">🔒</div>
-    <div>
-     <h2>مدیریت بازیکنان مجاز</h2>
-     <p>فهرست سفید بازیکنان سرور</p>
+    <div class="setting">
+     <label for="maxPlayers">حداکثر تعداد بازیکنان</label>
+     <input id="maxPlayers" type="number" min="1" max="100" value="20">
+    </div>
+
+    <div class="setting">
+     <div class="toggle">
+      <div class="toggle-text">
+       <b>فعال بودن PvP</b>
+       <small>امکان مبارزه بین بازیکنان</small>
+      </div>
+      <label class="switch">
+       <input type="checkbox" id="pvpEnabled" checked>
+       <span></span>
+      </label>
+     </div>
+    </div>
+
+    <div class="setting">
+     <div class="toggle">
+      <div class="toggle-text">
+       <b>Command Block</b>
+       <small>اجازه استفاده از بلوک فرمان</small>
+      </div>
+      <label class="switch">
+       <input type="checkbox" id="commandBlocks">
+       <span></span>
+      </label>
+     </div>
     </div>
    </div>
 
-   <div class="control-box">
-    <h3>مدیریت بازیکنان</h3>
-    <p>
-     پس از آماده‌سازی پایگاه داده و اتصال سرور واقعی،
-     امکان افزودن و حذف بازیکنان از این قسمت فراهم می‌شود.
-    </p>
-    <span class="coming">به‌زودی</span>
+   <div class="actions">
+    <button class="btn" id="saveSettings">💾 ذخیره تنظیمات</button>
+    <button class="btn secondary" id="resetSettings">بازگردانی پیش‌فرض</button>
+   </div>
+
+   <div class="note">
+    ⚠️ این تنظیمات در پایگاه داده BlockNova ذخیره می‌شوند.
+    تا زمانی که زیرساخت واقعی Minecraft متصل نشده،
+    تغییرات مستقیماً روی بازی اعمال نمی‌شوند.
    </div>
   </section>
 
@@ -441,20 +380,17 @@ footer b{
     <div class="section-icon">⚙️</div>
     <div>
      <h2>کنترل سرور</h2>
-     <p>مدیریت وضعیت و اجرای سرور</p>
+     <p>مدیریت اجرای سرور Minecraft</p>
     </div>
    </div>
 
    <div class="control-box">
     <h3>زیرساخت میزبانی</h3>
     <p>
-     سرور شما فعلاً به زیرساخت واقعی Minecraft متصل نشده است.
-     پس از راه‌اندازی سیستم میزبانی، امکان روشن و خاموش کردن
-     و راه‌اندازی مجدد سرور فراهم می‌شود.
+     اتصال به سیستم اجرای واقعی Minecraft هنوز آماده نشده است.
+     دکمه‌های روشن و خاموش کردن پس از راه‌اندازی زیرساخت فعال خواهند شد.
     </p>
-    <span class="coming">زیرساخت در دست توسعه</span>
    </div>
-
    <div class="actions">
     <button class="btn" disabled>▶ روشن کردن</button>
     <button class="btn secondary" disabled>■ خاموش کردن</button>
@@ -465,9 +401,7 @@ footer b{
  </section>
 </main>
 
-<footer>
- © 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.
-</footer>
+<footer>© 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.</footer>
 
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -483,6 +417,14 @@ const content = $("serverContent");
 
 let currentServerId = "";
 let currentUserId = "";
+
+const defaults = {
+ game_mode: "survival",
+ difficulty: "normal",
+ pvp_enabled: true,
+ max_players: 20,
+ command_blocks_enabled: false
+};
 
 function showMessage(text, type = "") {
  message.className = "message " + type;
@@ -500,7 +442,7 @@ function withTimeout(promise, milliseconds, label) {
  let timer;
  const timeoutPromise = new Promise((_, reject) => {
   timer = setTimeout(() => {
-   reject(new Error(label + " بیشتر از حد معمول طول کشید. لطفاً اینترنت را بررسی کن و دوباره امتحان کن."));
+   reject(new Error(label + " بیشتر از حد معمول طول کشید. اینترنت را بررسی کن."));
   }, milliseconds);
  });
  return Promise.race([promise, timeoutPromise])
@@ -509,20 +451,48 @@ function withTimeout(promise, milliseconds, label) {
 
 function statusText(status) {
  const names = {
-  active: "فعال",
-  waiting: "در انتظار اتصال",
-  stopped: "متوقف‌شده",
-  pending: "در انتظار",
-  creating: "در حال ساخت"
+  active:"فعال",
+  waiting:"در انتظار اتصال",
+  stopped:"متوقف‌شده",
+  pending:"در انتظار",
+  creating:"در حال ساخت"
  };
  return names[status] || status || "نامشخص";
 }
 
 function statusClass(status) {
- if (status === "active") return "active";
- if (["waiting", "pending", "creating"].includes(status)) return "waiting";
- if (status === "stopped") return "stopped";
+ if(status === "active") return "active";
+ if(["waiting","pending","creating"].includes(status)) return "waiting";
+ if(status === "stopped") return "stopped";
  return "";
+}
+
+function applySettings(data) {
+ const s = {...defaults,...(data || {})};
+
+ $("gameMode").value = s.game_mode;
+ $("difficulty").value = s.difficulty;
+ $("pvpEnabled").checked = s.pvp_enabled;
+ $("maxPlayers").value = s.max_players;
+ $("commandBlocks").checked = s.command_blocks_enabled;
+}
+
+async function loadSettings() {
+ setLoading("در حال دریافت تنظیمات بازی...");
+
+ const result = await withTimeout(
+  supabase
+   .from("server_settings")
+   .select("*")
+   .eq("server_id",currentServerId)
+   .maybeSingle(),
+  15000,
+  "دریافت تنظیمات"
+ );
+
+ if(result.error) throw result.error;
+
+ applySettings(result.data);
 }
 
 async function loadServer() {
@@ -537,25 +507,20 @@ async function loadServer() {
    "بررسی نشست ورود"
   );
 
-  if (sessionResult.error) throw sessionResult.error;
+  if(sessionResult.error) throw sessionResult.error;
 
   const session = sessionResult.data?.session;
 
-  if (!session) {
+  if(!session) {
    showMessage("نشست ورود پیدا نشد. در حال انتقال به صفحه ورود...");
-   setTimeout(() => {
-    location.href = "login.html";
-   }, 1200);
+   setTimeout(() => location.href = "login.html",1200);
    return;
   }
 
   currentUserId = session.user.id;
 
   const serverId = new URLSearchParams(location.search).get("id");
-
-  if (!serverId) {
-   throw new Error("شناسه سرور در آدرس صفحه وجود ندارد.");
-  }
+  if(!serverId) throw new Error("شناسه سرور در آدرس وجود ندارد.");
 
   setLoading("در حال دریافت مشخصات سرور...");
 
@@ -563,21 +528,17 @@ async function loadServer() {
    supabase
     .from("servers")
     .select("*")
-    .eq("id", serverId)
-    .eq("user_id", currentUserId)
+    .eq("id",serverId)
+    .eq("user_id",currentUserId)
     .maybeSingle(),
    15000,
    "دریافت مشخصات سرور"
   );
 
-  if (result.error) throw result.error;
+  if(result.error) throw result.error;
+  if(!result.data) throw new Error("سرور پیدا نشد یا متعلق به حساب شما نیست.");
 
   const data = result.data;
-
-  if (!data) {
-   throw new Error("سرور پیدا نشد یا به حساب کاربری شما تعلق ندارد.");
-  }
-
   currentServerId = data.id;
 
   $("serverName").textContent = data.name || "سرور من";
@@ -585,10 +546,7 @@ async function loadServer() {
   $("type").textContent = data.type || "-";
   $("software").textContent = data.software || "-";
   $("version").textContent = data.version || "-";
-  $("ram").textContent = data.ram_gb
-   ? data.ram_gb + " گیگابایت"
-   : "تنظیم نشده";
-
+  $("ram").textContent = data.ram_gb ? data.ram_gb + " گیگابایت" : "تنظیم نشده";
   $("serverId").textContent = data.id || "-";
   $("created").textContent = data.created_at
    ? new Date(data.created_at).toLocaleString("fa-IR")
@@ -598,13 +556,23 @@ async function loadServer() {
   $("status").className = "status " + statusClass(data.status);
 
   content.hidden = false;
-  showMessage("اطلاعات سرور با موفقیت دریافت شد.", "success");
 
- } catch (error) {
-  console.error("BlockNova management error:", error);
-  const detail = error?.message || "خطای ناشناخته";
-  showMessage("خطا در دریافت اطلاعات: " + detail, "error");
+  try {
+   await loadSettings();
+   showMessage("اطلاعات سرور و تنظیمات با موفقیت دریافت شدند.","success");
+  } catch(settingsError) {
+   console.error("Settings load error:",settingsError);
+   applySettings(defaults);
+   showMessage(
+    "مشخصات سرور دریافت شد، اما تنظیمات بارگذاری نشد: " +
+    (settingsError.message || "خطای ناشناخته"),
+    "error"
+   );
+  }
 
+ } catch(error) {
+  console.error("BlockNova error:",error);
+  showMessage("خطا در دریافت اطلاعات: " + (error.message || "خطای ناشناخته"),"error");
  } finally {
   $("refresh").disabled = false;
  }
@@ -613,13 +581,12 @@ async function loadServer() {
 async function renameServer() {
  const name = $("newServerName").value.trim();
 
- if (!currentServerId || !currentUserId) {
-  showMessage("ابتدا اطلاعات سرور باید دریافت شود.", "error");
+ if(!currentServerId || !currentUserId) {
+  showMessage("ابتدا اطلاعات سرور باید دریافت شود.","error");
   return;
  }
-
- if (name.length < 3) {
-  showMessage("نام سرور باید حداقل ۳ کاراکتر داشته باشد.", "error");
+ if(name.length < 3) {
+  showMessage("نام سرور باید حداقل ۳ کاراکتر داشته باشد.","error");
   return;
  }
 
@@ -629,54 +596,105 @@ async function renameServer() {
 
  try {
   const result = await withTimeout(
-   supabase
-    .from("servers")
-    .update({ name })
-    .eq("id", currentServerId)
-    .eq("user_id", currentUserId)
+   supabase.from("servers")
+    .update({name})
+    .eq("id",currentServerId)
+    .eq("user_id",currentUserId)
     .select("id,name"),
    15000,
    "ذخیره نام سرور"
   );
 
-  if (result.error) throw result.error;
-
-  if (!result.data || result.data.length === 0) {
-   throw new Error("تغییری ذخیره نشد. دسترسی حساب کاربری را بررسی کن.");
+  if(result.error) throw result.error;
+  if(!result.data || !result.data.length) {
+   throw new Error("تغییری ذخیره نشد. دسترسی حساب را بررسی کن.");
   }
 
   $("serverName").textContent = result.data[0].name;
   $("newServerName").value = result.data[0].name;
+  showMessage("نام سرور با موفقیت تغییر کرد.","success");
 
-  showMessage("نام سرور با موفقیت تغییر کرد.", "success");
-
- } catch (error) {
-  console.error(error);
-  showMessage(
-   "خطا در تغییر نام: " + (error.message || "خطای ناشناخته"),
-   "error"
-  );
-
+ } catch(error) {
+  showMessage("خطا در تغییر نام: " + (error.message || "خطای ناشناخته"),"error");
  } finally {
   button.disabled = false;
   button.textContent = "ذخیره نام جدید";
  }
 }
 
-$("refresh").addEventListener("click", loadServer);
-$("renameButton").addEventListener("click", renameServer);
+async function saveSettings() {
+ if(!currentServerId || !currentUserId) {
+  showMessage("ابتدا اطلاعات سرور باید دریافت شود.","error");
+  return;
+ }
 
-$("copyId").addEventListener("click", async () => {
- if (!currentServerId) return;
+ const maxPlayers = Number($("maxPlayers").value);
+
+ if(!Number.isInteger(maxPlayers) || maxPlayers < 1 || maxPlayers > 100) {
+  showMessage("تعداد بازیکنان باید عددی بین ۱ تا ۱۰۰ باشد.","error");
+  $("maxPlayers").focus();
+  return;
+ }
+
+ const settings = {
+  server_id: currentServerId,
+  user_id: currentUserId,
+  game_mode: $("gameMode").value,
+  difficulty: $("difficulty").value,
+  pvp_enabled: $("pvpEnabled").checked,
+  max_players: maxPlayers,
+  command_blocks_enabled: $("commandBlocks").checked,
+  updated_at: new Date().toISOString()
+ };
+
+ const button = $("saveSettings");
+ button.disabled = true;
+ button.textContent = "در حال ذخیره...";
 
  try {
-  await navigator.clipboard.writeText(currentServerId);
-  showMessage("شناسه سرور کپی شد.", "success");
- } catch (error) {
+  const result = await withTimeout(
+   supabase
+    .from("server_settings")
+    .upsert(settings,{onConflict:"server_id"})
+    .select()
+    .single(),
+   15000,
+   "ذخیره تنظیمات"
+  );
+
+  if(result.error) throw result.error;
+
+  showMessage("تنظیمات بازی با موفقیت در پایگاه داده ذخیره شدند.","success");
+
+ } catch(error) {
+  console.error("Save settings error:",error);
   showMessage(
-   "کپی خودکار انجام نشد. شناسه را به‌صورت دستی کپی کن.",
+   "خطا در ذخیره تنظیمات: " + (error.message || "خطای ناشناخته"),
    "error"
   );
+ } finally {
+  button.disabled = false;
+  button.textContent = "💾 ذخیره تنظیمات";
+ }
+}
+
+function resetSettings() {
+ applySettings(defaults);
+ showMessage("تنظیمات پیش‌فرض انتخاب شدند. برای ذخیره آن‌ها دکمه ذخیره را بزن.","");
+}
+
+$("refresh").addEventListener("click",loadServer);
+$("renameButton").addEventListener("click",renameServer);
+$("saveSettings").addEventListener("click",saveSettings);
+$("resetSettings").addEventListener("click",resetSettings);
+
+$("copyId").addEventListener("click",async () => {
+ if(!currentServerId) return;
+ try {
+  await navigator.clipboard.writeText(currentServerId);
+  showMessage("شناسه سرور کپی شد.","success");
+ } catch(error) {
+  showMessage("کپی خودکار انجام نشد. شناسه را دستی کپی کن.","error");
  }
 });
 
