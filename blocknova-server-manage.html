@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090811">
 <title>مدیریت سرور | BlockNova</title>
-
 <style>
 :root{
  --bg:#090711;--panel:#171226;--purple:#8b5cf6;
@@ -22,133 +21,68 @@ body{
 button,input,select{font:inherit}
 a{text-decoration:none;color:inherit}
 .wrap{width:min(1000px,92%);margin:auto}
-header{
- position:sticky;top:0;z-index:10;background:#0c0916ed;
- border-bottom:1px solid #ffffff12;backdrop-filter:blur(15px)
-}
+header{position:sticky;top:0;z-index:10;background:#0c0916ed;border-bottom:1px solid #ffffff12;backdrop-filter:blur(15px)}
 .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0}
 .logo{font-size:25px;font-weight:1000;direction:ltr}
 .logo span{color:var(--purple2)}
-.back{
- padding:9px 14px;border:1px solid var(--line);border-radius:12px;
- background:#ffffff08;color:#ddd0f5;font-size:12px
-}
+.back{padding:9px 14px;border:1px solid var(--line);border-radius:12px;background:#ffffff08;color:#ddd0f5;font-size:12px}
 main{padding:30px 0 65px}
-.hero{
- padding:27px;margin-bottom:20px;border:1px solid #7650b755;
- border-radius:22px;background:linear-gradient(120deg,#302044,#151021)
-}
+.hero{padding:27px;margin-bottom:20px;border:1px solid #7650b755;border-radius:22px;background:linear-gradient(120deg,#302044,#151021)}
 .eyebrow{color:var(--purple2);font-size:11px}
 .hero h1{font-size:27px;margin:8px 0}
 .hero p{color:var(--muted);font-size:12px;margin:0}
-.panel{
- padding:22px;margin-bottom:18px;border:1px solid var(--line);
- border-radius:19px;background:linear-gradient(145deg,#1b152b,#110d1c);
- box-shadow:0 12px 35px #0003
-}
+.panel{padding:22px;margin-bottom:18px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(145deg,#1b152b,#110d1c);box-shadow:0 12px 35px #0003}
 .section-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.section-icon{
- width:42px;height:42px;display:grid;place-items:center;
- border-radius:13px;background:linear-gradient(135deg,#7138d0,#a78bfa);
- font-size:20px;flex-shrink:0
-}
+.section-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#7138d0,#a78bfa);font-size:20px;flex-shrink:0}
 .section-title h2{font-size:16px;margin:0}
 .section-title p{font-size:11px;color:var(--muted);margin:2px 0}
 .server-name{font-size:24px;font-weight:bold;overflow-wrap:anywhere}
-.status{
- display:inline-flex;align-items:center;gap:7px;padding:6px 13px;
- border-radius:30px;font-size:11px;background:#453517;color:#fcd34d
-}
+.status{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:30px;font-size:11px;background:#453517;color:#fcd34d}
 .status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .status.active{background:#123b2d;color:#86efac}
 .status.waiting{background:#453517;color:#fcd34d}
 .status.stopped{background:#451c29;color:#fda4af}
 .status.unknown{background:#302641;color:#d8c5ff}
 .info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.item{
- min-width:0;padding:15px;border:1px solid #ffffff0c;
- border-radius:13px;background:#ffffff06
-}
+.item{min-width:0;padding:15px;border:1px solid #ffffff0c;border-radius:13px;background:#ffffff06}
 .item small{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
 .item b{display:block;font-size:14px;overflow-wrap:anywhere}
 .ltr{direction:ltr;text-align:right}
-.notice{
- margin-top:18px;padding:15px;border:1px solid #66502d;
- border-radius:13px;background:#2a2115;color:#e8d3aa;
- font-size:11px;line-height:2
-}
-.control-box{
- margin-top:20px;padding:17px;border:1px solid var(--line);
- border-radius:14px;background:#100c1b
-}
+.notice{margin-top:18px;padding:15px;border:1px solid #66502d;border-radius:13px;background:#2a2115;color:#e8d3aa;font-size:11px;line-height:2}
+.control-box{margin-top:20px;padding:17px;border:1px solid var(--line);border-radius:14px;background:#100c1b}
 .control-box h3{font-size:14px;margin:0 0 8px}
 .control-box p{font-size:11px;color:var(--muted);margin:0}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
-.btn{
- display:inline-flex;justify-content:center;align-items:center;gap:7px;
- padding:11px 16px;border:0;border-radius:11px;background:var(--purple);
- color:white;font-weight:bold;font-size:12px;cursor:pointer
-}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;padding:11px 16px;border:0;border-radius:11px;background:var(--purple);color:white;font-weight:bold;font-size:12px;cursor:pointer}
 .btn.secondary{background:#302442;border:1px solid #4b3965}
 .btn.danger{background:#451c29;border:1px solid #713347;color:#fda4af}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .field{margin-top:15px}
 .field label{display:block;font-size:12px;margin-bottom:7px;color:#ddd0f5}
-.field input,.field select{
- width:100%;padding:13px;border:1px solid #49385f;
- border-radius:11px;background:#0c0915;color:white;outline:none
-}
-.field input:focus,.field select:focus{
- border-color:var(--purple2);box-shadow:0 0 0 3px #8b5cf622
-}
+.field input,.field select{width:100%;padding:13px;border:1px solid #49385f;border-radius:11px;background:#0c0915;color:white;outline:none}
+.field input:focus,.field select:focus{border-color:var(--purple2);box-shadow:0 0 0 3px #8b5cf622}
 .field select option{background:#171226;color:white}
 .settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.toggle-row{
- display:flex;align-items:center;justify-content:space-between;gap:12px;
- padding:14px;margin-top:14px;border:1px solid #ffffff12;
- border-radius:13px;background:#ffffff06
-}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;margin-top:14px;border:1px solid #ffffff12;border-radius:13px;background:#ffffff06}
 .toggle-row strong{display:block;font-size:13px}
 .toggle-row small{display:block;color:var(--muted);font-size:10px}
 .switch{position:relative;width:48px;height:27px;flex-shrink:0}
 .switch input{opacity:0;width:0;height:0}
-.slider{
- position:absolute;inset:0;background:#51445f;border-radius:30px;
- cursor:pointer;transition:.2s
-}
-.slider:before{
- content:"";position:absolute;width:19px;height:19px;
- right:4px;top:4px;background:white;border-radius:50%;transition:.2s
-}
+.slider{position:absolute;inset:0;background:#51445f;border-radius:30px;cursor:pointer;transition:.2s}
+.slider:before{content:"";position:absolute;width:19px;height:19px;right:4px;top:4px;background:white;border-radius:50%;transition:.2s}
 .switch input:checked+.slider{background:var(--purple)}
 .switch input:checked+.slider:before{transform:translateX(-21px)}
-.message{
- padding:14px;border-radius:12px;background:#211832;
- border:1px solid var(--line);color:#d8c5ff;font-size:12px;overflow-wrap:anywhere
-}
+.message{padding:14px;border-radius:12px;background:#211832;border:1px solid var(--line);color:#d8c5ff;font-size:12px;overflow-wrap:anywhere}
 .message.error{color:#fda4af;background:#351925;border-color:#713347}
 .message.success{color:#86efac;background:#153328;border-color:#34795e}
 .player-list{display:grid;gap:10px;margin-top:18px}
-.player{
- display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:13px;border:1px solid #ffffff12;border-radius:12px;background:#ffffff06
-}
+.player{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px;border:1px solid #ffffff12;border-radius:12px;background:#ffffff06}
 .player-name{font-weight:bold;font-size:13px;direction:ltr;text-align:left;overflow-wrap:anywhere}
 .player-date{font-size:10px;color:var(--muted)}
-.empty{
- padding:20px;text-align:center;border:1px dashed #55436d;
- border-radius:12px;color:var(--muted);font-size:12px
-}
-.loading{
- width:20px;height:20px;border:2px solid #ffffff33;
- border-top-color:white;border-radius:50%;display:inline-block;
- animation:spin .8s linear infinite
-}
+.empty{padding:20px;text-align:center;border:1px dashed #55436d;border-radius:12px;color:var(--muted);font-size:12px}
+.loading{width:20px;height:20px;border:2px solid #ffffff33;border-top-color:white;border-radius:50%;display:inline-block;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-footer{
- padding:25px 0;border-top:1px solid var(--line);
- text-align:center;color:var(--muted);font-size:11px
-}
+footer{padding:25px 0;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:11px}
 footer b{color:var(--purple2);direction:ltr;display:inline-block}
 [hidden]{display:none!important}
 @media(max-width:550px){
@@ -159,12 +93,11 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
  .server-name{font-size:20px}
  .nav{padding:12px 0}.logo{font-size:21px}
  .settings-grid{grid-template-columns:1fr}
- .player{align-items:flex-start}
 }
 </style>
 </head>
-
 <body>
+
 <header>
  <div class="wrap nav">
   <a class="logo" href="blocknova-panel-v2.html">Block<span>Nova</span></a>
@@ -173,7 +106,6 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
 </header>
 
 <main class="wrap">
-
 <section class="hero">
  <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
  <h1>مدیریت سرور</h1>
@@ -182,226 +114,96 @@ footer b{color:var(--purple2);direction:ltr;display:inline-block}
 
 <div id="message" class="message">
  <span class="loading"></span>
- در حال دریافت اطلاعات سرور...
+ در حال اتصال به حساب کاربری...
 </div>
 
 <section id="serverContent" hidden>
 
- <section class="panel">
-  <div class="section-title">
-   <div class="section-icon">🖥️</div>
-   <div>
-    <h2>مشخصات سرور</h2>
-    <p>اطلاعات ثبت‌شده در حساب کاربری شما</p>
-   </div>
-  </div>
+<section class="panel">
+ <div class="section-title">
+  <div class="section-icon">🖥️</div>
+  <div><h2>مشخصات سرور</h2><p>اطلاعات ثبت‌شده در حساب کاربری شما</p></div>
+ </div>
+ <div class="server-name" id="serverName">سرور من</div>
+ <div style="margin-top:12px"><span class="status unknown" id="status">نامشخص</span></div>
+ <div class="info" style="margin-top:20px">
+  <div class="item"><small>نوع بازی</small><b id="type">-</b></div>
+  <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
+  <div class="item"><small>نسخه بازی</small><b id="version" class="ltr">-</b></div>
+  <div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
+  <div class="item"><small>شناسه سرور</small><b id="serverId" class="ltr">-</b></div>
+  <div class="item"><small>تاریخ ثبت</small><b id="created">-</b></div>
+ </div>
+ <div class="actions">
+  <button class="btn secondary" id="copyId">کپی شناسه سرور</button>
+  <button class="btn secondary" id="refresh">↻ بروزرسانی اطلاعات</button>
+ </div>
+</section>
 
-  <div class="server-name" id="serverName">سرور من</div>
-  <div style="margin-top:12px">
-   <span class="status unknown" id="status">نامشخص</span>
-  </div>
+<section class="panel">
+ <div class="section-title"><div class="section-icon">✏️</div><div><h2>تغییر نام سرور</h2><p>یک نام دلخواه برای سرورت انتخاب کن.</p></div></div>
+ <div class="field"><label for="newServerName">نام جدید سرور</label><input id="newServerName" maxlength="40" placeholder="مثلاً سرور دوستان من"></div>
+ <div class="actions"><button class="btn" id="renameButton">ذخیره نام جدید</button></div>
+</section>
 
-  <div class="info" style="margin-top:20px">
-   <div class="item"><small>نوع بازی</small><b id="type">-</b></div>
-   <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
-   <div class="item"><small>نسخه بازی</small><b id="version" class="ltr">-</b></div>
-   <div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
-   <div class="item"><small>شناسه سرور</small><b id="serverId" class="ltr">-</b></div>
-   <div class="item"><small>تاریخ ثبت</small><b id="created">-</b></div>
-  </div>
+<section class="panel">
+ <div class="section-title"><div class="section-icon">🎮</div><div><h2>تنظیمات گیم‌پلی</h2><p>تنظیمات دلخواه دنیای Minecraft خودت را انتخاب کن.</p></div></div>
+ <div class="settings-grid">
+  <div class="field"><label for="maxPlayers">حداکثر بازیکنان</label><select id="maxPlayers">
+   <option value="10">۱۰ بازیکن</option><option value="20">۲۰ بازیکن</option><option value="30">۳۰ بازیکن</option><option value="40">۴۰ بازیکن</option><option value="50">۵۰ بازیکن</option><option value="75">۷۵ بازیکن</option><option value="100">۱۰۰ بازیکن</option>
+  </select></div>
+  <div class="field"><label for="gamemode">حالت بازی</label><select id="gamemode">
+   <option value="survival">Survival - بقا</option><option value="creative">Creative - خلاقانه</option><option value="adventure">Adventure - ماجراجویی</option>
+  </select></div>
+  <div class="field"><label for="difficulty">درجه سختی</label><select id="difficulty">
+   <option value="peaceful">Peaceful - صلح‌آمیز</option><option value="easy">Easy - آسان</option><option value="normal">Normal - معمولی</option><option value="hard">Hard - سخت</option>
+  </select></div>
+ </div>
+ <div class="toggle-row"><div><strong>⚔️ مبارزه بازیکنان (PVP)</strong><small>بازیکنان بتوانند به یکدیگر آسیب بزنند.</small></div><label class="switch"><input type="checkbox" id="pvp"><span class="slider"></span></label></div>
+ <div class="toggle-row"><div><strong>🔒 فهرست سفید (Whitelist)</strong><small>فقط بازیکنان مجاز بتوانند وارد سرور شوند.</small></div><label class="switch"><input type="checkbox" id="whitelist"><span class="slider"></span></label></div>
+ <div class="actions"><button class="btn" id="saveSettings">💾 ذخیره تنظیمات</button><button class="btn secondary" id="resetSettings">بازگردانی پیش‌فرض</button></div>
+ <div class="notice">⚠️ این تنظیمات فعلاً در حساب کاربری شما ذخیره می‌شوند و هنوز روی سرور واقعی Minecraft اعمال نمی‌شوند.</div>
+</section>
 
-  <div class="actions">
-   <button class="btn secondary" id="copyId">کپی شناسه سرور</button>
-   <button class="btn secondary" id="refresh">↻ بروزرسانی اطلاعات</button>
-  </div>
- </section>
+<section class="panel">
+ <div class="section-title"><div class="section-icon">🔒</div><div><h2>مدیریت بازیکنان مجاز</h2><p>بازیکنانی را که اجازه ورود به سرور دارند مدیریت کن.</p></div></div>
+ <div class="field"><label for="playerName">نام کاربری Minecraft</label><input id="playerName" maxlength="16" placeholder="مثلاً Steve" autocomplete="off" dir="ltr" style="text-align:left"></div>
+ <div class="actions"><button class="btn" id="addPlayer">＋ افزودن بازیکن</button><button class="btn secondary" id="refreshPlayers">↻ بروزرسانی فهرست</button></div>
+ <div style="margin-top:20px"><h3 style="font-size:14px;margin:0 0 12px">فهرست بازیکنان <span id="playerCount" style="color:var(--purple2)">(۰)</span></h3><div id="playerList" class="player-list"><div class="empty">در حال دریافت فهرست...</div></div></div>
+ <div class="notice">⚠️ فهرست در سایت ذخیره می‌شود؛ برای اعمال واقعی باید به سرور Minecraft متصل شود.</div>
+</section>
 
- <section class="panel">
-  <div class="section-title">
-   <div class="section-icon">✏️</div>
-   <div>
-    <h2>تغییر نام سرور</h2>
-    <p>یک نام دلخواه برای سرورت انتخاب کن.</p>
-   </div>
-  </div>
-
-  <div class="field">
-   <label for="newServerName">نام جدید سرور</label>
-   <input id="newServerName" type="text" maxlength="40"
-    placeholder="مثلاً سرور دوستان من">
-  </div>
-
-  <div class="actions">
-   <button class="btn" id="renameButton">ذخیره نام جدید</button>
-  </div>
- </section>
-
- <section class="panel">
-  <div class="section-title">
-   <div class="section-icon">🎮</div>
-   <div>
-    <h2>تنظیمات گیم‌پلی</h2>
-    <p>تنظیمات دلخواه دنیای Minecraft خودت را انتخاب کن.</p>
-   </div>
-  </div>
-
-  <div class="settings-grid">
-   <div class="field">
-    <label for="maxPlayers">حداکثر بازیکنان</label>
-    <select id="maxPlayers">
-     <option value="10">۱۰ بازیکن</option>
-     <option value="20">۲۰ بازیکن</option>
-     <option value="30">۳۰ بازیکن</option>
-     <option value="40">۴۰ بازیکن</option>
-     <option value="50">۵۰ بازیکن</option>
-     <option value="75">۷۵ بازیکن</option>
-     <option value="100">۱۰۰ بازیکن</option>
-    </select>
-   </div>
-
-   <div class="field">
-    <label for="gamemode">حالت بازی</label>
-    <select id="gamemode">
-     <option value="survival">Survival - بقا</option>
-     <option value="creative">Creative - خلاقانه</option>
-     <option value="adventure">Adventure - ماجراجویی</option>
-    </select>
-   </div>
-
-   <div class="field">
-    <label for="difficulty">درجه سختی</label>
-    <select id="difficulty">
-     <option value="peaceful">Peaceful - صلح‌آمیز</option>
-     <option value="easy">Easy - آسان</option>
-     <option value="normal">Normal - معمولی</option>
-     <option value="hard">Hard - سخت</option>
-    </select>
-   </div>
-  </div>
-
-  <div class="toggle-row">
-   <div>
-    <strong>⚔️ مبارزه بازیکنان (PVP)</strong>
-    <small>بازیکنان بتوانند به یکدیگر آسیب بزنند.</small>
-   </div>
-   <label class="switch">
-    <input type="checkbox" id="pvp">
-    <span class="slider"></span>
-   </label>
-  </div>
-
-  <div class="toggle-row">
-   <div>
-    <strong>🔒 فهرست سفید (Whitelist)</strong>
-    <small>فقط بازیکنان مجاز بتوانند وارد سرور شوند.</small>
-   </div>
-   <label class="switch">
-    <input type="checkbox" id="whitelist">
-    <span class="slider"></span>
-   </label>
-  </div>
-
-  <div class="actions">
-   <button class="btn" id="saveSettings">💾 ذخیره تنظیمات</button>
-   <button class="btn secondary" id="resetSettings">بازگردانی پیش‌فرض</button>
-  </div>
-
-  <div class="notice">
-   ⚠️ این تنظیمات فعلاً در حساب کاربری شما ذخیره می‌شوند.
-   تا زمان اتصال زیرساخت واقعی Minecraft، تغییرات روی بازی اعمال نمی‌شوند.
-  </div>
- </section>
-
- <!-- مدیریت بازیکنان مجاز -->
- <section class="panel">
-  <div class="section-title">
-   <div class="section-icon">🔒</div>
-   <div>
-    <h2>مدیریت بازیکنان مجاز</h2>
-    <p>بازیکنانی را که اجازه ورود به سرور دارند مدیریت کن.</p>
-   </div>
-  </div>
-
-  <div class="field">
-   <label for="playerName">نام کاربری Minecraft</label>
-   <input id="playerName" type="text" maxlength="16"
-    placeholder="مثلاً Steve" autocomplete="off"
-    dir="ltr" style="text-align:left">
-  </div>
-
-  <div class="actions">
-   <button class="btn" id="addPlayer">＋ افزودن بازیکن</button>
-   <button class="btn secondary" id="refreshPlayers">↻ بروزرسانی فهرست</button>
-  </div>
-
-  <div style="margin-top:20px">
-   <h3 style="font-size:14px;margin:0 0 12px">
-    فهرست بازیکنان
-    <span id="playerCount" style="color:var(--purple2)">(۰)</span>
-   </h3>
-   <div id="playerList" class="player-list">
-    <div class="empty">در حال دریافت فهرست...</div>
-   </div>
-  </div>
-
-  <div class="notice">
-   ⚠️ نام بازیکنان در حساب شما ذخیره می‌شود.
-   برای اعمال واقعی Whitelist باید بعداً این بخش به سرور Minecraft متصل شود.
-  </div>
- </section>
-
- <section class="panel">
-  <div class="section-title">
-   <div class="section-icon">⚙️</div>
-   <div>
-    <h2>کنترل سرور</h2>
-    <p>مدیریت وضعیت سرور</p>
-   </div>
-  </div>
-
-  <div class="control-box">
-   <h3>زیرساخت میزبانی</h3>
-   <p>
-    سرور شما فعلاً به زیرساخت واقعی Minecraft متصل نشده است.
-    پس از راه‌اندازی سیستم میزبانی، امکان روشن و خاموش کردن
-    سرور از این بخش فراهم می‌شود.
-   </p>
-  </div>
-
-  <div class="actions">
-   <button class="btn" disabled>▶ روشن کردن</button>
-   <button class="btn secondary" disabled>■ خاموش کردن</button>
-   <button class="btn secondary" disabled>↻ راه‌اندازی مجدد</button>
-  </div>
-
-  <div class="notice">
-   ⚠️ وضعیت نمایش‌داده‌شده مربوط به اطلاعات ذخیره‌شده در حساب شماست.
-   دکمه‌های کنترل تا زمان اتصال زیرساخت واقعی غیرفعال‌اند.
-  </div>
- </section>
-
+<section class="panel">
+ <div class="section-title"><div class="section-icon">⚙️</div><div><h2>کنترل سرور</h2><p>مدیریت وضعیت سرور</p></div></div>
+ <div class="control-box"><h3>زیرساخت میزبانی</h3><p>سرور شما فعلاً به زیرساخت واقعی Minecraft متصل نشده است. پس از راه‌اندازی سیستم میزبانی، امکان روشن و خاموش کردن سرور فراهم می‌شود.</p></div>
+ <div class="actions"><button class="btn" disabled>▶ روشن کردن</button><button class="btn secondary" disabled>■ خاموش کردن</button><button class="btn secondary" disabled>↻ راه‌اندازی مجدد</button></div>
+ <div class="notice">⚠️ دکمه‌های کنترل تا زمان اتصال زیرساخت واقعی غیرفعال‌اند.</div>
+</section>
 </section>
 </main>
 
 <footer>© 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.</footer>
 
 <script type="module">
-import {createClient} from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import {createClient} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+/* تنظیمات اتصال */
 const supabase=createClient(
  "https://rxynsocnofdakbjbsgry.supabase.co",
- "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9"
+ "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9",
+ {
+  auth:{
+   persistSession:true,
+   autoRefreshToken:true,
+   detectSessionInUrl:true,
+   lock:async(_name,_timeout,fn)=>await fn()
+  }
+ }
 );
 
 const $=id=>document.getElementById(id);
 const message=$("message");
-const serverContent=$("serverContent");
-const refresh=$("refresh");
-const renameButton=$("renameButton");
-const saveSettings=$("saveSettings");
-const addPlayerButton=$("addPlayer");
-
+const content=$("serverContent");
 let currentServerId="";
 let currentUserId="";
 
@@ -410,23 +212,20 @@ function showMessage(text,type=""){
  message.textContent=text;
  message.hidden=false;
 }
-
-function statusText(status){
- const values={
-  active:"فعال",waiting:"در انتظار اتصال",
-  stopped:"متوقف‌شده",pending:"در انتظار",
-  creating:"در حال ساخت"
- };
- return values[status]||status||"نامشخص";
+function setLoading(text){
+ message.className="message";
+ message.innerHTML='<span class="loading"></span> '+text;
+ message.hidden=false;
 }
-
-function statusClass(status){
- if(status==="active")return "active";
- if(["waiting","pending","creating"].includes(status))return "waiting";
- if(status==="stopped")return "stopped";
+function statusText(s){
+ return ({active:"فعال",waiting:"در انتظار اتصال",stopped:"متوقف‌شده",pending:"در انتظار",creating:"در حال ساخت"})[s]||s||"نامشخص";
+}
+function statusClass(s){
+ if(s==="active")return "active";
+ if(["waiting","pending","creating"].includes(s))return "waiting";
+ if(s==="stopped")return "stopped";
  return "unknown";
 }
-
 function defaultSettings(){
  $("maxPlayers").value="20";
  $("gamemode").value="survival";
@@ -434,22 +233,21 @@ function defaultSettings(){
  $("pvp").checked=true;
  $("whitelist").checked=false;
 }
+function timeout(promise,ms,label){
+ return Promise.race([
+  promise,
+  new Promise((_,reject)=>setTimeout(()=>reject(new Error(label+" بیش از حد طول کشید. اتصال اینترنت یا نشست Supabase را بررسی کن.")),ms))
+ ]);
+}
 
 async function loadSettings(){
- const {data,error}=await supabase
-  .from("server_settings")
-  .select("*")
-  .eq("server_id",currentServerId)
-  .eq("user_id",currentUserId)
-  .maybeSingle();
-
+ const {data,error}=await timeout(
+  supabase.from("server_settings").select("*")
+   .eq("server_id",currentServerId).eq("user_id",currentUserId).maybeSingle(),
+  12000,"دریافت تنظیمات"
+ );
  if(error)throw error;
-
- if(!data){
-  defaultSettings();
-  return;
- }
-
+ if(!data){defaultSettings();return;}
  $("maxPlayers").value=String(data.max_players||20);
  $("gamemode").value=data.gamemode||"survival";
  $("difficulty").value=data.difficulty||"normal";
@@ -459,103 +257,60 @@ async function loadSettings(){
 
 async function loadPlayers(){
  const list=$("playerList");
- list.innerHTML='<div class="empty">در حال دریافت فهرست...</div>';
-
- const {data,error}=await supabase
-  .from("whitelist_players")
-  .select("id,player_name,created_at")
-  .eq("server_id",currentServerId)
-  .eq("user_id",currentUserId)
-  .order("created_at",{ascending:false});
-
+ list.textContent="در حال دریافت فهرست...";
+ const {data,error}=await timeout(
+  supabase.from("whitelist_players").select("id,player_name,created_at")
+   .eq("server_id",currentServerId).eq("user_id",currentUserId)
+   .order("created_at",{ascending:false}),
+  12000,"دریافت فهرست بازیکنان"
+ );
  if(error)throw error;
-
  $("playerCount").textContent="("+data.length+")";
  list.replaceChildren();
-
- if(data.length===0){
+ if(!data.length){
   const empty=document.createElement("div");
   empty.className="empty";
   empty.textContent="هنوز بازیکنی به فهرست اضافه نشده است.";
   list.appendChild(empty);
   return;
  }
-
- data.forEach(player=>{
-  const row=document.createElement("div");
-  row.className="player";
-
+ data.forEach(p=>{
+  const row=document.createElement("div");row.className="player";
   const details=document.createElement("div");
-
-  const name=document.createElement("div");
-  name.className="player-name";
-  name.textContent=player.player_name;
-
-  const date=document.createElement("div");
-  date.className="player-date";
-  date.textContent=player.created_at
-   ?new Date(player.created_at).toLocaleDateString("fa-IR")
-   :"";
-
+  const name=document.createElement("div");name.className="player-name";name.textContent=p.player_name;
+  const date=document.createElement("div");date.className="player-date";
+  date.textContent=p.created_at?new Date(p.created_at).toLocaleDateString("fa-IR"):"";
   details.append(name,date);
-
-  const remove=document.createElement("button");
-  remove.className="btn danger";
-  remove.textContent="حذف";
-  remove.type="button";
-  remove.addEventListener("click",()=>deletePlayer(player.id,remove));
-
-  row.append(details,remove);
-  list.appendChild(row);
+  const remove=document.createElement("button");remove.className="btn danger";remove.textContent="حذف";
+  remove.addEventListener("click",()=>deletePlayer(p.id,remove));
+  row.append(details,remove);list.appendChild(row);
  });
 }
 
 async function loadServer(){
- refresh.disabled=true;
- showMessage("در حال دریافت اطلاعات سرور...");
-
+ $("refresh").disabled=true;
+ setLoading("در حال بررسی نشست ورود...");
+ content.hidden=true;
  try{
-  const {data:{session},error:sessionError}=
-   await supabase.auth.getSession();
-
-  if(sessionError)throw sessionError;
-
-  if(!session){
-   location.href="login.html";
-   return;
-  }
-
+  const result=await timeout(supabase.auth.getSession(),12000,"بررسی نشست ورود");
+  if(result.error)throw result.error;
+  const session=result.data.session;
+  if(!session){location.href="login.html";return;}
   currentUserId=session.user.id;
 
-  const params=new URLSearchParams(location.search);
-  const serverId=params.get("id");
+  const id=new URLSearchParams(location.search).get("id");
+  if(!id)throw new Error("شناسه سرور در آدرس صفحه وجود ندارد.");
+  setLoading("در حال دریافت مشخصات سرور...");
 
-  if(!serverId){
-   serverContent.hidden=true;
-   showMessage(
-    "شناسه سرور در آدرس صفحه وجود ندارد. از قسمت سرورهای من روی مدیریت همان سرور کلیک کن.",
-    "error"
-   );
-   return;
-  }
-
-  const {data,error}=await supabase
-   .from("servers")
-   .select("*")
-   .eq("id",serverId)
-   .eq("user_id",session.user.id)
-   .maybeSingle();
-
+  const {data,error}=await timeout(
+   supabase.from("servers").select("*").eq("id",id)
+    .eq("user_id",currentUserId).maybeSingle(),
+   12000,"دریافت مشخصات سرور"
+  );
   if(error)throw error;
-
-  if(!data){
-   serverContent.hidden=true;
-   showMessage("این سرور پیدا نشد یا به حساب کاربری شما تعلق ندارد.","error");
-   return;
-  }
+  if(!data)throw new Error("سرور پیدا نشد یا به حساب شما تعلق ندارد.");
 
   currentServerId=data.id;
-
   $("serverName").textContent=data.name||"سرور من";
   $("newServerName").value=data.name||"";
   $("type").textContent=data.type||"-";
@@ -563,117 +318,98 @@ async function loadServer(){
   $("version").textContent=data.version||"-";
   $("ram").textContent=data.ram_gb?data.ram_gb+" گیگابایت":"تنظیم نشده";
   $("serverId").textContent=data.id||"-";
+  $("created").textContent=data.created_at?new Date(data.created_at).toLocaleString("fa-IR"):"نامشخص";
+  $("status").textContent=statusText(data.status);
+  $("status").className="status "+statusClass(data.status);
 
-  $("created").textContent=data.created_at
-   ?new Date(data.created_at).toLocaleString("fa-IR")
-   :"نامشخص";
-
-  const status=$("status");
-  status.textContent=statusText(data.status);
-  status.className="status "+statusClass(data.status);
-
+  setLoading("در حال دریافت تنظیمات...");
   await loadSettings();
+  setLoading("در حال دریافت فهرست بازیکنان...");
   await loadPlayers();
 
-  serverContent.hidden=false;
-  showMessage("اطلاعات سرور و بازیکنان با موفقیت دریافت شدند.","success");
-
+  content.hidden=false;
+  showMessage("اطلاعات سرور و تنظیمات با موفقیت دریافت شدند.","success");
  }catch(error){
   console.error(error);
-  serverContent.hidden=true;
-  showMessage("خطا در دریافت اطلاعات: "+(error.message||"خطای ناشناخته"),"error");
+  showMessage("خطا: "+(error.message||"خطای ناشناخته"),"error");
  }finally{
-  refresh.disabled=false;
+  $("refresh").disabled=false;
  }
 }
 
-// تغییر نام سرور
-renameButton.addEventListener("click",async()=>{
- if(!currentServerId||!currentUserId)return;
-
- const newName=$("newServerName").value.trim();
-
- if(!newName){
-  showMessage("لطفاً یک نام برای سرور وارد کن.","error");
-  return;
+$("renameButton").addEventListener("click",async()=>{
+ const name=$("newServerName").value.trim();
+ if(!currentServerId||!name||name.length<3){
+  showMessage("نام سرور باید حداقل ۳ حرف داشته باشد.","error");return;
  }
-
- if(newName.length<3){
-  showMessage("نام سرور باید حداقل ۳ حرف داشته باشد.","error");
-  return;
- }
-
- renameButton.disabled=true;
- renameButton.textContent="در حال ذخیره...";
-
+ const b=$("renameButton");b.disabled=true;b.textContent="در حال ذخیره...";
  try{
-  const {data,error}=await supabase
-   .from("servers")
-   .update({name:newName})
-   .eq("id",currentServerId)
-   .eq("user_id",currentUserId)
-   .select("id,name");
-
+  const {data,error}=await timeout(
+   supabase.from("servers").update({name}).eq("id",currentServerId)
+    .eq("user_id",currentUserId).select("id,name"),
+   12000,"تغییر نام"
+  );
   if(error)throw error;
-  if(!data||data.length===0)throw new Error("نام سرور ذخیره نشد.");
-
+  if(!data?.length)throw new Error("نام سرور ذخیره نشد.");
   $("serverName").textContent=data[0].name;
   $("newServerName").value=data[0].name;
   showMessage("نام سرور با موفقیت تغییر کرد.","success");
-
- }catch(error){
-  showMessage("خطا در تغییر نام: "+error.message,"error");
- }finally{
-  renameButton.disabled=false;
-  renameButton.textContent="ذخیره نام جدید";
- }
+ }catch(e){showMessage("خطا در تغییر نام: "+e.message,"error");}
+ finally{b.disabled=false;b.textContent="ذخیره نام جدید";}
 });
 
-// ذخیره تنظیمات بازی
-saveSettings.addEventListener("click",async()=>{
- if(!currentServerId||!currentUserId)return;
-
- saveSettings.disabled=true;
- saveSettings.textContent="در حال ذخیره...";
-
+$("saveSettings").addEventListener("click",async()=>{
+ const b=$("saveSettings");b.disabled=true;b.textContent="در حال ذخیره...";
  try{
   const settings={
-   server_id:currentServerId,
-   user_id:currentUserId,
+   server_id:currentServerId,user_id:currentUserId,
    max_players:Number($("maxPlayers").value),
-   gamemode:$("gamemode").value,
-   difficulty:$("difficulty").value,
-   pvp:$("pvp").checked,
-   whitelist:$("whitelist").checked,
+   gamemode:$("gamemode").value,difficulty:$("difficulty").value,
+   pvp:$("pvp").checked,whitelist:$("whitelist").checked,
    updated_at:new Date().toISOString()
   };
-
-  const {error}=await supabase
-   .from("server_settings")
-   .upsert(settings,{onConflict:"server_id"});
-
+  const {error}=await timeout(
+   supabase.from("server_settings").upsert(settings,{onConflict:"server_id"}),
+   12000,"ذخیره تنظیمات"
+  );
   if(error)throw error;
-
   showMessage("تنظیمات سرور با موفقیت ذخیره شدند.","success");
-
- }catch(error){
-  showMessage("خطا در ذخیره تنظیمات: "+error.message,"error");
- }finally{
-  saveSettings.disabled=false;
-  saveSettings.textContent="💾 ذخیره تنظیمات";
- }
+ }catch(e){showMessage("خطا در ذخیره تنظیمات: "+e.message,"error");}
+ finally{b.disabled=false;b.textContent="💾 ذخیره تنظیمات";}
 });
 
 $("resetSettings").addEventListener("click",()=>{
  defaultSettings();
- showMessage(
-  "تنظیمات پیش‌فرض انتخاب شدند. برای ثبت آن‌ها روی ذخیره تنظیمات بزن.",
-  "success"
- );
+ showMessage("تنظیمات پیش‌فرض انتخاب شدند. برای ثبت آن‌ها ذخیره تنظیمات را بزن.","success");
 });
 
-// افزودن بازیکن
-addPlayerButton.addEventListener("click",async()=>{
- if(!currentServerId||!currentUserId)return;
+$("addPlayer").addEventListener("click",async()=>{
+ const name=$("playerName").value.trim();
+ if(!/^[A-Za-z0-9_]{3,16}$/.test(name)){
+  showMessage("نام بازیکن باید ۳ تا ۱۶ کاراکتر و شامل حروف انگلیسی، عدد یا زیرخط باشد.","error");return;
+ }
+ const b=$("addPlayer");b.disabled=true;b.textContent="در حال افزودن...";
+ try{
+  const {error}=await timeout(
+   supabase.from("whitelist_players").insert({
+    server_id:currentServerId,user_id:currentUserId,player_name:name
+   }),12000,"افزودن بازیکن"
+  );
+  if(error){
+   if(error.code==="23505")throw new Error("این بازیکن قبلاً ثبت شده است.");
+   throw error;
+  }
+  $("playerName").value="";
+  await loadPlayers();
+  showMessage("بازیکن "+name+" با موفقیت اضافه شد.","success");
+ }catch(e){showMessage("خطا در افزودن بازیکن: "+e.message,"error");}
+ finally{b.disabled=false;b.textContent="＋ افزودن بازیکن";}
+});
 
- const playerNam
+async function deletePlayer(id,b){
+ if(!confirm("آیا مطمئنی می‌خواهی این بازیکن را حذف کنی؟"))return;
+ b.disabled=true;b.textContent="...";
+ try{
+  const {data,error}=await timeout(
+   supabase.from("whitelist_players").delete().eq("id",id)
+    .eq("server_id",currentServerI
