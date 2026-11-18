@@ -4,205 +4,703 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090711">
+<meta name="theme-color" content="#080611">
 <title>ساخت سرور | BlockNova</title>
 
 <style>
 :root{
---bg:#090711;--panel:#141020;--panel2:#1b142b;
---purple:#8b5cf6;--purple2:#a78bfa;
---text:#f7f3ff;--muted:#aaa1bd;--line:#302442;
+  --bg:#080611;
+  --panel:#110d1d;
+  --panel2:#171126;
+  --purple:#8b5cf6;
+  --purple2:#b69aff;
+  --cyan:#54d6ff;
+  --text:#f8f5ff;
+  --muted:#a59bb9;
+  --line:#302442;
+  --success:#42d9a0;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-margin:0;background:radial-gradient(ellipse at 80% -10%,#38205e 0,transparent 36%),var(--bg);
-color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.8;
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  font-family:Tahoma,Arial,sans-serif;
+  line-height:1.8;
+  background:
+    radial-gradient(ellipse at 85% 0%,#38206455,transparent 35%),
+    radial-gradient(ellipse at 0% 45%,#172e4a22,transparent 35%),
+    var(--bg);
 }
-a{text-decoration:none;color:inherit}
-button,select,input{font:inherit}
-.wrap{width:min(1000px,92%);margin:auto}
-header{position:sticky;top:0;z-index:5;background:#0b0813ef;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
-.brand{font-size:23px;font-weight:900;direction:ltr}
-.brand span{color:var(--purple2)}
-.back{background:#211832;border:1px solid #493467;padding:8px 14px;border-radius:11px;font-size:13px}
-main{padding:40px 0 65px}
-.heading{text-align:center;margin-bottom:30px}
-.heading h1{font-size:clamp(28px,5vw,42px);margin:0 0 8px}
-.heading p{color:var(--muted);margin:0}
-.panel{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:20px;padding:23px;margin-bottom:18px}
-.step-title{display:flex;align-items:center;gap:11px;margin-bottom:17px}
-.number{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#39245a;color:#d9c8ff;font-weight:900}
-.step-title h2{font-size:18px;margin:0}
-.options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.option{background:#100c1b;border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;text-align:right;color:var(--text);width:100%;transition:.2s}
-.option:hover{border-color:#8961c7}
-.option.active{border-color:var(--purple2);background:#2a1b40;box-shadow:0 0 20px #8b5cf622}
-.option .emoji{font-size:27px;display:block}
-.option strong{display:block;font-size:16px}
-.option small{color:var(--muted);font-size:12px}
-.software-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.software{background:#100c1b;border:1px solid var(--line);border-radius:12px;padding:13px 8px;color:var(--text);cursor:pointer;text-align:center}
-.software.active{background:#2a1b40;border-color:var(--purple2)}
-.software strong{display:block;font-size:14px}
-.software small{font-size:11px;color:var(--muted)}
-.field{margin-top:16px}
-.field label{display:block;margin-bottom:8px;font-size:14px;font-weight:bold}
-select{width:100%;padding:13px;border-radius:12px;background:#100c1b;border:1px solid var(--line);color:white;outline:none}
-select:focus{border-color:var(--purple2)}
-.advanced{margin-top:14px;padding:13px;background:#100c1b;border:1px solid var(--line);border-radius:12px}
-.advanced label{display:flex;align-items:center;gap:9px;cursor:pointer;margin:0}
-.advanced input{width:18px;height:18px;accent-color:var(--purple)}
-.hint{color:var(--muted);font-size:12px;margin-top:7px}
-.ram-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.ram{background:#100c1b;border:1px solid var(--line);border-radius:12px;padding:13px 5px;text-align:center;color:white;cursor:pointer}
-.ram.active{background:#2a1b40;border-color:var(--purple2)}
-.ram strong{display:block;font-size:17px}
-.ram small{font-size:11px;color:var(--muted)}
-.summary{background:#100c1b;border:1px solid #493467;border-radius:15px;padding:17px}
-.summary h3{margin:0 0 12px}
-.summary-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #302442;font-size:14px}
-.summary-row:last-of-type{border:0}
-.summary-row span:first-child{color:var(--muted)}
-.submit{width:100%;margin-top:17px;padding:14px;border:0;border-radius:13px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;font-weight:900;cursor:pointer;font-size:16px}
-.submit:hover{filter:brightness(1.1)}
-.notice{margin-top:15px;background:#211a12;border:1px solid #59442b;color:#e9d4ae;padding:13px;border-radius:12px;font-size:12px}
-#versionStatus{color:var(--muted);font-size:12px;margin-top:7px}
-#result{display:none;margin-top:15px;background:#12251e;border:1px solid #32664e;border-radius:12px;padding:14px;font-size:13px}
-footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
-@media(max-width:650px){
-.options{grid-template-columns:1fr}
-.software-grid{grid-template-columns:repeat(2,1fr)}
-.ram-grid{grid-template-columns:repeat(2,1fr)}
-.panel{padding:17px}
+button,input,select{font:inherit}
+button{color:inherit}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,92%);margin:auto}
+
+/* Header */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:#090713eF;
+  border-bottom:1px solid #ffffff12;
+  backdrop-filter:blur(18px);
+}
+.nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  gap:12px;
+}
+.brand{
+  font-size:25px;
+  font-weight:1000;
+  letter-spacing:-1px;
+  direction:ltr;
+}
+.brand span{
+  color:var(--purple2);
+  text-shadow:0 0 22px #9b70ff88;
+}
+.back{
+  padding:9px 15px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#ffffff08;
+  color:#d8ccef;
+  font-size:12px;
+  transition:.2s;
+}
+.back:hover{
+  border-color:var(--purple);
+  background:#8b5cf61b;
+}
+
+/* Hero */
+main{padding:38px 0 70px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:35px 30px;
+  margin-bottom:25px;
+  border:1px solid #7650b744;
+  border-radius:25px;
+  background:
+    radial-gradient(circle at 10% 20%,#7c3aed35,transparent 38%),
+    linear-gradient(120deg,#1d1431,#100d1c 70%);
+  box-shadow:0 20px 70px #0005;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:230px;height:230px;
+  left:-75px;top:-100px;
+  border:1px solid #a78bfa33;
+  border-radius:50%;
+  box-shadow:0 0 0 25px #a78bfa08,0 0 0 55px #a78bfa06;
+}
+.hero-content{position:relative;z-index:1}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 12px;
+  border:1px solid #9b76ef55;
+  border-radius:30px;
+  background:#8b5cf61a;
+  color:#d4c1ff;
+  font-size:11px;
+}
+.live-dot{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--success);
+  box-shadow:0 0 12px var(--success);
+}
+.hero h1{
+  margin:13px 0 5px;
+  font-size:clamp(27px,5vw,39px);
+  line-height:1.5;
+}
+.hero p{
+  max-width:600px;
+  margin:0;
+  color:#bcb1d0;
+  font-size:13px;
+}
+.hero-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:19px;
+}
+.hero-tags span{
+  padding:6px 11px;
+  border-radius:9px;
+  background:#ffffff0b;
+  border:1px solid #ffffff12;
+  color:#d9d0e9;
+  font-size:11px;
+}
+
+/* Progress */
+.progress{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-bottom:20px;
+}
+.progress-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#110d1d;
+  color:var(--muted);
+  font-size:11px;
+}
+.progress-item b{
+  display:grid;
+  place-items:center;
+  width:28px;height:28px;
+  flex-shrink:0;
+  border-radius:9px;
+  background:#ffffff0b;
+  color:#c7b5ed;
+}
+.progress-item.active{
+  border-color:#946bdf88;
+  background:#211638;
+  color:#f0eaff;
+}
+.progress-item.active b{
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  color:white;
+  box-shadow:0 0 17px #8b5cf655;
+}
+
+/* Layout */
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 310px;
+  align-items:start;
+  gap:18px;
+}
+.main-column{min-width:0}
+.panel{
+  position:relative;
+  padding:23px;
+  margin-bottom:17px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:linear-gradient(145deg,#19132aee,#100d1bee);
+  box-shadow:0 12px 35px #0002;
+  transition:border-color .2s;
+}
+.panel:hover{border-color:#63458b}
+.step-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:19px;
+}
+.number{
+  display:grid;
+  place-items:center;
+  width:38px;height:38px;
+  flex-shrink:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#7540d2,#a78bfa);
+  box-shadow:0 5px 20px #8b5cf633;
+  color:white;
+  font-weight:900;
+}
+.step-title h2{font-size:16px;margin:0}
+.step-title p{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* Edition cards */
+.options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.option{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-height:104px;
+  width:100%;
+  padding:16px;
+  text-align:right;
+  cursor:pointer;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#0d0a17;
+  transition:.22s;
+}
+.option:hover{
+  transform:translateY(-2px);
+  border-color:#8060b5;
+}
+.option.active{
+  border-color:var(--purple2);
+  background:linear-gradient(120deg,#352052,#1b1429);
+  box-shadow:0 0 25px #8b5cf622,inset 0 0 20px #8b5cf60a;
+}
+.option-icon{
+  display:grid;
+  place-items:center;
+  width:48px;height:48px;
+  flex-shrink:0;
+  border-radius:14px;
+  background:#ffffff0b;
+  font-size:25px;
+}
+.option strong{display:block;font-size:15px;direction:ltr;text-align:right}
+.option small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.check{
+  position:absolute;
+  left:12px;top:12px;
+  display:none;
+  color:var(--purple2);
+  font-size:15px;
+}
+.option.active .check{display:block}
+
+/* Software */
+.software-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.software{
+  min-height:83px;
+  padding:12px 7px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#0e0b18;
+  cursor:pointer;
+  text-align:center;
+  transition:.2s;
+}
+.software:hover{border-color:#8060b5;transform:translateY(-2px)}
+.software.active{
+  border-color:var(--purple2);
+  background:#2a1c40;
+  box-shadow:0 0 18px #8b5cf622;
+}
+.software .software-icon{
+  display:block;
+  font-size:19px;
+  margin-bottom:2px;
+}
+.software strong{display:block;font-size:12px}
+.software small{display:block;color:var(--muted);font-size:9px}
+
+/* Fields */
+.field{margin-top:19px}
+.field label{
+  display:block;
+  margin-bottom:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+.select-wrap{position:relative}
+select{
+  width:100%;
+  padding:13px 14px;
+  color:white;
+  background:#0c0915;
+  border:1px solid #403252;
+  border-radius:12px;
+  outline:none;
+  cursor:pointer;
+}
+select:focus{border-color:var(--purple2);box-shadow:0 0 0 3px #8b5cf61b}
+select option{background:#171126;color:white}
+#versionStatus{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:8px;
+}
+.advanced{
+  margin-top:15px;
+  padding:14px;
+  border:1px solid #47335f;
+  border-radius:13px;
+  background:#171126;
+}
+.advanced label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0;
+  cursor:pointer;
+  font-size:12px;
+}
+.advanced input{
+  width:17px;height:17px;
+  accent-color:var(--purple);
+}
+.hint{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* RAM */
+.ram-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.ram{
+  padding:16px 6px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#0d0a17;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+}
+.ram:hover{border-color:#8968bd}
+.ram.active{
+  border-color:var(--purple2);
+  background:linear-gradient(145deg,#382452,#211630);
+  box-shadow:0 0 20px #8b5cf622;
+}
+.ram strong{
+  display:block;
+  direction:ltr;
+  font-size:20px;
+}
+.ram small{color:var(--muted);font-size:10px}
+
+/* Summary sidebar */
+.sidebar{
+  position:sticky;
+  top:88px;
+}
+.summary{
+  overflow:hidden;
+  border:1px solid #62458b;
+  border-radius:19px;
+  background:linear-gradient(160deg,#201633,#100d1b 70%);
+  box-shadow:0 15px 45px #0004;
+}
+.summary-head{
+  padding:19px;
+  border-bottom:1px solid #ffffff12;
+  background:linear-gradient(120deg,#392456,#201633);
+}
+.summary-head small{
+  color:#d4c4f2;
+  font-size:10px;
+}
+.summary-head h3{margin:4px 0 0;font-size:17px}
+.summary-body{padding:17px}
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:11px 0;
+  border-bottom:1px solid #ffffff10;
+  font-size:11px;
+}
+.summary-row span{color:var(--muted)}
+.summary-row strong{
+  max-width:58%;
+  text-align:left;
+  overflow-wrap:anywhere;
+  direction:ltr;
+  font-size:11px;
+}
+.ram-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:15px;
+  padding:13px;
+  border-radius:12px;
+  background:#8b5cf617;
+  border:1px solid #8b5cf633;
+}
+.ram-summary span{color:#c9b8e7;font-size:11px}
+.ram-summary strong{font-size:19px;direction:ltr}
+.submit{
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(110deg,#7138d0,#a78bfa);
+  color:white;
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+  box-shadow:0 8px 25px #8b5cf633;
+  transition:.2s;
+}
+.submit:hover{filter:brightness(1.13);transform:translateY(-2px)}
+#result{
+  display:none;
+  margin-top:13px;
+  padding:12px;
+  border-radius:11px;
+  background:#153328;
+  border:1px solid #34795e;
+  color:#a9f2d0;
+  font-size:11px;
+}
+.notice{
+  margin-top:14px;
+  padding:13px;
+  border:1px solid #66502d;
+  border-radius:12px;
+  background:#2a2115;
+  color:#e8d3aa;
+  font-size:10px;
+  line-height:2;
+}
+.footer{
+  padding:24px 0;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
+}
+.footer b{color:var(--purple2);direction:ltr;display:inline-block}
+
+/* Mobile */
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .summary{max-width:none}
+}
+@media(max-width:600px){
+  main{padding-top:23px}
+  .hero{padding:25px 19px;border-radius:19px}
+  .progress{grid-template-columns:repeat(2,1fr)}
+  .progress-item{padding:9px;font-size:10px}
+  .panel{padding:17px;border-radius:16px}
+  .options{grid-template-columns:1fr}
+  .option{min-height:85px}
+  .software-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ram-grid{grid-template-columns:repeat(2,1fr)}
+  .brand{font-size:21px}
+  .back{font-size:10px;padding:8px 10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;transition:none!important}
 }
 </style>
 </head>
 
 <body>
 <header>
-<div class="wrap nav">
-<a class="brand" href="index.html">Block<span>Nova</span></a>
-<a class="back" href="index.html">بازگشت به صفحه اصلی ←</a>
-</div>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">Block<span>Nova</span></a>
+    <a class="back" href="index.html">← بازگشت به پنل</a>
+  </div>
 </header>
 
 <main class="wrap">
-<div class="heading">
-<h1>ساخت سرور جدید 🚀</h1>
-<p>سرور ماینکرافت خودت را با تنظیمات دلخواه بساز.</p>
-</div>
+  <section class="hero">
+    <div class="hero-content">
+      <span class="eyebrow"><i class="live-dot"></i> BLOCKNOVA SERVER BUILDER</span>
+      <h1>سرور رویایی خودت رو بساز</h1>
+      <p>نسخه، نرم‌افزار و منابع سرورت رو انتخاب کن و تنظیمات دلخواهت رو در یک محیط حرفه‌ای آماده کن.</p>
+      <div class="hero-tags">
+        <span>✦ Java & Bedrock</span>
+        <span>✦ نسخه‌های متنوع</span>
+        <span>✦ تنظیمات اختصاصی</span>
+      </div>
+    </div>
+  </section>
 
-<section class="panel">
-<div class="step-title">
-<div class="number">۱</div>
-<h2>نوع سرور را انتخاب کن</h2>
-</div>
-<div class="options">
-<button class="option active" data-edition="Java">
-<span class="emoji">☕</span>
-<strong>Java Edition</strong>
-<small>مناسب کامپیوتر و لانچرهای جاوا</small>
-</button>
-<button class="option" data-edition="Bedrock">
-<span class="emoji">📱</span>
-<strong>Bedrock Edition</strong>
-<small>مناسب موبایل، کنسول و ویندوز</small>
-</button>
-</div>
-</section>
+  <div class="progress">
+    <div class="progress-item active"><b>۱</b> نوع سرور</div>
+    <div class="progress-item active"><b>۲</b> نرم‌افزار و نسخه</div>
+    <div class="progress-item active"><b>۳</b> حافظه RAM</div>
+    <div class="progress-item active"><b>۴</b> بررسی تنظیمات</div>
+  </div>
 
-<section class="panel">
-<div class="step-title">
-<div class="number">۲</div>
-<h2>نرم‌افزار سرور را انتخاب کن</h2>
-</div>
+  <div class="layout">
+    <div class="main-column">
 
-<div class="software-grid" id="softwareGrid"></div>
+      <section class="panel">
+        <div class="step-title">
+          <div class="number">۱</div>
+          <div>
+            <h2>نوع سرور را انتخاب کن</h2>
+            <p>نسخه مناسب دستگاه‌ها و بازی خودت را انتخاب کن.</p>
+          </div>
+        </div>
 
-<div class="field">
-<label for="version">نسخه ماینکرافت</label>
-<select id="version">
-<option value="">در حال دریافت نسخه‌ها...</option>
-</select>
-<div id="versionStatus">در حال اتصال به فهرست نسخه‌ها...</div>
-</div>
+        <div class="options">
+          <button class="option active" data-edition="Java">
+            <span class="option-icon">☕</span>
+            <span>
+              <strong>Java Edition</strong>
+              <small>کامپیوتر و لانچرهای جاوا</small>
+            </span>
+            <span class="check">✓</span>
+          </button>
 
-<div class="advanced" id="advancedBox">
-<label>
-<input type="checkbox" id="showAdvanced">
-نمایش نسخه‌های پیشرفته (Snapshot، Beta و Alpha)
-</label>
-<div class="hint">این نسخه‌ها برای آزمایش و تجربه نسخه‌های قدیمی هستند و ممکن است برای همه نرم‌افزارها قابل استفاده نباشند.</div>
-</div>
-</section>
+          <button class="option" data-edition="Bedrock">
+            <span class="option-icon">📱</span>
+            <span>
+              <strong>Bedrock Edition</strong>
+              <small>موبایل، کنسول و ویندوز</small>
+            </span>
+            <span class="check">✓</span>
+          </button>
+        </div>
+      </section>
 
-<section class="panel">
-<div class="step-title">
-<div class="number">۳</div>
-<h2>حافظه RAM سرور</h2>
-</div>
-<div class="ram-grid">
-<button class="ram active" data-ram="2"><strong>2 GB</strong><small>رم سرور</small></button>
-<button class="ram" data-ram="4"><strong>4 GB</strong><small>رم سرور</small></button>
-<button class="ram" data-ram="6"><strong>6 GB</strong><small>رم سرور</small></button>
-<button class="ram" data-ram="8"><strong>8 GB</strong><small>رم سرور</small></button>
-</div>
-</section>
+      <section class="panel">
+        <div class="step-title">
+          <div class="number">۲</div>
+          <div>
+            <h2>نرم‌افزار و نسخه بازی</h2>
+            <p>موتور اجرای سرورت را انتخاب کن.</p>
+          </div>
+        </div>
 
-<section class="panel">
-<div class="step-title">
-<div class="number">۴</div>
-<h2>خلاصه تنظیمات سرور</h2>
-</div>
-<div class="summary">
-<h3>مشخصات سرور شما</h3>
-<div class="summary-row"><span>نوع بازی</span><strong id="sumEdition">Java</strong></div>
-<div class="summary-row"><span>نرم‌افزار</span><strong id="sumSoftware">Paper</strong></div>
-<div class="summary-row"><span>نسخه بازی</span><strong id="sumVersion">در حال دریافت</strong></div>
-<div class="summary-row"><span>حافظه RAM</span><strong id="sumRam">2 GB</strong></div>
-<button class="submit" id="createButton">تأیید تنظیمات سرور</button>
-<div id="result"></div>
-</div>
-<div class="notice">
-⚠️ این صفحه فعلاً نمایشی است. انتخاب‌ها و فهرست نسخه‌ها کار می‌کنند، اما ساخت واقعی سرور، تخصیص RAM و دانلود نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده‌اند. نمایش یک نسخه به معنی تضمین نصب آن روی میزبان نیست.
-</div>
-</section>
+        <div class="software-grid" id="softwareGrid"></div>
+
+        <div class="field">
+          <label for="version">نسخه ماینکرافت</label>
+          <div class="select-wrap">
+            <select id="version">
+              <option value="">در حال دریافت نسخه‌ها...</option>
+            </select>
+          </div>
+          <div id="versionStatus">در حال اتصال به فهرست نسخه‌ها...</div>
+        </div>
+
+        <div class="advanced" id="advancedBox">
+          <label>
+            <input type="checkbox" id="showAdvanced">
+            نمایش نسخه‌های پیشرفته (Snapshot، Beta و Alpha)
+          </label>
+          <div class="hint">
+            نسخه‌های آزمایشی و قدیمی ممکن است با بعضی نرم‌افزارها سازگار نباشند.
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="step-title">
+          <div class="number">۳</div>
+          <div>
+            <h2>حافظه RAM سرور</h2>
+            <p>مقدار حافظه موردنظر را انتخاب کن.</p>
+          </div>
+        </div>
+
+        <div class="ram-grid">
+          <button class="ram active" data-ram="2">
+            <strong>2 GB</strong><small>حافظه RAM</small>
+          </button>
+          <button class="ram" data-ram="4">
+            <strong>4 GB</strong><small>حافظه RAM</small>
+          </button>
+          <button class="ram" data-ram="6">
+            <strong>6 GB</strong><small>حافظه RAM</small>
+          </button>
+          <button class="ram" data-ram="8">
+            <strong>8 GB</strong><small>حافظه RAM</small>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="sidebar">
+      <section class="summary">
+        <div class="summary-head">
+          <small>BLOCKNOVA / CONFIGURATION</small>
+          <h3>خلاصه تنظیمات سرور</h3>
+        </div>
+
+        <div class="summary-body">
+          <div class="summary-row">
+            <span>نوع بازی</span>
+            <strong id="sumEdition">Java</strong>
+          </div>
+          <div class="summary-row">
+            <span>نرم‌افزار</span>
+            <strong id="sumSoftware">Paper</strong>
+          </div>
+          <div class="summary-row">
+            <span>نسخه بازی</span>
+            <strong id="sumVersion">در حال دریافت</strong>
+          </div>
+
+          <div class="ram-summary">
+            <span>حافظه انتخابی</span>
+            <strong id="sumRam">2 GB</strong>
+          </div>
+
+          <button class="submit" id="createButton">
+            تأیید تنظیمات سرور ←
+          </button>
+
+          <div id="result"></div>
+        </div>
+      </section>
+
+      <div class="notice">
+        ⚠️ این صفحه فعلاً برای انتخاب و آماده‌سازی تنظیمات است. ساخت واقعی سرور، تخصیص RAM و نصب نرم‌افزار هنوز به زیرساخت میزبانی متصل نشده است. نمایش یک نسخه به معنی تضمین نصب آن روی میزبان نیست.
+      </div>
+    </aside>
+  </div>
 </main>
 
-<footer>© 2026 BlockNova — تمام حقوق محفوظ است.</footer>
+<footer class="footer">
+  © 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.
+</footer>
 
 <script>
 const softwareOptions = {
-Java:[
-{name:"Vanilla",desc:"نسخه رسمی و ساده"},
-{name:"Paper",desc:"مناسب پلاگین‌ها"},
-{name:"Spigot",desc:"سرور پلاگین‌پذیر"},
-{name:"Purpur",desc:"امکانات بیشتر"},
-{name:"Fabric",desc:"مناسب مودها"},
-{name:"Forge",desc:"مودهای ماینکرافت"},
-{name:"NeoForge",desc:"مودلودر جدید"}
-],
-Bedrock:[
-{name:"Bedrock Dedicated Server",desc:"سرور رسمی بدراک"},
-{name:"PocketMine-MP",desc:"سرور پلاگین‌پذیر"},
-{name:"Nukkit",desc:"سرور بدراک"}
-]
+  Java:[
+    {name:"Vanilla",desc:"نسخه رسمی و ساده",icon:"⛏️"},
+    {name:"Paper",desc:"مناسب پلاگین‌ها",icon:"📄"},
+    {name:"Spigot",desc:"سرور پلاگین‌پذیر",icon:"🔌"},
+    {name:"Purpur",desc:"امکانات بیشتر",icon:"🟣"},
+    {name:"Fabric",desc:"مناسب مودها",icon:"🧵"},
+    {name:"Forge",desc:"مودهای ماینکرافت",icon:"⚙️"},
+    {name:"NeoForge",desc:"مودلودر جدید",icon:"🔷"}
+  ],
+  Bedrock:[
+    {name:"Bedrock Dedicated Server",desc:"سرور رسمی بدراک",icon:"🌍"},
+    {name:"PocketMine-MP",desc:"سرور پلاگین‌پذیر",icon:"📱"},
+    {name:"Nukkit",desc:"سرور بدراک",icon:"🧩"}
+  ]
 };
 
 const URLS={
-java:"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
-paper:"https://api.papermc.io/v2/projects/paper",
-purpur:"https://api.purpurmc.org/v2/purpur",
-fabric:"https://meta.fabricmc.net/v2/versions/game",
-forge:"https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json",
-bedrock:"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/bedrock/common/protocolVersions.json"
+  java:"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+  paper:"https://api.papermc.io/v2/projects/paper",
+  purpur:"https://api.purpurmc.org/v2/purpur",
+  fabric:"https://meta.fabricmc.net/v2/versions/game",
+  forge:"https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json",
+  bedrock:"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/bedrock/common/protocolVersions.json"
 };
 
 let edition="Java";
 let software="Paper";
 let ram="2";
-
 let javaVersions=[];
 let bedrockVersions=[];
 let compatibility={};
@@ -213,249 +711,123 @@ const versionSelect=document.getElementById("version");
 const versionStatus=document.getElementById("versionStatus");
 
 async function getJSON(url){
-const response=await fetch(url);
-if(!response.ok) throw new Error("HTTP "+response.status);
-return response.json();
+  const response=await fetch(url);
+  if(!response.ok)throw new Error("HTTP "+response.status);
+  return response.json();
 }
 
 function renderSoftware(){
-softwareGrid.innerHTML="";
-softwareOptions[edition].forEach(item=>{
-const button=document.createElement("button");
-button.className="software"+(item.name===software?" active":"");
-button.innerHTML=`<strong>${item.name}</strong><small>${item.desc}</small>`;
-button.addEventListener("click",()=>{
-software=item.name;
-renderSoftware();
-renderVersions();
-updateSummary();
-});
-softwareGrid.appendChild(button);
-});
+  softwareGrid.innerHTML="";
+
+  softwareOptions[edition].forEach(item=>{
+    const button=document.createElement("button");
+    button.className="software"+(item.name===software?" active":"");
+
+    const icon=document.createElement("span");
+    icon.className="software-icon";
+    icon.textContent=item.icon;
+
+    const name=document.createElement("strong");
+    name.textContent=item.name;
+
+    const desc=document.createElement("small");
+    desc.textContent=item.desc;
+
+    button.append(icon,name,desc);
+
+    button.addEventListener("click",()=>{
+      software=item.name;
+      renderSoftware();
+      renderVersions();
+      updateSummary();
+    });
+
+    softwareGrid.appendChild(button);
+  });
 }
 
 async function loadJava(){
-try{
-const data=await getJSON(URLS.java);
-javaVersions=data.versions||[];
-if(!javaVersions.length) throw new Error("No Java versions");
-}catch(error){
-console.error(error);
-versionStatus.textContent="دریافت نسخه‌های Java ناموفق بود. اتصال اینترنت را بررسی کن.";
-}
+  try{
+    const data=await getJSON(URLS.java);
+    javaVersions=data.versions||[];
+    if(!javaVersions.length)throw new Error("No Java versions");
+  }catch(error){
+    console.error(error);
+    versionStatus.textContent="دریافت نسخه‌های Java ناموفق بود. اتصال اینترنت را بررسی کن.";
+  }
 }
 
 async function loadCompatibility(){
-const jobs=[
-["Paper",async()=>{
-const d=await getJSON(URLS.paper);
-return d.versions||[];
-}],
-["Purpur",async()=>{
-const d=await getJSON(URLS.purpur);
-return d.versions||[];
-}],
-["Fabric",async()=>{
-const d=await getJSON(URLS.fabric);
-return d.filter(v=>v.stable).map(v=>v.version);
-}],
-["Forge",async()=>{
-const d=await getJSON(URLS.forge);
-const keys=Object.keys(d.promos||{});
-return [...new Set(keys.map(k=>k.replace(/-(recommended|latest)$/,"")))];
-}]
-];
+  const jobs=[
+    ["Paper",async()=>{
+      const d=await getJSON(URLS.paper);
+      return d.versions||[];
+    }],
+    ["Purpur",async()=>{
+      const d=await getJSON(URLS.purpur);
+      return d.versions||[];
+    }],
+    ["Fabric",async()=>{
+      const d=await getJSON(URLS.fabric);
+      return d.filter(v=>v.stable).map(v=>v.version);
+    }],
+    ["Forge",async()=>{
+      const d=await getJSON(URLS.forge);
+      const keys=Object.keys(d.promos||{});
+      return [...new Set(keys.map(k=>k.replace(/-(recommended|latest)$/,"")))];
+    }]
+  ];
 
-await Promise.all(jobs.map(async([name,fn])=>{
-try{
-compatibility[name]=await fn();
-}catch(error){
-console.warn("Compatibility list unavailable:",name,error);
-compatibility[name]=null;
-}
-}));
+  await Promise.all(jobs.map(async([name,fn])=>{
+    try{
+      compatibility[name]=await fn();
+    }catch(error){
+      console.warn("Compatibility list unavailable:",name,error);
+      compatibility[name]=null;
+    }
+  }));
 }
 
 function getJavaList(){
-let list=javaVersions.slice();
+  let list=javaVersions.slice();
 
-if(!advanced){
-list=list.filter(v=>v.type==="release");
-}
+  if(!advanced){
+    list=list.filter(v=>v.type==="release");
+  }
 
-if(software==="Vanilla"){
-return list;
-}
+  if(software==="Vanilla")return list;
 
-if(software==="Paper"||software==="Purpur"||software==="Fabric"){
-const supported=compatibility[software];
-if(!supported) return list.filter(v=>v.type==="release");
-return list.filter(v=>supported.includes(v.id));
-}
+  if(["Paper","Purpur","Fabric"].includes(software)){
+    const supported=compatibility[software];
+    if(!supported)return list.filter(v=>v.type==="release");
+    return list.filter(v=>supported.includes(v.id));
+  }
 
-if(software==="Forge"){
-const supported=compatibility.Forge;
-if(!supported) return list.filter(v=>v.type==="release");
-return list.filter(v=>supported.includes(v.id));
-}
+  if(software==="Forge"){
+    const supported=compatibility.Forge;
+    if(!supported)return list.filter(v=>v.type==="release");
+    return list.filter(v=>supported.includes(v.id));
+  }
 
-// برای Spigot و NeoForge فهرست رسمی نمایش داده می‌شود.
-// بررسی قطعی سازگاری آن‌ها باید در مرحله اتصال نصب‌کننده انجام شود.
-return list;
+  return list;
 }
 
 function renderVersions(){
-versionSelect.innerHTML="";
-let versions=[];
+  versionSelect.innerHTML="";
+  let versions=[];
 
-if(edition==="Java"){
-versions=getJavaList();
+  if(edition==="Java"){
+    versions=getJavaList();
 
-const categories=[
-{key:"release",label:"نسخه‌های رسمی"},
-{key:"snapshot",label:"نسخه‌های آزمایشی و Snapshot"},
-{key:"old_beta",label:"نسخه‌های Beta قدیمی"},
-{key:"old_alpha",label:"نسخه‌های Alpha قدیمی"}
-];
+    const categories=[
+      {key:"release",label:"نسخه‌های رسمی"},
+      {key:"snapshot",label:"نسخه‌های آزمایشی و Snapshot"},
+      {key:"old_beta",label:"نسخه‌های Beta قدیمی"},
+      {key:"old_alpha",label:"نسخه‌های Alpha قدیمی"}
+    ];
 
-categories.forEach(category=>{
-const groupItems=versions.filter(v=>v.type===category.key);
-if(!groupItems.length)return;
+    categories.forEach(category=>{
+      const groupItems=versions.filter(v=>v.type===category.key);
+      if(!groupItems.length)return;
 
-const group=document.createElement("optgroup");
-group.label=category.label;
-
-groupItems.forEach(v=>{
-const option=document.createElement("option");
-option.value=v.id;
-option.textContent="Minecraft "+v.id;
-group.appendChild(option);
-});
-
-versionSelect.appendChild(group);
-});
-
-const latest=versions.find(v=>v.type==="release");
-if(latest)versionSelect.value=latest.id;
-
-versionStatus.textContent=versions.length
-+" نسخه متناسب با فهرست انتخابی دریافت شد.";
-
-if(["Spigot","NeoForge"].includes(software)){
-versionStatus.textContent+=" سازگاری دقیق این نرم‌افزار باید هنگام نصب بررسی شود.";
-}
-
-}else{
-versions=bedrockVersions;
-
-const group=document.createElement("optgroup");
-group.label="نسخه‌های Bedrock";
-
-versions.forEach(v=>{
-const option=document.createElement("option");
-option.value=v;
-option.textContent="Minecraft "+v;
-group.appendChild(option);
-});
-
-versionSelect.appendChild(group);
-
-if(versions.length){
-versionSelect.value=versions[0];
-}
-
-versionStatus.textContent=versions.length
-+" نسخه Bedrock در فهرست موجود است.";
-}
-
-if(!versions.length){
-const option=document.createElement("option");
-option.value="";
-option.textContent="نسخه‌ای دریافت نشد";
-versionSelect.appendChild(option);
-}
-
-updateSummary();
-}
-
-async function loadBedrock(){
-try{
-const data=await getJSON(URLS.bedrock);
-let raw=Array.isArray(data)?data:(data.versions||data.protocolVersions||[]);
-
-bedrockVersions=[...new Set(raw.map(v=>{
-if(typeof v==="string")return v;
-return v.minecraftVersion||v.version||v.minecraft_version||"";
-}).filter(v=>/^\d+\.\d+(\.\d+)?$/.test(v)))];
-
-bedrockVersions.sort((a,b)=>{
-const aa=a.split(".").map(Number);
-const bb=b.split(".").map(Number);
-for(let i=0;i<Math.max(aa.length,bb.length);i++){
-if((aa[i]||0)!==(bb[i]||0))return (bb[i]||0)-(aa[i]||0);
-}
-return 0;
-});
-
-if(!bedrockVersions.length)throw new Error("No Bedrock versions");
-}catch(error){
-console.error(error);
-versionStatus.textContent="دریافت خودکار Bedrock ناموفق بود. فهرست نسخه‌ها در دسترس نیست.";
-}
-}
-
-function updateSummary(){
-document.getElementById("sumEdition").textContent=edition;
-document.getElementById("sumSoftware").textContent=software;
-document.getElementById("sumVersion").textContent=versionSelect.value||"انتخاب نشده";
-document.getElementById("sumRam").textContent=ram+" GB";
-}
-
-document.querySelectorAll("[data-edition]").forEach(button=>{
-button.addEventListener("click",()=>{
-edition=button.dataset.edition;
-document.querySelectorAll("[data-edition]").forEach(b=>{
-b.classList.toggle("active",b===button);
-});
-software=softwareOptions[edition][0].name;
-renderSoftware();
-renderVersions();
-});
-});
-
-document.querySelectorAll("[data-ram]").forEach(button=>{
-button.addEventListener("click",()=>{
-ram=button.dataset.ram;
-document.querySelectorAll("[data-ram]").forEach(b=>{
-b.classList.toggle("active",b===button);
-});
-updateSummary();
-});
-});
-
-document.getElementById("showAdvanced").addEventListener("change",event=>{
-advanced=event.target.checked;
-renderVersions();
-});
-
-versionSelect.addEventListener("change",updateSummary);
-
-document.getElementById("createButton").addEventListener("click",()=>{
-const result=document.getElementById("result");
-result.style.display="block";
-result.textContent="تنظیمات شما با موفقیت انتخاب شد. ساخت واقعی سرور هنوز فعال نشده است.";
-});
-
-async function start(){
-renderSoftware();
-versionStatus.textContent="در حال دریافت فهرست نسخه‌ها...";
-await Promise.all([loadJava(),loadBedrock(),loadCompatibility()]);
-renderVersions();
-updateSummary();
-}
-
-start();
-</script>
-</body>
-                                                                              </html>
-                                                                              
+      const group=document.createElement("optg
