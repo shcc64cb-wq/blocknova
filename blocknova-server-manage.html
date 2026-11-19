@@ -7,699 +7,621 @@
 <meta name="theme-color" content="#090711">
 <title>مدیریت سرور | BlockNova</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{
  --bg:#090711;
  --panel:#171226;
+ --panel2:#211a32;
  --purple:#8b5cf6;
  --purple2:#b69aff;
- --text:#f8f5ff;
- --muted:#aaa0bd;
- --line:#382b50;
- --green:#42d9a0;
- --red:#fb7185;
+ --text:#f5f1ff;
+ --muted:#a59bb8;
+ --green:#35d39a;
+ --red:#ff637d;
+ --border:rgba(255,255,255,.09);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{
- margin:0;min-height:100vh;
- background:radial-gradient(ellipse at 80% 0%,#49287955,transparent 35%),var(--bg);
- color:var(--text);
+ margin:0;background:var(--bg);color:var(--text);
  font-family:Tahoma,Arial,sans-serif;
- line-height:1.8;
+ min-height:100vh;
 }
 button,input,select{font:inherit}
-a{text-decoration:none;color:inherit}
-.wrap{width:min(1050px,92%);margin:auto}
-header{
- position:sticky;top:0;z-index:10;
- background:#0c0916ed;
- border-bottom:1px solid #ffffff12;
- backdrop-filter:blur(15px);
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.topbar{
+ padding:18px 5%;display:flex;align-items:center;
+ justify-content:space-between;border-bottom:1px solid var(--border);
+ background:#100c1b;position:sticky;top:0;z-index:5;
 }
-.nav{
- display:flex;justify-content:space-between;
- align-items:center;gap:12px;padding:14px 0;
-}
-.logo{font-size:25px;font-weight:1000;direction:ltr}
-.logo span{color:var(--purple2)}
-.back{
- padding:9px 14px;border:1px solid var(--line);
- border-radius:12px;background:#ffffff08;
- color:#ddd0f5;font-size:12px;
-}
-main{padding:28px 0 65px}
-.hero{
- padding:26px;margin-bottom:20px;
- border:1px solid #7650b766;border-radius:22px;
- background:linear-gradient(120deg,#302044,#151021);
-}
-.eyebrow{color:var(--purple2);font-size:10px;direction:ltr}
-.hero h1{font-size:26px;margin:8px 0}
-.hero p{color:var(--muted);font-size:12px;margin:0}
-.quick-nav{
- display:grid;grid-template-columns:repeat(4,1fr);
- gap:10px;margin-bottom:20px;
-}
-.quick-nav a{
- text-align:center;padding:11px 6px;
- border:1px solid var(--line);border-radius:12px;
- background:#171226;color:#d9c9f4;font-size:11px;
-}
-.message{
- padding:14px;border-radius:12px;
- background:#211832;border:1px solid var(--line);
- color:#d8c5ff;font-size:12px;
- overflow-wrap:anywhere;margin-bottom:18px;
-}
-.message.error{color:#fda4af;background:#351925;border-color:#713347}
-.message.success{color:#86efac;background:#153328;border-color:#34795e}
-.panel{
- padding:22px;margin-bottom:18px;
- border:1px solid var(--line);border-radius:19px;
- background:linear-gradient(145deg,#1b152b,#110d1c);
- box-shadow:0 12px 35px #0003;
- scroll-margin-top:90px;
-}
-.section-title{
- display:flex;align-items:center;gap:12px;margin-bottom:18px;
-}
-.section-icon{
- width:44px;height:44px;display:grid;place-items:center;
- border-radius:14px;background:linear-gradient(135deg,#7138d0,#a78bfa);
- font-size:21px;flex-shrink:0;
-}
-.section-title h2{font-size:16px;margin:0}
-.section-title p{font-size:11px;color:var(--muted);margin:2px 0}
-.server-heading{
- display:flex;align-items:center;justify-content:space-between;
- flex-wrap:wrap;gap:12px;padding:17px;
- border:1px solid #ffffff12;border-radius:15px;
- background:#ffffff06;
-}
-.server-name{font-size:22px;font-weight:bold;overflow-wrap:anywhere}
+.logo{font-size:22px;font-weight:900;color:var(--purple2)}
+.logo span{color:white}
+.topbar small{color:var(--muted)}
+.container{width:min(1050px,92%);margin:28px auto 60px}
+.page-head{margin-bottom:22px}
+.page-head h1{font-size:25px;margin:0 0 9px}
+.page-head p{color:var(--muted);font-size:13px;line-height:1.9;margin:0}
 .status{
- display:inline-flex;align-items:center;gap:7px;
- padding:6px 13px;border-radius:30px;
- font-size:11px;background:#302641;color:#d8c5ff;
+ display:inline-flex;align-items:center;gap:8px;
+ background:rgba(255,99,125,.1);color:#ff8da0;
+ border:1px solid rgba(255,99,125,.2);
+ border-radius:30px;padding:8px 13px;font-size:12px;
 }
-.status:before{
- content:"";width:7px;height:7px;
- border-radius:50%;background:currentColor;
+.dot{width:8px;height:8px;background:var(--red);border-radius:50%}
+.nav{
+ display:flex;gap:9px;flex-wrap:wrap;margin:20px 0;
 }
-.status.active{background:#123b2d;color:#86efac}
-.status.waiting{background:#453517;color:#fcd34d}
-.status.stopped{background:#451c29;color:#fda4af}
+.nav a{
+ background:var(--panel);border:1px solid var(--border);
+ padding:11px 15px;border-radius:11px;font-size:12px;
+ color:#d8ccef;
+}
+.nav a:hover{border-color:var(--purple)}
+.card{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:17px;padding:20px;margin-bottom:17px;
+}
+.card h2{font-size:17px;margin:0 0 17px}
+.card p.desc{font-size:12px;color:var(--muted);line-height:1.9;margin:-8px 0 16px}
+.info-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
 .info{
- display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
- gap:12px;margin-top:15px;
+ background:var(--panel2);border:1px solid var(--border);
+ border-radius:12px;padding:14px;min-width:0;
 }
-.item{
- min-width:0;padding:14px;
- border:1px solid #ffffff0c;border-radius:13px;
- background:#ffffff06;
+.info small{display:block;color:var(--muted);font-size:11px;margin-bottom:9px}
+.info strong{font-size:13px;overflow-wrap:anywhere}
+.field{margin-bottom:14px}
+.field label{display:block;color:#c9bddc;font-size:12px;margin-bottom:8px}
+input,select{
+ width:100%;padding:13px 14px;border-radius:10px;
+ background:#100c1b;border:1px solid var(--border);
+ color:white;outline:none;
 }
-.item small{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
-.item b{display:block;font-size:13px;overflow-wrap:anywhere}
-.ltr{direction:ltr;text-align:right}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+input:focus,select:focus{border-color:var(--purple)}
+input::placeholder{color:#71677f}
 .btn{
- display:inline-flex;justify-content:center;align-items:center;
- gap:7px;padding:11px 17px;border:0;border-radius:11px;
- background:linear-gradient(135deg,#8b5cf6,#7041d4);
- color:white;font-weight:bold;font-size:12px;cursor:pointer;
+ border:0;border-radius:10px;padding:12px 17px;
+ background:var(--purple);color:white;font-weight:bold;font-size:12px;
 }
-.btn.secondary{background:#302442;border:1px solid #4b3965}
+.btn:hover{filter:brightness(1.12)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.field{margin-top:15px}
-.field label{
- display:block;font-size:12px;margin-bottom:7px;color:#ddd0f5;
+.btn.secondary{background:#302442}
+.btn.danger{background:rgba(255,99,125,.15);color:#ff8da0;border:1px solid rgba(255,99,125,.25)}
+.btn.full{width:100%}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{min-width:0}
+.row input{flex:1}
+.notice{
+ background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.22);
+ border-radius:11px;padding:12px;color:#d8c8ff;
+ font-size:12px;line-height:2;margin-top:13px;
 }
-.field input,.field select{
- width:100%;padding:13px;
- border:1px solid #49385f;border-radius:11px;
- background:#0c0915;color:white;outline:none;
+.message{font-size:12px;line-height:1.8;margin-top:12px;min-height:18px}
+.message.error{color:#ff8094}
+.message.success{color:var(--green)}
+.player-tools{display:flex;gap:10px;align-items:center;margin:14px 0}
+.player-tools input{flex:1}
+.player-count{
+ background:var(--panel2);border:1px solid var(--border);
+ border-radius:10px;padding:11px 13px;font-size:12px;white-space:nowrap;
 }
-.field input:focus,.field select:focus{
- border-color:var(--purple2);
- box-shadow:0 0 0 3px #8b5cf622;
+.player-list{display:flex;flex-direction:column;gap:9px}
+.player-item{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ background:var(--panel2);border:1px solid var(--border);
+ padding:12px;border-radius:12px;
 }
-.field select option{background:#171226;color:white}
-.settings-grid{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
- gap:14px;
+.player-name{font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+.player-date{font-size:10px;color:var(--muted);margin-top:6px}
+.empty{
+ text-align:center;color:var(--muted);padding:24px 10px;
+ font-size:12px;line-height:2;
 }
-.setting{
- padding:15px;border:1px solid #ffffff12;
- border-radius:14px;background:#ffffff05;
+.check-row{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ background:var(--panel2);padding:13px;border-radius:11px;
+ margin-bottom:10px;font-size:12px;
 }
-.setting label{
- display:block;font-size:12px;color:#ddd0f5;margin-bottom:8px;
+.check-row input{width:18px;height:18px;accent-color:var(--purple)}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.disabled-note{font-size:12px;color:var(--muted);line-height:2}
+#pageMessage{
+ background:var(--panel);border:1px solid var(--border);
+ padding:15px;border-radius:12px;color:var(--muted);
+ font-size:13px;line-height:2;margin-bottom:18px;
 }
-.setting select,.setting input[type=number]{
- width:100%;padding:12px;
- border:1px solid #49385f;border-radius:10px;
- background:#0c0915;color:white;outline:none;
-}
-.setting select:focus,.setting input:focus{border-color:var(--purple2)}
-.toggle{
- display:flex;align-items:center;justify-content:space-between;
- gap:12px;min-height:65px;
-}
-.toggle-text b{display:block;font-size:12px}
-.toggle-text small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
-.switch{
- position:relative;width:48px;height:26px;flex-shrink:0;
-}
-.switch input{opacity:0;width:0;height:0}
-.switch span{
- position:absolute;inset:0;border-radius:30px;
- background:#493d5c;cursor:pointer;transition:.2s;
-}
-.switch span:before{
- content:"";position:absolute;width:18px;height:18px;
- right:4px;top:4px;border-radius:50%;
- background:white;transition:.2s;
-}
-.switch input:checked+span{background:#8b5cf6}
-.switch input:checked+span:before{transform:translateX(-22px)}
-.note{
- margin-top:16px;padding:14px;
- border:1px solid #66502d;border-radius:12px;
- background:#2a2115;color:#e8d3aa;
- font-size:11px;line-height:2;
-}
-.control-box{
- padding:17px;border:1px solid var(--line);
- border-radius:14px;background:#100c1b;
-}
-.control-box h3{font-size:14px;margin:0 0 7px}
-.control-box p{font-size:11px;color:var(--muted);margin:0}
-.loading{
- width:18px;height:18px;display:inline-block;
- border:2px solid #ffffff33;border-top-color:white;
- border-radius:50%;animation:spin .8s linear infinite;
- vertical-align:middle;margin-left:7px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-footer{
- padding:25px 0;border-top:1px solid var(--line);
- text-align:center;color:var(--muted);font-size:11px;
-}
-footer b{color:var(--purple2);direction:ltr;display:inline-block}
-[hidden]{display:none!important}
-@media(max-width:650px){
- .wrap{width:92%}
- main{padding-top:20px}
- .hero{padding:20px}
- .hero h1{font-size:22px}
- .panel{padding:16px}
- .info{grid-template-columns:repeat(2,minmax(0,1fr))}
- .item{padding:12px}
- .item b{font-size:12px}
- .server-name{font-size:19px}
- .nav{padding:12px 0}
- .logo{font-size:21px}
- .quick-nav{grid-template-columns:repeat(2,1fr)}
- .settings-grid{grid-template-columns:1fr}
+footer{text-align:center;color:#70667f;font-size:11px;padding:25px}
+@media(max-width:600px){
+ .info-grid{grid-template-columns:1fr}
+ .row{flex-direction:column;align-items:stretch}
+ .player-tools{flex-direction:column;align-items:stretch}
+ .player-count{text-align:center}
+ .card{padding:15px}
+ .topbar{padding:15px 4%}
 }
 </style>
 </head>
 
 <body>
-<header>
- <div class="wrap nav">
-  <a class="logo" href="blocknova-panel-v2.html">Block<span>Nova</span></a>
-  <a class="back" href="blocknova-panel-v2.html">← بازگشت به پنل</a>
- </div>
+
+<header class="topbar">
+ <div class="logo">BLOCK<span>NOVA</span></div>
+ <small>پنل مدیریت سرور</small>
 </header>
 
-<main class="wrap">
- <section class="hero">
-  <div class="eyebrow">BLOCKNOVA / SERVER MANAGEMENT</div>
+<main class="container">
+
+ <div class="page-head">
   <h1>مدیریت سرور</h1>
-  <p>مدیریت اطلاعات و تنظیمات سرور Minecraft</p>
- </section>
-
- <nav class="quick-nav">
-  <a href="#serverInfo">🖥️ مشخصات سرور</a>
-  <a href="#rename">✏️ تغییر نام</a>
-  <a href="#gameSettings">🎮 تنظیمات بازی</a>
-  <a href="#serverControl">⚙️ کنترل سرور</a>
- </nav>
-
- <div id="message" class="message">
-  <span class="loading"></span>
-  در حال اتصال به حساب کاربری...
+  <p>از این قسمت می‌تونی اطلاعات و تنظیمات سرورت رو مدیریت کنی.</p>
  </div>
 
- <section id="serverContent" hidden>
+ <div id="pageMessage">در حال اتصال به حساب کاربری...</div>
 
-  <section class="panel" id="serverInfo">
-   <div class="section-title">
-    <div class="section-icon">🖥️</div>
-    <div>
-     <h2>مشخصات سرور</h2>
-     <p>اطلاعات ثبت‌شده در حساب شما</p>
-    </div>
-   </div>
+ <div id="mainContent" hidden>
 
-   <div class="server-heading">
-    <div class="server-name" id="serverName">سرور من</div>
-    <span class="status" id="status">نامشخص</span>
-   </div>
+  <div class="status"><span class="dot"></span> سرور آفلاین / بدون اتصال به میزبان</div>
 
-   <div class="info">
-    <div class="item"><small>نوع بازی</small><b id="type">-</b></div>
-    <div class="item"><small>نرم‌افزار</small><b id="software">-</b></div>
-    <div class="item"><small>نسخه بازی</small><b id="version" class="ltr">-</b></div>
-    <div class="item"><small>حافظه RAM</small><b id="ram">-</b></div>
-    <div class="item"><small>شناسه سرور</small><b id="serverId" class="ltr">-</b></div>
-    <div class="item"><small>تاریخ ثبت</small><b id="created">-</b></div>
-   </div>
+  <nav class="nav">
+   <a href="#overview">اطلاعات سرور</a>
+   <a href="#rename">تغییر نام</a>
+   <a href="#settings">تنظیمات بازی</a>
+   <a href="#players">مدیریت بازیکنان</a>
+   <a href="#controls">کنترل سرور</a>
+  </nav>
 
-   <div class="actions">
-    <button class="btn secondary" id="copyId">📋 کپی شناسه</button>
-    <button class="btn secondary" id="refresh">↻ بروزرسانی</button>
+  <section class="card" id="overview">
+   <h2>اطلاعات سرور</h2>
+   <div class="info-grid">
+    <div class="info"><small>نام سرور</small><strong id="serverName">-</strong></div>
+    <div class="info"><small>وضعیت</small><strong>آفلاین</strong></div>
+    <div class="info"><small>نوع سرور</small><strong id="serverType">-</strong></div>
+    <div class="info"><small>نرم‌افزار</small><strong id="serverSoftware">-</strong></div>
+    <div class="info"><small>نسخه ماینکرفت</small><strong id="serverVersion">-</strong></div>
+    <div class="info"><small>رم اختصاص‌یافته</small><strong id="serverRam">-</strong></div>
+    <div class="info"><small>تاریخ ساخت</small><strong id="serverCreated">-</strong></div>
+    <div class="info"><small>شناسه سرور</small><strong id="serverIdText">-</strong></div>
    </div>
+   <button class="btn secondary" id="copyId" style="margin-top:13px">کپی شناسه سرور</button>
   </section>
 
-  <section class="panel" id="rename">
-   <div class="section-title">
-    <div class="section-icon">✏️</div>
-    <div>
-     <h2>تغییر نام سرور</h2>
-     <p>نام دلخواه خودت را انتخاب کن.</p>
-    </div>
+  <section class="card" id="rename">
+   <h2>تغییر نام سرور</h2>
+   <p class="desc">نام جدید سرورت رو وارد کن.</p>
+   <div class="field">
+    <label for="newServerName">نام جدید</label>
+    <input id="newServerName" maxlength="40" placeholder="نام سرور">
+   </div>
+   <button class="btn" id="renameButton">ذخیره نام جدید</button>
+   <div class="message" id="renameMessage"></div>
+  </section>
+
+  <section class="card" id="settings">
+   <h2>تنظیمات گیم‌پلی</h2>
+   <p class="desc">تنظیمات موردنظر بازی رو انتخاب کن و ذخیره کن.</p>
+
+   <div class="field">
+    <label for="gameMode">حالت بازی</label>
+    <select id="gameMode">
+     <option value="survival">Survival - بقا</option>
+     <option value="creative">Creative - خلاقانه</option>
+     <option value="adventure">Adventure - ماجراجویی</option>
+    </select>
    </div>
 
    <div class="field">
-    <label for="newServerName">نام جدید سرور</label>
-    <input id="newServerName" maxlength="40" placeholder="مثلاً سرور دوستان من">
+    <label for="difficulty">درجه سختی</label>
+    <select id="difficulty">
+     <option value="peaceful">Peaceful - صلح‌آمیز</option>
+     <option value="easy">Easy - آسان</option>
+     <option value="normal">Normal - معمولی</option>
+     <option value="hard">Hard - سخت</option>
+    </select>
    </div>
-   <div class="actions">
-    <button class="btn" id="renameButton">ذخیره نام جدید</button>
+
+   <div class="field">
+    <label for="maxPlayers">حداکثر تعداد بازیکنان</label>
+    <input id="maxPlayers" type="number" min="1" max="100" value="20">
+   </div>
+
+   <label class="check-row">
+    <span>فعال بودن مبارزه بازیکنان (PvP)</span>
+    <input type="checkbox" id="pvpEnabled" checked>
+   </label>
+
+   <label class="check-row">
+    <span>فعال بودن Command Blocks</span>
+    <input type="checkbox" id="commandBlocks" >
+   </label>
+
+   <button class="btn full" id="saveSettings">ذخیره تنظیمات</button>
+   <div class="message" id="settingsMessage"></div>
+  </section>
+
+  <section class="card" id="players">
+   <h2>مدیریت بازیکنان</h2>
+   <p class="desc">نام بازیکنان رو به فهرست سرورت اضافه کن یا بازیکنان قبلی رو حذف کن.</p>
+
+   <div class="field">
+    <label for="playerName">نام بازیکن ماینکرفت</label>
+    <div class="row">
+     <input id="playerName" maxlength="16" placeholder="مثلاً Steve123" autocomplete="off">
+     <button class="btn" id="addPlayer">افزودن بازیکن</button>
+    </div>
+   </div>
+
+   <div class="message" id="playerMessage"></div>
+
+   <div class="player-tools">
+    <input id="playerSearch" placeholder="جست‌وجوی نام بازیکن..." autocomplete="off">
+    <div class="player-count">تعداد: <strong id="playerCount">۰</strong></div>
+   </div>
+
+   <div id="playerList" class="player-list">
+    <div class="empty">در حال دریافت فهرست بازیکنان...</div>
+   </div>
+
+   <div class="notice">
+    توجه: بازیکنان در حال حاضر فقط در دیتابیس BlockNova ذخیره می‌شوند. اتصال به Whitelist واقعی ماینکرفت بعد از راه‌اندازی زیرساخت سرور انجام می‌شود.
    </div>
   </section>
 
-  <section class="panel" id="gameSettings">
-   <div class="section-title">
-    <div class="section-icon">🎮</div>
-    <div>
-     <h2>تنظیمات گیم‌پلی</h2>
-     <p>تنظیمات اختصاصی این سرور</p>
-    </div>
-   </div>
-
-   <div class="settings-grid">
-    <div class="setting">
-     <label for="gameMode">حالت بازی</label>
-     <select id="gameMode">
-      <option value="survival">Survival - بقا</option>
-      <option value="creative">Creative - خلاقانه</option>
-      <option value="adventure">Adventure - ماجراجویی</option>
-     </select>
-    </div>
-
-    <div class="setting">
-     <label for="difficulty">درجه سختی</label>
-     <select id="difficulty">
-      <option value="peaceful">Peaceful - صلح‌آمیز</option>
-      <option value="easy">Easy - آسان</option>
-      <option value="normal">Normal - معمولی</option>
-      <option value="hard">Hard - سخت</option>
-     </select>
-    </div>
-
-    <div class="setting">
-     <label for="maxPlayers">حداکثر تعداد بازیکنان</label>
-     <input id="maxPlayers" type="number" min="1" max="100" value="20">
-    </div>
-
-    <div class="setting">
-     <div class="toggle">
-      <div class="toggle-text">
-       <b>فعال بودن PvP</b>
-       <small>امکان مبارزه بین بازیکنان</small>
-      </div>
-      <label class="switch">
-       <input type="checkbox" id="pvpEnabled" checked>
-       <span></span>
-      </label>
-     </div>
-    </div>
-
-    <div class="setting">
-     <div class="toggle">
-      <div class="toggle-text">
-       <b>Command Block</b>
-       <small>اجازه استفاده از بلوک فرمان</small>
-      </div>
-      <label class="switch">
-       <input type="checkbox" id="commandBlocks">
-       <span></span>
-      </label>
-     </div>
-    </div>
-   </div>
-
+  <section class="card" id="controls">
+   <h2>کنترل سرور</h2>
+   <p class="desc">روشن و خاموش کردن سرور و راه‌اندازی مجدد.</p>
    <div class="actions">
-    <button class="btn" id="saveSettings">💾 ذخیره تنظیمات</button>
-    <button class="btn secondary" id="resetSettings">بازگردانی پیش‌فرض</button>
+    <button class="btn" disabled>روشن کردن سرور</button>
+    <button class="btn danger" disabled>خاموش کردن سرور</button>
+    <button class="btn secondary" disabled>راه‌اندازی مجدد</button>
    </div>
-
-   <div class="note">
-    ⚠️ این تنظیمات در پایگاه داده BlockNova ذخیره می‌شوند.
-    تا زمانی که زیرساخت واقعی Minecraft متصل نشده،
-    تغییرات مستقیماً روی بازی اعمال نمی‌شوند.
-   </div>
+   <p class="disabled-note">این دکمه‌ها تا زمان اتصال سرور واقعی غیرفعال هستند.</p>
   </section>
 
-  <section class="panel" id="serverControl">
-   <div class="section-title">
-    <div class="section-icon">⚙️</div>
-    <div>
-     <h2>کنترل سرور</h2>
-     <p>مدیریت اجرای سرور Minecraft</p>
-    </div>
-   </div>
-
-   <div class="control-box">
-    <h3>زیرساخت میزبانی</h3>
-    <p>
-     اتصال به سیستم اجرای واقعی Minecraft هنوز آماده نشده است.
-     دکمه‌های روشن و خاموش کردن پس از راه‌اندازی زیرساخت فعال خواهند شد.
-    </p>
-   </div>
-   <div class="actions">
-    <button class="btn" disabled>▶ روشن کردن</button>
-    <button class="btn secondary" disabled>■ خاموش کردن</button>
-    <button class="btn secondary" disabled>↻ راه‌اندازی مجدد</button>
-   </div>
-  </section>
-
- </section>
+ </div>
 </main>
 
-<footer>© 2026 <b>BlockNova</b> — تمام حقوق محفوظ است.</footer>
+<footer>© BlockNova - Minecraft Server Platform</footer>
 
-<script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
+<script>
 const SUPABASE_URL = "https://rxynsocnofdakbjbsgry.supabase.co";
 const SUPABASE_KEY = "sb_publishable_v_-z4rWz91cMaVk6GEG0lg_eMQRaim9";
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
-const message = $("message");
-const content = $("serverContent");
 
-let currentServerId = "";
-let currentUserId = "";
+let currentUserId = null;
+let currentServerId = null;
+let players = [];
 
-const defaults = {
- game_mode: "survival",
- difficulty: "normal",
- pvp_enabled: true,
- max_players: 20,
- command_blocks_enabled: false
-};
-
-function showMessage(text, type = "") {
- message.className = "message " + type;
- message.textContent = text;
- message.hidden = false;
+function pageMessage(message, isError=false){
+ const el = $("pageMessage");
+ el.textContent = message;
+ el.style.color = isError ? "#ff8094" : "#a59bb8";
 }
 
-function setLoading(text) {
- message.className = "message";
- message.innerHTML = '<span class="loading"></span> ' + text;
- message.hidden = false;
+function showMessage(id,message,type=""){
+ const el=$(id);
+ el.textContent=message;
+ el.className="message "+type;
 }
 
-function withTimeout(promise, milliseconds, label) {
- let timer;
- const timeoutPromise = new Promise((_, reject) => {
-  timer = setTimeout(() => {
-   reject(new Error(label + " بیشتر از حد معمول طول کشید. اینترنت را بررسی کن."));
-  }, milliseconds);
- });
- return Promise.race([promise, timeoutPromise])
-  .finally(() => clearTimeout(timer));
+function timeout(promise,ms=15000){
+ return Promise.race([
+  promise,
+  new Promise((_,reject)=>setTimeout(()=>reject(new Error("زمان اتصال تمام شد. صفحه را دوباره بارگذاری کن.")),ms))
+ ]);
 }
 
-function statusText(status) {
- const names = {
-  active:"فعال",
-  waiting:"در انتظار اتصال",
-  stopped:"متوقف‌شده",
-  pending:"در انتظار",
-  creating:"در حال ساخت"
- };
- return names[status] || status || "نامشخص";
+function formatDate(value){
+ if(!value) return "-";
+ const d=new Date(value);
+ if(Number.isNaN(d.getTime())) return "-";
+ return d.toLocaleDateString("fa-IR");
 }
 
-function statusClass(status) {
- if(status === "active") return "active";
- if(["waiting","pending","creating"].includes(status)) return "waiting";
- if(status === "stopped") return "stopped";
- return "";
+async function loadServer(){
+ const result=await timeout(db.auth.getSession());
+ if(result.error) throw result.error;
+
+ const session=result.data.session;
+ if(!session){
+  pageMessage("برای مدیریت سرور ابتدا وارد حساب کاربری شو.",true);
+  return;
+ }
+
+ currentUserId=session.user.id;
+
+ const params=new URLSearchParams(location.search);
+ currentServerId=params.get("id");
+
+ if(!currentServerId){
+  pageMessage("شناسه سرور در آدرس صفحه وجود ندارد.",true);
+  return;
+ }
+
+ const response=await timeout(
+  db.from("servers")
+   .select("*")
+   .eq("id",currentServerId)
+   .eq("user_id",currentUserId)
+   .maybeSingle()
+ );
+
+ if(response.error) throw response.error;
+ if(!response.data){
+  pageMessage("سرور پیدا نشد یا اجازه دسترسی به آن را نداری.",true);
+  return;
+ }
+
+ const server=response.data;
+
+ $("serverName").textContent=server.name||"-";
+ $("serverType").textContent=server.type||"-";
+ $("serverSoftware").textContent=server.software||"-";
+ $("serverVersion").textContent=server.version||"-";
+ $("serverRam").textContent=server.ram_gb ? server.ram_gb+" GB" : "-";
+ $("serverCreated").textContent=formatDate(server.created_at);
+ $("serverIdText").textContent=server.id;
+ $("newServerName").value=server.name||"";
+
+ $("mainContent").hidden=false;
+ pageMessage("اطلاعات سرور با موفقیت دریافت شد.");
+
+ await loadSettings();
+ await loadPlayers();
 }
 
-function applySettings(data) {
- const s = {...defaults,...(data || {})};
+async function renameServer(){
+ const name=$("newServerName").value.trim();
 
- $("gameMode").value = s.game_mode;
- $("difficulty").value = s.difficulty;
- $("pvpEnabled").checked = s.pvp_enabled;
- $("maxPlayers").value = s.max_players;
- $("commandBlocks").checked = s.command_blocks_enabled;
+ if(name.length<3 || name.length>40){
+  showMessage("renameMessage","نام باید بین ۳ تا ۴۰ کاراکتر باشد.","error");
+  return;
+ }
+
+ $("renameButton").disabled=true;
+ showMessage("renameMessage","در حال ذخیره...");
+
+ try{
+  const result=await timeout(
+   db.from("servers")
+    .update({name:name})
+    .eq("id",currentServerId)
+    .eq("user_id",currentUserId)
+    .select("id,name")
+  );
+
+  if(result.error) throw result.error;
+  if(!result.data || !result.data.length) throw new Error("تغییر نام انجام نشد.");
+
+  $("serverName").textContent=result.data[0].name;
+  showMessage("renameMessage","نام سرور با موفقیت تغییر کرد.","success");
+ }catch(error){
+  showMessage("renameMessage",error.message||"خطا در تغییر نام.","error");
+ }finally{
+  $("renameButton").disabled=false;
+ }
 }
 
-async function loadSettings() {
- setLoading("در حال دریافت تنظیمات بازی...");
-
- const result = await withTimeout(
-  supabase
-   .from("server_settings")
+async function loadSettings(){
+ const result=await timeout(
+  db.from("server_settings")
    .select("*")
    .eq("server_id",currentServerId)
-   .maybeSingle(),
-  15000,
-  "دریافت تنظیمات"
+   .maybeSingle()
  );
 
  if(result.error) throw result.error;
 
- applySettings(result.data);
+ const s=result.data||{};
+
+ $("gameMode").value=s.game_mode||"survival";
+ $("difficulty").value=s.difficulty||"normal";
+ $("maxPlayers").value=s.max_players??20;
+ $("pvpEnabled").checked=s.pvp_enabled??true;
+ $("commandBlocks").checked=s.command_blocks_enabled??false;
 }
 
-async function loadServer() {
- $("refresh").disabled = true;
- content.hidden = true;
- setLoading("در حال بررسی نشست ورود...");
+async function saveSettings(){
+ const max=Number($("maxPlayers").value);
 
- try {
-  const sessionResult = await withTimeout(
-   supabase.auth.getSession(),
-   15000,
-   "بررسی نشست ورود"
-  );
-
-  if(sessionResult.error) throw sessionResult.error;
-
-  const session = sessionResult.data?.session;
-
-  if(!session) {
-   showMessage("نشست ورود پیدا نشد. در حال انتقال به صفحه ورود...");
-   setTimeout(() => location.href = "login.html",1200);
-   return;
-  }
-
-  currentUserId = session.user.id;
-
-  const serverId = new URLSearchParams(location.search).get("id");
-  if(!serverId) throw new Error("شناسه سرور در آدرس وجود ندارد.");
-
-  setLoading("در حال دریافت مشخصات سرور...");
-
-  const result = await withTimeout(
-   supabase
-    .from("servers")
-    .select("*")
-    .eq("id",serverId)
-    .eq("user_id",currentUserId)
-    .maybeSingle(),
-   15000,
-   "دریافت مشخصات سرور"
-  );
-
-  if(result.error) throw result.error;
-  if(!result.data) throw new Error("سرور پیدا نشد یا متعلق به حساب شما نیست.");
-
-  const data = result.data;
-  currentServerId = data.id;
-
-  $("serverName").textContent = data.name || "سرور من";
-  $("newServerName").value = data.name || "";
-  $("type").textContent = data.type || "-";
-  $("software").textContent = data.software || "-";
-  $("version").textContent = data.version || "-";
-  $("ram").textContent = data.ram_gb ? data.ram_gb + " گیگابایت" : "تنظیم نشده";
-  $("serverId").textContent = data.id || "-";
-  $("created").textContent = data.created_at
-   ? new Date(data.created_at).toLocaleString("fa-IR")
-   : "نامشخص";
-
-  $("status").textContent = statusText(data.status);
-  $("status").className = "status " + statusClass(data.status);
-
-  content.hidden = false;
-
-  try {
-   await loadSettings();
-   showMessage("اطلاعات سرور و تنظیمات با موفقیت دریافت شدند.","success");
-  } catch(settingsError) {
-   console.error("Settings load error:",settingsError);
-   applySettings(defaults);
-   showMessage(
-    "مشخصات سرور دریافت شد، اما تنظیمات بارگذاری نشد: " +
-    (settingsError.message || "خطای ناشناخته"),
-    "error"
-   );
-  }
-
- } catch(error) {
-  console.error("BlockNova error:",error);
-  showMessage("خطا در دریافت اطلاعات: " + (error.message || "خطای ناشناخته"),"error");
- } finally {
-  $("refresh").disabled = false;
- }
-}
-
-async function renameServer() {
- const name = $("newServerName").value.trim();
-
- if(!currentServerId || !currentUserId) {
-  showMessage("ابتدا اطلاعات سرور باید دریافت شود.","error");
-  return;
- }
- if(name.length < 3) {
-  showMessage("نام سرور باید حداقل ۳ کاراکتر داشته باشد.","error");
+ if(!Number.isInteger(max)||max<1||max>100){
+  showMessage("settingsMessage","تعداد بازیکنان باید بین ۱ تا ۱۰۰ باشد.","error");
   return;
  }
 
- const button = $("renameButton");
- button.disabled = true;
- button.textContent = "در حال ذخیره...";
-
- try {
-  const result = await withTimeout(
-   supabase.from("servers")
-    .update({name})
-    .eq("id",currentServerId)
-    .eq("user_id",currentUserId)
-    .select("id,name"),
-   15000,
-   "ذخیره نام سرور"
-  );
-
-  if(result.error) throw result.error;
-  if(!result.data || !result.data.length) {
-   throw new Error("تغییری ذخیره نشد. دسترسی حساب را بررسی کن.");
-  }
-
-  $("serverName").textContent = result.data[0].name;
-  $("newServerName").value = result.data[0].name;
-  showMessage("نام سرور با موفقیت تغییر کرد.","success");
-
- } catch(error) {
-  showMessage("خطا در تغییر نام: " + (error.message || "خطای ناشناخته"),"error");
- } finally {
-  button.disabled = false;
-  button.textContent = "ذخیره نام جدید";
- }
-}
-
-async function saveSettings() {
- if(!currentServerId || !currentUserId) {
-  showMessage("ابتدا اطلاعات سرور باید دریافت شود.","error");
-  return;
- }
-
- const maxPlayers = Number($("maxPlayers").value);
-
- if(!Number.isInteger(maxPlayers) || maxPlayers < 1 || maxPlayers > 100) {
-  showMessage("تعداد بازیکنان باید عددی بین ۱ تا ۱۰۰ باشد.","error");
-  $("maxPlayers").focus();
-  return;
- }
-
- const settings = {
-  server_id: currentServerId,
-  user_id: currentUserId,
-  game_mode: $("gameMode").value,
-  difficulty: $("difficulty").value,
-  pvp_enabled: $("pvpEnabled").checked,
-  max_players: maxPlayers,
-  command_blocks_enabled: $("commandBlocks").checked,
-  updated_at: new Date().toISOString()
+ const settings={
+  server_id:currentServerId,
+  game_mode:$("gameMode").value,
+  difficulty:$("difficulty").value,
+  max_players:max,
+  pvp_enabled:$("pvpEnabled").checked,
+  command_blocks_enabled:$("commandBlocks").checked,
+  updated_at:new Date().toISOString()
  };
 
- const button = $("saveSettings");
- button.disabled = true;
- button.textContent = "در حال ذخیره...";
+ $("saveSettings").disabled=true;
+ showMessage("settingsMessage","در حال ذخیره تنظیمات...");
 
- try {
-  const result = await withTimeout(
-   supabase
-    .from("server_settings")
+ try{
+  const result=await timeout(
+   db.from("server_settings")
     .upsert(settings,{onConflict:"server_id"})
     .select()
-    .single(),
-   15000,
-   "ذخیره تنظیمات"
+    .single()
   );
 
   if(result.error) throw result.error;
 
-  showMessage("تنظیمات بازی با موفقیت در پایگاه داده ذخیره شدند.","success");
-
- } catch(error) {
-  console.error("Save settings error:",error);
-  showMessage(
-   "خطا در ذخیره تنظیمات: " + (error.message || "خطای ناشناخته"),
-   "error"
-  );
- } finally {
-  button.disabled = false;
-  button.textContent = "💾 ذخیره تنظیمات";
+  showMessage("settingsMessage","تنظیمات با موفقیت ذخیره شد.","success");
+ }catch(error){
+  showMessage("settingsMessage",error.message||"خطا در ذخیره تنظیمات.","error");
+ }finally{
+  $("saveSettings").disabled=false;
  }
 }
 
-function resetSettings() {
- applySettings(defaults);
- showMessage("تنظیمات پیش‌فرض انتخاب شدند. برای ذخیره آن‌ها دکمه ذخیره را بزن.","");
+function renderPlayers(){
+ const list=$("playerList");
+ const query=$("playerSearch").value.trim().toLowerCase();
+
+ const filtered=players.filter(p=>
+  p.player_name.toLowerCase().includes(query)
+ );
+
+ $("playerCount").textContent=players.length.toLocaleString("fa-IR");
+ list.replaceChildren();
+
+ if(!filtered.length){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent=players.length
+   ? "بازیکنی با این نام پیدا نشد."
+   : "هنوز بازیکنی اضافه نشده است.";
+  list.appendChild(empty);
+  return;
+ }
+
+ filtered.forEach(player=>{
+  const item=document.createElement("div");
+  item.className="player-item";
+
+  const details=document.createElement("div");
+
+  const name=document.createElement("div");
+  name.className="player-name";
+  name.textContent=player.player_name;
+
+  const date=document.createElement("div");
+  date.className="player-date";
+  date.textContent="تاریخ افزودن: "+formatDate(player.created_at);
+
+  details.append(name,date);
+
+  const remove=document.createElement("button");
+  remove.className="btn danger";
+  remove.textContent="حذف";
+  remove.addEventListener("click",()=>deletePlayer(player.id,player.player_name));
+
+  item.append(details,remove);
+  list.appendChild(item);
+ });
 }
 
-$("refresh").addEventListener("click",loadServer);
+async function loadPlayers(){
+ $("playerList").textContent="در حال دریافت فهرست بازیکنان...";
+
+ const result=await timeout(
+  db.from("server_players")
+   .select("id,player_name,created_at")
+   .eq("server_id",currentServerId)
+   .eq("user_id",currentUserId)
+   .order("created_at",{ascending:false})
+ );
+
+ if(result.error){
+  $("playerList").textContent="خطا در دریافت بازیکنان: "+result.error.message;
+  throw result.error;
+ }
+
+ players=result.data||[];
+ renderPlayers();
+}
+
+async function addPlayer(){
+ const name=$("playerName").value.trim();
+
+ if(!/^[A-Za-z0-9_]{3,16}$/.test(name)){
+  showMessage("playerMessage","نام بازیکن باید ۳ تا ۱۶ کاراکتر و فقط شامل حروف انگلیسی، عدد یا _ باشد.","error");
+  return;
+ }
+
+ $("addPlayer").disabled=true;
+ showMessage("playerMessage","در حال افزودن بازیکن...");
+
+ try{
+  const result=await timeout(
+   db.from("server_players")
+    .insert({
+     server_id:currentServerId,
+     user_id:currentUserId,
+     player_name:name
+    })
+    .select("id,player_name,created_at")
+    .single()
+  );
+
+  if(result.error){
+   if(result.error.code==="23505"){
+    throw new Error("این بازیکن قبلاً به فهرست اضافه شده است.");
+   }
+   throw result.error;
+  }
+
+  players.unshift(result.data);
+  $("playerName").value="";
+  renderPlayers();
+  showMessage("playerMessage","بازیکن با موفقیت اضافه شد.","success");
+
+ }catch(error){
+  showMessage("playerMessage",error.message||"افزودن بازیکن ناموفق بود.","error");
+ }finally{
+  $("addPlayer").disabled=false;
+ }
+}
+
+async function deletePlayer(id,name){
+ if(!confirm("آیا مطمئنی می‌خواهی "+name+" را حذف کنی؟")) return;
+
+ try{
+  const result=await timeout(
+   db.from("server_players")
+    .delete()
+    .eq("id",id)
+    .eq("server_id",currentServerId)
+    .eq("user_id",currentUserId)
+  );
+
+  if(result.error) throw result.error;
+
+  players=players.filter(p=>p.id!==id);
+  renderPlayers();
+  showMessage("playerMessage","بازیکن حذف شد.","success");
+
+ }catch(error){
+  showMessage("playerMessage",error.message||"حذف بازیکن ناموفق بود.","error");
+ }
+}
+
 $("renameButton").addEventListener("click",renameServer);
 $("saveSettings").addEventListener("click",saveSettings);
-$("resetSettings").addEventListener("click",resetSettings);
+$("addPlayer").addEventListener("click",addPlayer);
+$("playerSearch").addEventListener("input",renderPlayers);
 
-$("copyId").addEventListener("click",async () => {
- if(!currentServerId) return;
- try {
+$("playerName").addEventListener("keydown",e=>{
+ if(e.key==="Enter") addPlayer();
+});
+
+$("copyId").addEventListener("click",async()=>{
+ try{
   await navigator.clipboard.writeText(currentServerId);
-  showMessage("شناسه سرور کپی شد.","success");
- } catch(error) {
-  showMessage("کپی خودکار انجام نشد. شناسه را دستی کپی کن.","error");
+  $("copyId").textContent="کپی شد!";
+  setTimeout(()=>$("copyId").textContent="کپی شناسه سرور",1800);
+ }catch{
+  alert("کپی خودکار انجام نشد. شناسه را دستی کپی کن.");
  }
 });
 
-loadServer();
+loadServer().catch(error=>{
+ console.error(error);
+ pageMessage("خطا در بارگذاری: "+(error.message||"اتصال برقرار نشد."),true);
+});
 </script>
+
 </body>
- </html>
- 
+</html>
